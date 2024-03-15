@@ -1,0 +1,96 @@
+[gd_scene load_steps=14 format=3 uid="uid://ckrmhlyb1wm7c"]
+
+[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://assets/3DModel/Arrow.dae" id="1_2n81c"]
+[ext_resource type="Script" path="res://assets/scripts/RL/agents/BasicAgent.cs" id="2_s38mw"]
+[ext_resource type="Script" path="res://assets/scripts/RL/actuators/RBMoveActuator.cs" id="3_8yyvm"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RayCastingSensor.cs" id="4_676st"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/MinDistReward.cs" id="5_771kv"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/TouchRewardFunc.cs" id="6_mprb4"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/FloatArrayCompositeSensor.cs" id="8_e67gg"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="9_srm3f"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/ActionSensor.cs" id="10_fkiei"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/FallReward.cs" id="11_6w07l"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_768m2"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vl1w0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jxcle"]
+albedo_color = Color(0.815686, 0.152941, 1, 1)
+
+[node name="IABot" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+sleeping = true
+can_sleep = false
+continuous_cd = true
+max_contacts_reported = 10000
+contact_monitor = true
+angular_damp = 5.0
+
+[node name="Arrow" parent="." instance=ExtResource("1_2n81c")]
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 1.29594, 0.474278)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.887573, 0)
+shape = SubResource("CapsuleShape3D_768m2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.859779, 0)
+mesh = SubResource("CapsuleMesh_vl1w0")
+surface_material_override/0 = SubResource("StandardMaterial3D_jxcle")
+
+[node name="Agent" type="Node" parent="."]
+script = ExtResource("2_s38mw")
+avatarPath = NodePath("..")
+doneAtNegativeReward = false
+MaxStepsPerEpisode = 3000
+
+[node name="Actuator" type="Node" parent="Agent"]
+script = ExtResource("3_8yyvm")
+moveAmount = 20.0
+turnAmount = 20.0
+jumpPower = 0.0
+jumpForwardPower = 0.0
+actionName = "move"
+
+[node name="Sensor" type="Node" parent="Agent"]
+script = ExtResource("4_676st")
+groupCode = PackedInt32Array(50, 100, 200)
+groupName = PackedStringArray("FLOOR", "PLAYER", "TARGET")
+eyePath = NodePath("../../Arrow")
+visionMaxDistance = 15.0
+flattened = true
+perceptionKey = "vision"
+normalized = false
+isState = true
+
+[node name="MinDist" type="Node" parent="Agent"]
+script = ExtResource("5_771kv")
+target = NodePath("../../../Target")
+
+[node name="TouchReward" type="Node" parent="Agent"]
+script = ExtResource("6_mprb4")
+reward = 100.0
+targetPath = NodePath("../../../Target")
+causeEpisodeToEnd = true
+
+[node name="ArraySensor" type="Node" parent="Agent"]
+script = ExtResource("8_e67gg")
+perceptionKey = "array2"
+isState = true
+
+[node name="OrientationSensor" type="Node" parent="Agent/ArraySensor"]
+script = ExtResource("9_srm3f")
+target = NodePath("../../../../Target")
+perceptionKey = "orientation"
+
+[node name="ActionSensor" type="Node" parent="Agent/ArraySensor"]
+script = ExtResource("10_fkiei")
+actionName = "move"
+actionSize = 4
+perceptionKey = "actions"
+
+[node name="FallReward" type="Node" parent="Agent"]
+script = ExtResource("11_6w07l")
+causeEpisodeToEnd = true
