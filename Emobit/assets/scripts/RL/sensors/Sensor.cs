@@ -29,7 +29,6 @@ namespace ai4u
 		public string GetName();
 		public string GetKey();
 		public int[] GetShape();
-		public bool IsState();
 		public bool IsResetable();
 		public bool IsActive();
 		public bool IsInput();
@@ -222,16 +221,13 @@ namespace ai4u
 		public bool isActive = true;
 		[Export]
 		public bool isInput = true;
-		[Export]
-		public bool  normalized = true;
+		
 		[Export]
 		public bool resetable = true;
 		[Export]
 		public float rangeMin = 0.0f;
 		[Export]
 		public float rangeMax = 1.0f;
-		[Export]
-		public bool isState;
 		
 		protected SensorType Type;
 		protected int[] Shape;
@@ -239,10 +235,8 @@ namespace ai4u
 		
 		public bool Normalized
 		{
-			get
-			{
-				return normalized;
-			}
+			get;
+			set;
 		}
 
 		public void SetName(string name)
@@ -357,11 +351,6 @@ namespace ai4u
 		public int[] GetShape()
 		{
 			return shape;
-		}
-
-		public bool IsState()
-		{
-			return isState;
 		}
 
 		public bool IsResetable()

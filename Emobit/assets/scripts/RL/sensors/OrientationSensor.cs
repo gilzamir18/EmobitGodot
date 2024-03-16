@@ -15,6 +15,9 @@ namespace ai4u {
 		[Export]
 		private float maxDistance = 100;
 
+		[Export]
+		private bool normalized;
+
 		private HistoryStack<float> history;
 
 		public override void OnSetup(Agent agent) {
@@ -33,6 +36,7 @@ namespace ai4u {
 			type = SensorType.sfloatarray;
 			shape = new int[1]{2};
 			history = new HistoryStack<float>(shape[0]*stackedObservations);
+			Normalized =  normalized;
 		}
 
 		public override void OnReset(Agent aget)

@@ -88,14 +88,38 @@ namespace ai4u
 		[Export]
 		public bool flattened = false;
 
+
+		[Export] 
+		private Color debugColor = new Color(1, 0, 0, 1);
+		
+		[Export]
+		private Color debugNoTagColor = new Color(1, 1, 1, 1);
+
+		[Export]
+		private Color debugBackgroundColor = new Color(0, 1, 0, 1);
+
+	 	[Export]
+		private float debugThickness = 1.0f;
+
+		[Export]
+		private float debugOriginSize = 10;
+
 		private Dictionary<string, int> mapping;
 		private Ray[,] raysMatrix = null;
 		private HistoryStack<float> history;
 		private PhysicsDirectSpaceState3D spaceState;
 		
 
+		private LineDrawer lineDrawer;
+
 		public override void OnSetup(Agent agent) 
 		{
+
+			if (debugEnabled)
+			{
+				lineDrawer = GetNode<LineDrawer>("/root/LineDrawer");
+			}
+
 			type = SensorType.sfloatarray;
 			if (!flattened)
 			{
@@ -130,6 +154,10 @@ namespace ai4u
 			Vector3 up = aim.Y.Normalized();
 			Vector3 right = aim.X.Normalized();
 			UpdateRaysMatrix(eye.GlobalTransform.Origin, forward, up, right, fieldOfView);
+			if (debugEnabled)
+			{
+				lineDrawer.Redraw();
+			}
 			return history.Values;
 		}
 
@@ -205,10 +233,10 @@ namespace ai4u
 			if (debugEnabled)
 			{
 				if (isTagged) {
-					GetNode<LineDrawer>("/root/LineDrawer").Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, new Color(1, 0, 0, 1), new Color(0, 1, 0, 1), 1, 10);
+					lineDrawer.Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, debugColor, debugBackgroundColor, debugThickness, debugOriginSize);
 				} else 
 				{
-					GetNode<LineDrawer>("/root/LineDrawer").Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, new Color(1, 1, 1, 1), new Color(0, 1, 0, 1), 1, 10);					
+					lineDrawer.Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, debugNoTagColor, debugBackgroundColor, debugThickness, debugOriginSize);					
 				}
 			}			
 		}

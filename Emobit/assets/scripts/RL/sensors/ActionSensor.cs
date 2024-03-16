@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Godot;
 
 namespace ai4u {
@@ -9,10 +11,11 @@ namespace ai4u {
 		public string actionName;
 		
 		[Export]
-		public int actionSize;    
+		public int actionSize;
 		
 		private HistoryStack<float> history;
 		private float[] previewsAction;
+
 
 		public override void OnSetup(Agent agent) {
 			this.agent = (BasicAgent)agent;

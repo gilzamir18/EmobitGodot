@@ -1,9 +1,12 @@
-[gd_scene load_steps=20 format=3 uid="uid://brb3bfsmcdoph"]
+[gd_scene load_steps=23 format=3 uid="uid://brb3bfsmcdoph"]
 
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="1_g8gpe"]
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_obwm7"]
 [ext_resource type="PackedScene" uid="uid://ckrmhlyb1wm7c" path="res://prefabs/aibot.tscn" id="4_5avvx"]
-[ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="5_fe7s5"]
+[ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="5_lq0oc"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RewardSensor.cs" id="5_yd4h1"]
+[ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="6_nk34i"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/CollisionWithRewardFunc.cs" id="8_rf03j"]
 [ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="11_l2bbl"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="17_1smsj"]
 
@@ -79,7 +82,7 @@ fruit = NodePath("Fruit")
 fruitPositions = NodePath("FruitPositions")
 agent = NodePath("IABot/Agent")
 
-[node name="Floor" type="StaticBody3D" parent="." groups=["Floor"]]
+[node name="Floor" type="StaticBody3D" parent="." groups=["FLOOR"]]
 script = ExtResource("1_g8gpe")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
@@ -93,10 +96,11 @@ gi_mode = 0
 mesh = SubResource("ArrayMesh_yumwp")
 skeleton = NodePath("")
 
-[node name="Fruit" type="StaticBody3D" parent="." groups=["Fruit"]]
+[node name="Fruit" type="StaticBody3D" parent="." groups=["TARGET"]]
 transform = Transform3D(2, -4.3201e-12, 0, -2.251e-11, 2, 0, 2.32831e-10, 6.98492e-10, 2, -6.67453, 1.61265, 7.13166)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Fruit"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fruit" groups=["TARGET"]]
+transform = Transform3D(1, -2.04636e-12, 0, -1.14824e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_qj23i")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Fruit"]
@@ -181,7 +185,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13332, 0.005, -7.9718)
 [node name="pos25" type="Node3D" parent="FruitPositions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13332, 0.005, -7.9718)
 
-[node name="LWall" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="LWall" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.688, 2.5057, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LWall"]
@@ -192,7 +196,7 @@ shape = SubResource("BoxShape3D_33gy8")
 transform = Transform3D(0.5, 0, 0, 0, 5, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("BoxMesh_orx12")
 
-[node name="RWall2" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="RWall2" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.80062, 2.5057, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RWall2"]
@@ -203,7 +207,7 @@ shape = SubResource("BoxShape3D_33gy8")
 transform = Transform3D(0.5, 0, 0, 0, 5, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("BoxMesh_orx12")
 
-[node name="BWall3" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="BWall3" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.506, -10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BWall3"]
@@ -213,7 +217,7 @@ shape = SubResource("BoxShape3D_33gy8")
 transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("BoxMesh_orx12")
 
-[node name="TWall4" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="TWall4" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.506, 9.7173)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TWall4"]
@@ -224,7 +228,7 @@ transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("BoxMesh_orx12")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.111989, 0.993709, 0, -0.993709, 0.111989, 0, 15.7217, 1.34229)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.65661e-10, 15.7217, 1.34229)
 projection = 1
 current = true
 size = 20.0
@@ -234,18 +238,29 @@ transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.87
 
 [node name="ControlLoop" type="Node" parent="." node_paths=PackedStringArray("agentsList")]
 script = ExtResource("11_l2bbl")
+defaultTimeScale = 10.0
 agentsList = [NodePath("../IABot/Agent")]
 
-[node name="IABot" parent="." instance=ExtResource("4_5avvx")]
+[node name="IABot" parent="." groups=["PLAYER"] instance=ExtResource("4_5avvx")]
 transform = Transform3D(1, -5.96856e-11, 2.32831e-10, 4.6839e-11, 1, -3.49246e-10, 2.32831e-10, 8.14907e-10, 1, -6.95969, 0.00542105, -7.74487)
 
 [node name="CollisionShape3D" parent="IABot" index="1"]
 transform = Transform3D(1, -6.08225e-11, 1.16415e-10, 4.63842e-11, 1, -2.32831e-10, 1.16415e-10, 4.65661e-10, 1, -0.000373307, 0.895548, 0.000962291)
 
+[node name="Agent" parent="IABot" index="3"]
+remote = true
+MaxStepsPerEpisode = 500
+
 [node name="Sensor" parent="IABot/Agent" index="1"]
 groupCode = PackedInt32Array(50, 100, 200, 10)
 groupName = PackedStringArray("FLOOR", "PLAYER", "TARGET", "WALL")
+hSize = 62
+vSize = 3
+verticalShift = 20.0
+eyePath = NodePath("../../Eye")
+fieldOfView = 45.0
 debugEnabled = true
+stackedObservations = 4
 
 [node name="MinDist" parent="IABot/Agent" index="2"]
 target = NodePath("../../../Fruit")
@@ -253,14 +268,25 @@ target = NodePath("../../../Fruit")
 [node name="TouchReward" parent="IABot/Agent" index="3"]
 targetPath = NodePath("../../../Fruit")
 
+[node name="ArraySensor" parent="IABot/Agent" index="4"]
+perceptionKey = "array"
+stackedObservations = 4
+
 [node name="OrientationSensor" parent="IABot/Agent/ArraySensor" index="0"]
 target = NodePath("../../../../Fruit")
 reference = NodePath("../../../Arrow")
+normalized = true
+isInput = false
 
-[node name="WASDRBMoveController" type="Node" parent="IABot/Agent" index="6"]
-script = ExtResource("5_fe7s5")
+[node name="ActionSensor" parent="IABot/Agent/ArraySensor" index="1"]
+isInput = false
 
-[node name="positions" type="Node" parent="IABot/Agent" index="7"]
+[node name="RewardSensor" type="Node" parent="IABot/Agent/ArraySensor" index="2"]
+script = ExtResource("5_yd4h1")
+perceptionKey = "rewards"
+isInput = false
+
+[node name="positions" type="Node" parent="IABot/Agent" index="6"]
 
 [node name="pos1" type="Node3D" parent="IABot/Agent/positions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, -8.1963)
@@ -337,6 +363,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.894577, 0.005, 6.82336)
 [node name="pos25" type="Node3D" parent="IABot/Agent/positions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.45957, 0.005, -0.29799)
 
+[node name="RemoteConf" type="Node" parent="IABot/Agent" index="7"]
+script = ExtResource("5_lq0oc")
+receiveBufferSize = 81920
+sendBufferSize = 81920
+
+[node name="WASDController" type="Node" parent="IABot/Agent" index="8"]
+script = ExtResource("6_nk34i")
+
+[node name="CollisionWall" type="Node" parent="IABot/Agent" index="9"]
+script = ExtResource("8_rf03j")
+reward = -0.001
+group = "WALL"
+
+[node name="Eye" type="Node3D" parent="IABot"]
+transform = Transform3D(1, -2.33854e-10, 2.32831e-10, 4.61569e-11, 1, -3.49246e-10, 2.32831e-10, 6.98492e-10, 1, 1.90735e-06, 0.952856, 0.0325065)
+
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)
 
@@ -346,7 +388,7 @@ offset_bottom = 39.0
 script = ExtResource("17_1smsj")
 agentPath = NodePath("../IABot/Agent")
 
-[node name="Block1" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="Block1" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, -8.87894e-11, 2.32831e-10, 7.58291e-11, 1, -3.49246e-10, 3.49246e-10, 8.14907e-10, 1, -0.0139282, 2.72681, -7.61861)
 visible = false
 
@@ -358,7 +400,7 @@ shape = SubResource("BoxShape3D_gc5m7")
 transform = Transform3D(10, 0, 0, 0, 4.5, 0, 0, 0, 5, 0, 0, 0)
 mesh = SubResource("BoxMesh_3c5on")
 
-[node name="Block2" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="Block2" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, -9.06084e-11, 4.65661e-10, 7.40101e-11, 1, -3.49246e-10, 4.65661e-10, 6.98492e-10, 1, -0.00561791, 2.72138, -2.56197)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Block2"]
@@ -369,7 +411,7 @@ shape = SubResource("BoxShape3D_gc5m7")
 transform = Transform3D(10, 4.90218e-10, -3.72529e-09, 1.45519e-11, 4.5, 2.32831e-09, -7.45058e-09, 1.39698e-09, 5, -9.50317e-05, 6.27041e-05, -0.0578234)
 mesh = SubResource("BoxMesh_3c5on")
 
-[node name="Block3" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="Block3" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, -9.06084e-11, 4.65661e-10, 7.38964e-11, 1, -3.49246e-10, 5.82077e-10, 6.98492e-10, 1, 0.00261096, 2.716, 2.44509)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Block3"]
@@ -380,7 +422,7 @@ shape = SubResource("BoxShape3D_gc5m7")
 transform = Transform3D(10, 3.73802e-10, -9.31323e-10, 5.45697e-12, 4.5, 1.39698e-09, 0, 9.31323e-10, 5, -0.000190063, 0.000124216, -0.115648)
 mesh = SubResource("BoxMesh_3c5on")
 
-[node name="Block4" type="StaticBody3D" parent="." groups=["Wall"]]
+[node name="Block4" type="StaticBody3D" parent="." groups=["WALL"]]
 transform = Transform3D(1, -9.06084e-11, 4.65661e-10, 7.38964e-11, 1, -3.49246e-10, 5.82077e-10, 6.98492e-10, 1, 0.0109213, 2.71057, 7.50174)
 visible = false
 

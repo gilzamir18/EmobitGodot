@@ -16,9 +16,15 @@ namespace  ai4u
 		[Export]
 		public float jumpPower = 1.0f;
 		
+		[Export]
+		private bool debug = false;
+
 		private float reward_sum = 0;
 		
 		private bool hasNewAction = false;
+
+
+		
 
 		override public void OnSetup()
 		{
@@ -114,7 +120,11 @@ namespace  ai4u
 					}
 					if (GetStateName(i) == "done")
 					{
-						GD.Print("Reward Episode: " + reward_sum);
+						
+						if (debug)
+						{
+							GD.Print("Reward Episode: " + reward_sum);
+						}
 						reward_sum = 0;
 					}
 				}

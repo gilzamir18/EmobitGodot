@@ -158,7 +158,7 @@ public partial class SceneManager : Node
 		if (b3 != 0)
 		{
 			block3.Visible  = true;
-			shape1.Disabled = false;
+			shape3.Disabled = false;
 		}
 		else
 		{
