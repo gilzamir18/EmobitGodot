@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://brb3bfsmcdoph"]
+[gd_scene load_steps=30 format=3 uid="uid://brb3bfsmcdoph"]
 
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="1_g8gpe"]
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_obwm7"]
@@ -6,8 +6,14 @@
 [ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="5_lq0oc"]
 [ext_resource type="Script" path="res://assets/scripts/RL/sensors/RewardSensor.cs" id="5_yd4h1"]
 [ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="6_nk34i"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="6_xv6uf"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/GroupTouchSensor.cs" id="7_4j3y0"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/TouchSensor.cs" id="7_tlbvp"]
 [ext_resource type="Script" path="res://assets/scripts/RL/events/CollisionWithRewardFunc.cs" id="8_rf03j"]
+[ext_resource type="PackedScene" uid="uid://b3nhj6ax7xuc5" path="res://prefabs/sensor_orientationviewer.tscn" id="10_7kn71"]
 [ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="11_l2bbl"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/DistanceToTargetReward.cs" id="12_8smqg"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/RestlessnessReward.cs" id="13_5bpgd"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="17_1smsj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
@@ -70,6 +76,8 @@ size = Vector3(10, 4.5, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x845j"]
 albedo_color = Color(0.639216, 0.027451, 0.243137, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7obly"]
 
 [node name="Arena" type="Node3D" node_paths=PackedStringArray("radiation", "radiationPositions", "agentBody", "agentPositions", "fruit", "fruitPositions", "agent")]
 transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 0, 0, 0)
@@ -249,7 +257,10 @@ transform = Transform3D(1, -6.08225e-11, 1.16415e-10, 4.63842e-11, 1, -2.32831e-
 
 [node name="Agent" parent="IABot" index="3"]
 remote = true
-MaxStepsPerEpisode = 500
+MaxStepsPerEpisode = 600
+
+[node name="Actuator" parent="IABot/Agent" index="0"]
+moveAmount = 5.0
 
 [node name="Sensor" parent="IABot/Agent" index="1"]
 groupCode = PackedInt32Array(50, 100, 200, 10)
@@ -259,23 +270,24 @@ vSize = 3
 verticalShift = 20.0
 eyePath = NodePath("../../Eye")
 fieldOfView = 45.0
-debugEnabled = true
 stackedObservations = 4
 
 [node name="MinDist" parent="IABot/Agent" index="2"]
 target = NodePath("../../../Fruit")
 
-[node name="TouchReward" parent="IABot/Agent" index="3"]
-targetPath = NodePath("../../../Fruit")
+[node name="TouchReward" parent="IABot/Agent" index="3" node_paths=PackedStringArray("target")]
+target = NodePath("../../../Fruit")
 
 [node name="ArraySensor" parent="IABot/Agent" index="4"]
 perceptionKey = "array"
 stackedObservations = 4
 
-[node name="OrientationSensor" parent="IABot/Agent/ArraySensor" index="0"]
+[node name="OrientationSensor" parent="IABot/Agent/ArraySensor" index="0" node_paths=PackedStringArray("target", "reference")]
 target = NodePath("../../../../Fruit")
-reference = NodePath("../../../Arrow")
+reference = NodePath("../../..")
+maxDistance = 15.0
 normalized = true
+visibilityTest = true
 isInput = false
 
 [node name="ActionSensor" parent="IABot/Agent/ArraySensor" index="1"]
@@ -284,6 +296,32 @@ isInput = false
 [node name="RewardSensor" type="Node" parent="IABot/Agent/ArraySensor" index="2"]
 script = ExtResource("5_yd4h1")
 perceptionKey = "rewards"
+isInput = false
+
+[node name="RadiationSensor" type="Node" parent="IABot/Agent/ArraySensor" index="3" node_paths=PackedStringArray("target", "reference")]
+script = ExtResource("6_xv6uf")
+target = NodePath("../../../../Radiation")
+reference = NodePath("../../..")
+maxDistance = 20.0
+info = 1
+normalized = true
+visibilityTest = true
+perceptionKey = "rad"
+isInput = false
+
+[node name="TouchWallSensor" type="Node" parent="IABot/Agent/ArraySensor" index="4"]
+script = ExtResource("7_4j3y0")
+group = "WALL"
+isInput = false
+
+[node name="TouchFruitSensor" type="Node" parent="IABot/Agent/ArraySensor" index="5" node_paths=PackedStringArray("target")]
+script = ExtResource("7_tlbvp")
+target = NodePath("../../../../Fruit")
+isInput = false
+
+[node name="TouchFloorSensor" type="Node" parent="IABot/Agent/ArraySensor" index="6" node_paths=PackedStringArray("target")]
+script = ExtResource("7_tlbvp")
+target = NodePath("../../../../Floor")
 isInput = false
 
 [node name="positions" type="Node" parent="IABot/Agent" index="6"]
@@ -376,6 +414,14 @@ script = ExtResource("8_rf03j")
 reward = -0.001
 group = "WALL"
 
+[node name="RadiationReward" type="Node" parent="IABot/Agent" index="10" node_paths=PackedStringArray("target")]
+script = ExtResource("12_8smqg")
+target = NodePath("../../../Radiation")
+maxReward = -1.0
+
+[node name="RestlessnessReward" type="Node" parent="IABot/Agent" index="11"]
+script = ExtResource("13_5bpgd")
+
 [node name="Eye" type="Node3D" parent="IABot"]
 transform = Transform3D(1, -2.33854e-10, 2.32831e-10, 4.61569e-11, 1, -3.49246e-10, 2.32831e-10, 6.98492e-10, 1, 1.90735e-06, 0.952856, 0.0325065)
 
@@ -434,11 +480,23 @@ shape = SubResource("BoxShape3D_gc5m7")
 transform = Transform3D(10, 2.58296e-10, -9.31323e-10, 5.45697e-12, 4.5, 1.39698e-09, 0, 9.31323e-10, 5, -0.000325894, 0.000212908, -0.198298)
 mesh = SubResource("BoxMesh_3c5on")
 
-[node name="Radiation" type="Node3D" parent="."]
+[node name="Radiation" type="StaticBody3D" parent="."]
+transform = Transform3D(1, -2.6148e-12, 0, -1.13687e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 6.79141, 0.547486, -2.79397e-09)
+collision_layer = 2
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Radiation"]
 mesh = SubResource("BoxMesh_6ydlo")
 surface_material_override/0 = SubResource("StandardMaterial3D_x845j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Radiation"]
+transform = Transform3D(1, -2.04636e-12, 0, 1.81899e-11, 1, 0, 1.16415e-10, 1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_7obly")
 
 [node name="RadiationPositions" type="Node" parent="."]
 
@@ -517,4 +575,39 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, 2.20329)
 [node name="pos25" type="Node3D" parent="RadiationPositions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, -3.91662)
 
+[node name="OrientationViewer" parent="." node_paths=PackedStringArray("orientationSensor") instance=ExtResource("10_7kn71")]
+offset_top = 144.0
+offset_right = -86.0
+orientationSensor = NodePath("../IABot/Agent/ArraySensor/OrientationSensor")
+
+[node name="RadiationViewer" parent="." node_paths=PackedStringArray("orientationSensor") instance=ExtResource("10_7kn71")]
+offset_top = 52.0
+offset_bottom = -149.0
+orientationSensor = NodePath("../IABot/Agent/ArraySensor/RadiationSensor")
+title = "Radiation Sensor"
+
+[node name="LabelTitle" parent="RadiationViewer" index="0"]
+visible = false
+offset_left = 2.0
+offset_top = -3.0
+offset_right = 176.0
+offset_bottom = 20.0
+text = "Radiation"
+
+[node name="Angle" parent="RadiationViewer" index="1"]
+visible = false
+
+[node name="Distance" parent="RadiationViewer" index="2"]
+offset_top = 36.0
+offset_bottom = 52.0
+
+[node name="LabelAngle" parent="RadiationViewer" index="3"]
+visible = false
+
+[node name="LabelDistance" parent="RadiationViewer" index="4"]
+offset_top = 13.0
+offset_bottom = 36.0
+text = "Radiation"
+
 [editable path="IABot"]
+[editable path="RadiationViewer"]

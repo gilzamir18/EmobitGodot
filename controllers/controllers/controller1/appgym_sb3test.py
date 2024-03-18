@@ -10,12 +10,12 @@ import torch
 import sys
 
 
-path = "logs_exp1_2/logs/rl_model_2000000_steps"
+path = "model"
 
 if len(sys.argv) > 1:
    path = sys.argv[1].strip()
 
-env = gym.make("BMEnv-v0", controller_class=DonutGymController, rid='1', config=dict(server_IP='127.0.0.1', server_port=8080))
+env = gym.make("BMEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 
 model = SAC.load(path, custom_objects={'action_space': env.action_space, 'observation_space': env.observation_space}) 
 DonutGymController.model = model

@@ -12,7 +12,7 @@ IMG_H = 3
 IMG_CH = 4
 MAX_STEPS = 1000
 ENV_HIST_LEN = 30
-ARRAY_SIZE = IMG_CH * 7
+ARRAY_SIZE = IMG_CH * 11
 EXTRA_FIELDS = 1
 
 # Get cpu, gpu or mps device for training.

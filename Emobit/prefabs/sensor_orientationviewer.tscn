@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3nhj6ax7xuc5"]
+
+[ext_resource type="Script" path="res://prefabs/scripts/SensorOrientationViewer.cs" id="1_r3d3h"]
+
+[node name="OrientationViewer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r3d3h")
+
+[node name="LabelTitle" type="Label" parent="."]
+layout_mode = 0
+offset_right = 174.0
+offset_bottom = 23.0
+
+[node name="Angle" type="HSlider" parent="."]
+layout_mode = 0
+offset_top = 51.0
+offset_right = 144.0
+offset_bottom = 67.0
+min_value = -1.0
+max_value = 1.0
+step = 0.001
+value = -1.0
+
+[node name="Distance" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 114.0
+offset_right = 144.0
+offset_bottom = 130.0
+step = 0.001
+
+[node name="LabelAngle" type="Label" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 29.0
+offset_right = 139.0
+offset_bottom = 52.0
+text = "Angle"
+
+[node name="LabelDistance" type="Label" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 91.0
+offset_right = 140.0
+offset_bottom = 114.0
+text = "Distance"

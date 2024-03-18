@@ -21,7 +21,7 @@ LineDrawer="*res://assets/plugins/LineDrawer.cs"
 
 [display]
 
-window/size/viewport_width=400
+window/size/viewport_width=800
 window/size/viewport_height=280
 window/vsync/vsync_mode=0
 

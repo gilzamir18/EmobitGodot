@@ -104,6 +104,9 @@ namespace ai4u
 		[Export]
 		private float debugOriginSize = 10;
 
+		[Export]
+		private bool excludeSelf = true;
+
 		private Dictionary<string, int> mapping;
 		private Ray[,] raysMatrix = null;
 		private HistoryStack<float> history;
@@ -196,8 +199,20 @@ namespace ai4u
 		public void UpdateView(int i, int j, int debug_line = 0)
 		{
 			var myray = raysMatrix[i,j];
+			
+			//var query = PhysicsRayQueryParameters3D.Create(myray.Origin, myray.Origin + myray.Direction*visionMaxDistance, 2147483647);
+			
+
 			var query = PhysicsRayQueryParameters3D.Create(myray.Origin, myray.Origin + myray.Direction*visionMaxDistance, 2147483647);
+			
+			if (excludeSelf)
+			{
+				var rb = agent.GetAvatarBody() as PhysicsBody3D;
+				query.Exclude = new Godot.Collections.Array<Rid> { rb.GetRid() };
+			}
+
 			var result = this.spaceState.IntersectRay( query);//new Godot.Collections.Array { agent.GetBody() }
+			
 			bool isTagged = false;
 			float t = -1;
 			if (result.Count > 0)
