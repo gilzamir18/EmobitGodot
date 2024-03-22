@@ -1,6 +1,6 @@
-import bemaker
-from bemaker.controllers import BasicGymController
-import BMEnv
+import ai4u
+from ai4u.controllers import BasicGymController
+import AI4UEnv
 import gymnasium as gym
 import numpy as np
 from stable_baselines3 import SAC
@@ -11,7 +11,7 @@ from stable_baselines3.common.callbacks import CheckpointCallback
 checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./logs/', name_prefix='rl_model')
 
 
-env = gym.make("BMEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
+env = gym.make("AI4UEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 policy_kwargs = dict(net_arch=[1024, 512])
 model = SAC(MlpPolicy, env, policy_kwargs=policy_kwargs, tensorboard_log='tflog', verbose=1)
 DonutGymController.model = model

@@ -1,5 +1,5 @@
-import bemaker
-import BMEnv
+import ai4u
+import AI4UEnv
 import gymnasium as gym
 import numpy as np
 from stable_baselines3 import SAC
@@ -15,7 +15,7 @@ path = "model"
 if len(sys.argv) > 1:
    path = sys.argv[1].strip()
 
-env = gym.make("BMEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
+env = gym.make("AI4UEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 
 model = SAC.load(path, custom_objects={'action_space': env.action_space, 'observation_space': env.observation_space}) 
 DonutGymController.model = model

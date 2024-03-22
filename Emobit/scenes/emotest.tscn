@@ -236,10 +236,10 @@ transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("BoxMesh_orx12")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.65661e-10, 15.7217, 1.34229)
+transform = Transform3D(1, 2.32831e-10, -1.12273e-08, -1.03455e-11, -4.36557e-08, 1, 0, -1, -4.69154e-08, -0.00238766, 15.7233, -0.110544)
 projection = 1
 current = true
-size = 20.0
+size = 30.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.8739, 0)

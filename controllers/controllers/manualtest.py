@@ -1,6 +1,6 @@
 from math import trunc
-import bemaker
-import BMEnv
+import ai4u
+import AI4UEnv
 import gymnasium as gym
 import numpy as np
 from controller1.controller import DonutGymController
@@ -30,7 +30,7 @@ except ImportError:
         return ch
     inputch = lambda : ''.join(getch())
 
-env = gym.make("BMEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
+env = gym.make("AI4UEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 
 print("\n\n\n\nWARNING:::> In Project Settings, option Player, set run in background to true.\n\n\n\n")
 

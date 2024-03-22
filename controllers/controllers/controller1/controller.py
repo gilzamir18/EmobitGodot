@@ -1,7 +1,7 @@
 import torch
 from torch import nn
-import bemaker
-from bemaker import agents
+import ai4u
+from ai4u import agents
 import gymnasium as gym
 import numpy as np
 from collections import deque
