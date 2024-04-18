@@ -88,41 +88,14 @@ namespace ai4u
 		[Export]
 		public bool flattened = false;
 
-
-		[Export] 
-		private Color debugColor = new Color(1, 0, 0, 1);
-		
-		[Export]
-		private Color debugNoTagColor = new Color(1, 1, 1, 1);
-
-		[Export]
-		private Color debugBackgroundColor = new Color(0, 1, 0, 1);
-
-	 	[Export]
-		private float debugThickness = 1.0f;
-
-		[Export]
-		private float debugOriginSize = 10;
-
-		[Export]
-		private bool excludeSelf = true;
-
 		private Dictionary<string, int> mapping;
 		private Ray[,] raysMatrix = null;
 		private HistoryStack<float> history;
 		private PhysicsDirectSpaceState3D spaceState;
 		
 
-		private LineDrawer lineDrawer;
-
 		public override void OnSetup(Agent agent) 
 		{
-
-			if (debugEnabled)
-			{
-				lineDrawer = GetNode<LineDrawer>("/root/LineDrawer");
-			}
-
 			type = SensorType.sfloatarray;
 			if (!flattened)
 			{
@@ -157,10 +130,6 @@ namespace ai4u
 			Vector3 up = aim.Y.Normalized();
 			Vector3 right = aim.X.Normalized();
 			UpdateRaysMatrix(eye.GlobalTransform.Origin, forward, up, right, fieldOfView);
-			if (debugEnabled)
-			{
-				lineDrawer.Redraw();
-			}
 			return history.Values;
 		}
 
@@ -199,20 +168,8 @@ namespace ai4u
 		public void UpdateView(int i, int j, int debug_line = 0)
 		{
 			var myray = raysMatrix[i,j];
-			
-			//var query = PhysicsRayQueryParameters3D.Create(myray.Origin, myray.Origin + myray.Direction*visionMaxDistance, 2147483647);
-			
-
 			var query = PhysicsRayQueryParameters3D.Create(myray.Origin, myray.Origin + myray.Direction*visionMaxDistance, 2147483647);
-			
-			if (excludeSelf)
-			{
-				var rb = agent.GetAvatarBody() as PhysicsBody3D;
-				query.Exclude = new Godot.Collections.Array<Rid> { rb.GetRid() };
-			}
-
 			var result = this.spaceState.IntersectRay( query);//new Godot.Collections.Array { agent.GetBody() }
-			
 			bool isTagged = false;
 			float t = -1;
 			if (result.Count > 0)
@@ -248,10 +205,10 @@ namespace ai4u
 			if (debugEnabled)
 			{
 				if (isTagged) {
-					lineDrawer.Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, debugColor, debugBackgroundColor, debugThickness, debugOriginSize);
+					GetNode<LineDrawer>("/root/LineDrawer").Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, new Color(1, 0, 0, 1), new Color(0, 1, 0, 1), 1, 10);
 				} else 
 				{
-					lineDrawer.Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, debugNoTagColor, debugBackgroundColor, debugThickness, debugOriginSize);					
+					GetNode<LineDrawer>("/root/LineDrawer").Draw_Line3D(debug_line, myray.Origin, myray.Origin + myray.Direction * visionMaxDistance, new Color(1, 1, 1, 1), new Color(0, 1, 0, 1), 1, 10);					
 				}
 			}			
 		}

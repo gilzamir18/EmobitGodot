@@ -6,9 +6,7 @@ namespace ai4u
 {
 	public partial class RewardSensor : Sensor
 	{
-		[Export]
 		public float rewardScale = 1.0f;
-
 		public override void OnSetup(Agent agent)
 		{
 			this.agent = (BasicAgent) agent;

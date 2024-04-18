@@ -37,10 +37,14 @@ namespace ai4u
 	public partial class ControlRequestor : Node
 	{
 		[Export]
-		public float defaultTimeScale = 1.0f; 
+		private float defaultTimeScale = 1.0f; 
 		[Export]
-		public bool physicsMode = true;
-		
+		private bool physicsMode = true;
+		[Export]
+		private bool computePhysicsTicks = true;
+		[Export] int maxPhysicsFrames = 60;
+
+
 		public int skipFrame = 8;
 		
 		public bool repeatAction = false;
@@ -70,6 +74,10 @@ namespace ai4u
 			}
 
 			Engine.TimeScale = defaultTimeScale;
+			if (computePhysicsTicks)
+			{
+				Engine.PhysicsTicksPerSecond = Mathf.Max(maxPhysicsFrames, Mathf.RoundToInt(defaultTimeScale * maxPhysicsFrames));
+			}
 		}
 
 		public override void _ExitTree()
@@ -352,7 +360,10 @@ namespace ai4u
 		/// 2 = boolean
 		/// 3 = string
 		/// 4 = byte array
-		/// e value is the value of the information sent.
+		/// 5 = float array
+		/// 6 = int array
+		/// 7 = string array
+		/// @return the value of the information sent.
 		/// </summary>
 		public string SendMessageFrom(RemoteBrain rbrain, string[] desc, byte[] tipo, string[] valor)
 		{

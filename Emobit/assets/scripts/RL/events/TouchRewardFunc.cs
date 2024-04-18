@@ -10,10 +10,12 @@ namespace ai4u {
 		private float acmReward = 0.0f;
 		private BasicAgent agent;
 		private bool configured = false;
+		private bool eval = false;
 		
 		public override void OnSetup(Agent agent) {
 			if (!configured)
 			{
+				eval = false;
 				configured = true;
 				agent.AddResetListener(this);
 				this.agent = (BasicAgent) agent;
@@ -25,6 +27,7 @@ namespace ai4u {
 		public void OnEntered(Node body) {
 			if (body == target) {
 				acmReward += this.reward;
+				eval = true;
 			}
 		}
 
@@ -33,7 +36,17 @@ namespace ai4u {
 			acmReward = 0.0f;
 		}
 
-		public override void OnReset(Agent agent) {
+        public override bool Eval()
+        {
+			return eval;
+        }
+
+        public override void ResetEval()
+        {
+			eval = false;
+        }
+
+        public override void OnReset(Agent agent) {
 			acmReward = 0.0f;
 		}
 	}

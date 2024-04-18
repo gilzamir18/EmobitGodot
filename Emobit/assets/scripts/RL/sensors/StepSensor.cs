@@ -11,8 +11,6 @@ namespace ai4u
 		private int maxSize=300;
 		[Export]
 		private bool realNumber;
-		[Export]
-		private bool normalized;
 		
 		public override void OnSetup(Agent agent)
 		{
@@ -36,7 +34,7 @@ namespace ai4u
 		
 		public override float GetFloatValue()
 		{
-			if (Normalized)
+			if (normalized)
 			{
 				return agent.NSteps/maxSize;
 			}

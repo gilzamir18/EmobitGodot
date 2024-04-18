@@ -21,11 +21,11 @@ public partial class NeuralNetController : Controller
 	[Export]
 	private string modelPath;
 
-	/// <summary>
-	/// The name of the actuator that receives commands from the neural network 
+    /// <summary>
+    /// The name of the actuator that receives commands from the neural network 
 	/// in the ONNX model.
-	/// </summary>
-	[Export]
+    /// </summary>
+    [Export]
 	private string mainOutput = "move";
 	
 	/// <summary>

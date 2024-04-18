@@ -11,7 +11,9 @@ namespace ai4u
 		sint,
 		sbytearray,
 		sfloatarray,
-		sintarray
+		sintarray,
+		sstrings,
+		simage
 	}
 
 	public interface ISensor: IAgentResetListener
@@ -25,6 +27,7 @@ namespace ai4u
 		public int GetIntValue();
 		public int[] GetIntArrayValue();
 		public float[] GetFloatArrayValue();
+		public string[] GetStringValues();
 		public SensorType GetSensorType();
 		public string GetName();
 		public string GetKey();
@@ -44,6 +47,7 @@ namespace ai4u
 		public void SetName(string name);
 		public void SetRange(float min, float max);
 		public void SetIsResetable(bool v);
+		public SensorType GetDataType();
 	}
 
 	public abstract class AbstractSensor: ISensor
@@ -56,7 +60,6 @@ namespace ai4u
 		private int stackedObservations = 1;
 		private bool isActive = true;
 		private bool isInput = false;
-		private bool isState = false;
 		private bool resetable = true;
 		private float rangeMin = 0;
 		private float rangeMax = 1;
@@ -79,6 +82,11 @@ namespace ai4u
 			throw new System.NotSupportedException();
 		}
 
+        public virtual string[] GetStringValues()
+        {
+            throw new System.NotSupportedException();
+        }
+        
 		public virtual bool GetBoolValue() {
 			throw new System.NotSupportedException();
 		}
@@ -117,11 +125,6 @@ namespace ai4u
 		public virtual int[] GetShape()
 		{
 			return shape;
-		}
-
-		public virtual bool IsState()
-		{
-			return isState;
 		}
 
 		public virtual bool IsInput()
@@ -208,6 +211,11 @@ namespace ai4u
 		{
 			this.name = name;
 		}
+
+		public virtual SensorType GetDataType()
+		{
+			return type;
+		}
 	}
 
 
@@ -221,7 +229,8 @@ namespace ai4u
 		public bool isActive = true;
 		[Export]
 		public bool isInput = true;
-		
+		[Export]
+		public bool  normalized = true;
 		[Export]
 		public bool resetable = true;
 		[Export]
@@ -235,8 +244,10 @@ namespace ai4u
 		
 		public bool Normalized
 		{
-			get;
-			set;
+			get
+			{
+				return normalized;
+			}
 		}
 
 		public void SetName(string name)
@@ -283,6 +294,7 @@ namespace ai4u
 			}
 		}
 
+
 		public int[] shape 
 		{
 			get
@@ -313,7 +325,12 @@ namespace ai4u
 			return string.Empty;
 		}
 
-		public virtual bool GetBoolValue() {
+        public virtual string[] GetStringValues()
+        {
+            return new string[0];
+        }
+
+        public virtual bool GetBoolValue() {
 			return false;
 		}
 
@@ -406,5 +423,10 @@ namespace ai4u
 		public virtual void OnReset(Agent agent) {
 
 		}
-	}
+
+        public virtual SensorType GetDataType()
+        {
+            return Type;
+        }
+    }
 }

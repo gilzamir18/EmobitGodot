@@ -1,5 +1,5 @@
-import bemaker
-import BMEnv
+import ai4u
+import AI4UEnv
 import gymnasium as gym
 import numpy as np
 from stable_baselines3 import SAC
@@ -8,19 +8,26 @@ from controller import DonutGymController
 import time
 import torch
 import sys
-
-
+from ai4u.onnxutils import read_json_file
+from ai4u.onnxutils import sac_export_to
 path = "model"
 
 if len(sys.argv) > 1:
    path = sys.argv[1].strip()
 
-env = gym.make("BMEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 
-model = SAC.load(path, custom_objects={'action_space': env.action_space, 'observation_space': env.observation_space}) 
-DonutGymController.model = model
-DonutGymController.train_mode = False
+metadatamodel = read_json_file('model.json')
+sac_export_to("model", env)
+
+#model = SAC.load(path, custom_objects={'action_space': env.action_space, 'observation_space': env.observation_space}) 
+#DonutGymController.model = model
+#DonutGymController.train_mode = False
+
+
+
+'''
 obs, info = env.reset()
+
 
 reward_sum = 0
 while True:
@@ -36,6 +43,6 @@ while True:
       obs, truncate = env.reset()
       done = False
      # time.sleep(1)
-
+'''
 
 
