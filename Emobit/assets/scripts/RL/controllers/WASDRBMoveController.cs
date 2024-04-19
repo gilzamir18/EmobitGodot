@@ -5,6 +5,9 @@ using ai4u;
 
 namespace  ai4u
 {
+	/// <summary>
+	/// WASD controller for RigidBody3D game objects.
+	/// </summary>
 	public partial class WASDRBMoveController : Controller
 	{
 		[Export]
@@ -16,15 +19,9 @@ namespace  ai4u
 		[Export]
 		public float jumpPower = 1.0f;
 		
-		[Export]
-		private bool debug = false;
-
 		private float reward_sum = 0;
 		
-		private bool hasNewAction = false;
-
-
-		
+		private bool done = false;
 
 		override public void OnSetup()
 		{
@@ -33,7 +30,7 @@ namespace  ai4u
 		
 		override public void OnReset(Agent agent)
 		{
-			hasNewAction = false;
+			done = false;
 		}
 
 		override public string GetAction()
@@ -45,37 +42,31 @@ namespace  ai4u
 				if (Input.IsKeyPressed(Key.W))
 				{
 					actionValue[0] = speed;
-					hasNewAction = true;
 				}
 
 				if (Input.IsKeyPressed(Key.S))
 				{
 					actionValue[0] = -speed;
-					hasNewAction = true;
 				}
 
 				if (Input.IsKeyPressed(Key.U))
 				{
 					actionValue[2] = jumpPower;
-					hasNewAction = true;
 				}
 
 				if (Input.IsKeyPressed(Key.J))
 				{
 					actionValue[3] = jumpPower;
-					hasNewAction = true;
 				}
 
 				if (Input.IsKeyPressed(Key.A))
 				{
 					actionValue[1] = -turnAmount;
-					hasNewAction = true;
 				}
 
 				if (Input.IsKeyPressed(Key.D))
 				{
 					actionValue[1] = turnAmount;
-					hasNewAction = true;
 				}
 
 				if (Input.IsKeyPressed(Key.R))
@@ -108,26 +99,10 @@ namespace  ai4u
 
 		override public void NewStateEvent()
 		{
-			if (hasNewAction)
+			if (!agent.Alive() && !done)
 			{
-				int n = GetStateSize();
-				for (int i = 0; i < n; i++)
-				{
-					if (GetStateName(i) == "reward" || GetStateName(i) == "score")
-					{
-						float r = GetStateAsFloat(i);
-						reward_sum += r;
-					}
-					if (GetStateName(i) == "done")
-					{
-						
-						if (debug)
-						{
-							GD.Print("Reward Episode: " + reward_sum);
-						}
-						reward_sum = 0;
-					}
-				}
+				GD.Print("Episode Reward " + ((BasicAgent)agent).EpisodeReward);
+				done = true;
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 namespace ai4u;
@@ -194,7 +195,14 @@ public abstract partial class Agent : Node
 		this.values[i] = value;
 	}
 
-	public void SetStateAsBool(int i, string desc, bool value)
+    public void SetStateAsStringArray(int i, string desc, string[] value)
+    {
+        this.desc[i] = desc;
+        this.types[i] = Brain.STRING_ARRAY;
+        this.values[i] = string.Join(" ", value);
+	}
+
+    public void SetStateAsBool(int i, string desc, bool value)
 	{
 		this.desc[i] = desc;
 		this.types[i] = Brain.BOOL;
@@ -204,7 +212,7 @@ public abstract partial class Agent : Node
 	public void SetStateAsByteArray(int i, string desc, byte[] value)
 	{
 		this.desc[i] = desc;
-		this.types[i] = Brain.OTHER;
+		this.types[i] = Brain.BYTE_ARRAY;
 		this.values[i] = System.Convert.ToBase64String(value);
 	}
 
@@ -250,14 +258,23 @@ public abstract partial class Agent : Node
 
 	public bool GetActionArgAsBool(int i = 0)
 	{
-		try
+		bool vb;
+		string[] value = this.brain.GetReceivedArgs();
+		if (bool.TryParse(value[i], out vb))
 		{
-			return bool.Parse(this.brain.GetReceivedArgs()[i]);
+			return vb;
 		}
-		catch
+		else
 		{
-			float[] a = GetActionArgAsFloatArray();
-			return a[i] > 0;
+			int vi = 0;
+			if (int.TryParse(value[i], out vi))
+			{
+				return vi != 0;
+			}
+			else
+			{
+				throw new InvalidCastException($"String {value[i]} cannot casted in boolean!");
+			}
 		}
 	}
 

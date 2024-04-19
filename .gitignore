@@ -4,3 +4,7 @@ controllers/controller1/tflog
 Emobit/.godot
 controllers/controllers/controller1/__pycache__
 controllers/controllers/controller1/tflog
+*.pyc
+*.zip
+*.0
+

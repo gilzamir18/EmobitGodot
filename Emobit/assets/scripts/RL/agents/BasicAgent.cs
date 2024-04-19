@@ -50,12 +50,17 @@ namespace ai4u
 
 		[Export]
 		public bool checkEpisodeTruncated = true;
-		
+
+
+		public float EpisodeReward => episodeReward;
+
 		private bool truncated;
 		private float reward;
 		private float lastReward;
 		private bool done;
-		
+		private float episodeReward;
+
+
 		private List<RewardFunc> rewards;
 
 		private Dictionary<string, bool> firstTouch;
@@ -71,6 +76,7 @@ namespace ai4u
 		public override void SetupAgent(ControlRequestor requestor)
 		{	
 			totalNumberOfSensors = 0;
+			episodeReward = 0;
 			controlRequestor = requestor;
 			numberOfSensors = 0;
 			System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
@@ -177,11 +183,6 @@ namespace ai4u
 			types = new byte[totalNumberOfSensors + NUMBER_OF_CONTROLINFO];
 			values = new string[totalNumberOfSensors + NUMBER_OF_CONTROLINFO];
 			
-			foreach (RewardFunc r in rewards)
-			{
-				r.OnSetup(this);
-			}
-			
 			foreach (ISensor sensor in sensorList)
 			{
 				if (sensor.IsResetable())
@@ -231,6 +232,11 @@ namespace ai4u
 			setupIsDone = true;
 		}
 
+		public string GetMetadataAsJson()
+		{
+			return metadataLoader.toJson();
+		}
+
 		public override void ResetCommandBuffer()
 		{
 			desc = new string[totalNumberOfSensors + NUMBER_OF_CONTROLINFO];
@@ -240,6 +246,7 @@ namespace ai4u
 
 		public override void ResetReward()
 		{
+
 			reward = 0;
 			if (beginOfStepEvent != null)
 			{
@@ -303,7 +310,8 @@ namespace ai4u
 				return truncated;
 			}
 		}
-		
+
+		[Obsolete]
 		public float AcummulatedReward
 		{
 			get
@@ -346,6 +354,7 @@ namespace ai4u
 			}
 			reward += v;
 			lastReward = v;
+			episodeReward += v;
 		}
 		
 		public void AddReward(float v, bool causeEpisodeToEnd){
@@ -363,6 +372,7 @@ namespace ai4u
 			}
 
 			reward += v;
+			episodeReward += v;
 		}
 
 		public override void  ApplyAction()
@@ -406,6 +416,7 @@ namespace ai4u
 				beginOfEpisodeEvent(this);
 			}
 			brain.OnReset(this);
+			episodeReward = 0;
 		}
 
 		public override void AgentRestart()
@@ -472,6 +483,10 @@ namespace ai4u
 						var fv3 = s.GetIntValue();
 						SetStateAsInt(i, s.GetKey(), fv3);
 						break;
+					case SensorType.sintarray:
+						var v = s.GetIntArrayValue();
+						SetStateAsIntArray(i, s.GetKey(), v);
+						break;
 					case SensorType.sstring:
 						var fv4 = s.GetStringValue();
 						if (fv4 == null)
@@ -480,7 +495,7 @@ namespace ai4u
 						}
 						SetStateAsString(i, s.GetKey(), fv4);
 						break;
-					case SensorType.sbool:
+                    case SensorType.sbool:
 						var fv5 = s.GetBoolValue();
 						SetStateAsBool(i, s.GetKey(), fv5);
 						break;
@@ -492,7 +507,15 @@ namespace ai4u
 						}
 						SetStateAsByteArray(i, s.GetKey(), fv6);
 						break;
-					default:
+                    case SensorType.sstrings:
+                        var fv7 = s.GetStringValues();
+                        if (fv7 == null)
+                        {
+                            throw new System.Exception("Error: string array sensor " + s.GetName() + " returning null value!");
+                        }
+                        SetStateAsStringArray(i, s.GetKey(), fv7);
+                        break;
+                    default:
 						break;
 				}
 			}
@@ -531,3 +554,4 @@ namespace ai4u
 		}
 	}
 }
+
