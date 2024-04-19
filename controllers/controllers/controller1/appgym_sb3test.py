@@ -15,6 +15,7 @@ path = "model"
 if len(sys.argv) > 1:
    path = sys.argv[1].strip()
 
+env = gym.make("AI4UEnv-v0", controller_class=DonutGymController, rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 
 metadatamodel = read_json_file('model.json')
 sac_export_to("model", env)
