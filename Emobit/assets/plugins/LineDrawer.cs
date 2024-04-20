@@ -44,6 +44,7 @@ partial class LineDrawer: Node2D
 
     public override void _Draw()
 	{
+		
 		foreach(Line line in lines)
 		{
 			if (line.originSize > 0)

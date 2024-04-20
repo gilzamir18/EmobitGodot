@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://brb3bfsmcdoph"]
+[gd_scene load_steps=30 format=3 uid="uid://brb3bfsmcdoph"]
 
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="1_g8gpe"]
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_obwm7"]
@@ -14,8 +14,6 @@
 [ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="11_l2bbl"]
 [ext_resource type="Script" path="res://assets/scripts/RL/events/DistanceToTargetReward.cs" id="12_8smqg"]
 [ext_resource type="Script" path="res://assets/scripts/RL/events/RestlessnessReward.cs" id="13_5bpgd"]
-[ext_resource type="Script" path="res://assets/scripts/RL/controllers/NeuralNetController.cs" id="14_vnk7t"]
-[ext_resource type="Script" path="res://assets/scripts/Tools/ExportAgentMetadata.cs" id="15_pk7sx"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="17_1smsj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
@@ -259,21 +257,19 @@ transform = Transform3D(1, -5.96856e-11, 2.32831e-10, 4.6839e-11, 1, -3.49246e-1
 transform = Transform3D(1, -6.08225e-11, 1.16415e-10, 4.63842e-11, 1, -2.32831e-10, 1.16415e-10, 4.65661e-10, 1, -0.000373307, 0.895548, 0.000962291)
 
 [node name="Agent" parent="IABot" index="3"]
+remote = true
 MaxStepsPerEpisode = 600
 
 [node name="Actuator" parent="IABot/Agent" index="0"]
 moveAmount = 5.0
+turnAmount = 1.0
+floorGroup = "FLOOR"
 
-[node name="Sensor" parent="IABot/Agent" index="1"]
-groupCode = PackedInt32Array(50, 100, 200, 10)
-groupName = PackedStringArray("FLOOR", "PLAYER", "TARGET", "WALL")
+[node name="Sensor" parent="IABot/Agent" index="1" node_paths=PackedStringArray("eye")]
 hSize = 62
 vSize = 3
-verticalShift = 20.0
-eyePath = NodePath("../../Eye")
-fieldOfView = 45.0
+eye = NodePath("../../Eye")
 stackedObservations = 4
-normalized = true
 
 [node name="MinDist" parent="IABot/Agent" index="2"]
 target = NodePath("../../../Fruit")
@@ -327,7 +323,7 @@ script = ExtResource("7_tlbvp")
 target = NodePath("../../../../Floor")
 isInput = false
 
-[node name="positions" type="Node" parent="IABot/Agent" index="6"]
+[node name="positions" type="Node" parent="IABot/Agent" index="5"]
 
 [node name="pos1" type="Node3D" parent="IABot/Agent/positions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, -8.1963)
@@ -404,36 +400,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.894577, 0.005, 6.82336)
 [node name="pos25" type="Node3D" parent="IABot/Agent/positions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.45957, 0.005, -0.29799)
 
-[node name="RemoteConf" type="Node" parent="IABot/Agent" index="7"]
+[node name="RemoteConf" type="Node" parent="IABot/Agent" index="6"]
 script = ExtResource("5_lq0oc")
 receiveBufferSize = 81920
 sendBufferSize = 81920
 
-[node name="WASDController" type="Node" parent="IABot/Agent" index="8"]
+[node name="WASDController" type="Node" parent="IABot/Agent" index="7"]
 script = ExtResource("6_nk34i")
 speed = 1.0
 
-[node name="CollisionWall" type="Node" parent="IABot/Agent" index="9"]
+[node name="CollisionWall" type="Node" parent="IABot/Agent" index="8"]
 script = ExtResource("8_rf03j")
 group = "WALL"
 
-[node name="RadiationReward" type="Node" parent="IABot/Agent" index="10" node_paths=PackedStringArray("target")]
+[node name="RadiationReward" type="Node" parent="IABot/Agent" index="9" node_paths=PackedStringArray("target")]
 script = ExtResource("12_8smqg")
 target = NodePath("../../../Radiation")
 maxReward = -1.0
 causeEpisodeToEnd = true
 
-[node name="RestlessnessReward" type="Node" parent="IABot/Agent" index="11"]
+[node name="RestlessnessReward" type="Node" parent="IABot/Agent" index="10"]
 script = ExtResource("13_5bpgd")
-
-[node name="NeuralNet" type="Node" parent="IABot/Agent" index="12"]
-script = ExtResource("14_vnk7t")
-modelPath = "model.onnx"
-
-[node name="ExportJson" type="Node" parent="IABot/Agent" index="13" node_paths=PackedStringArray("agent")]
-script = ExtResource("15_pk7sx")
-agent = NodePath("..")
-filePath = "/home/gilzamir/model.json"
 
 [node name="Eye" type="Node3D" parent="IABot"]
 transform = Transform3D(1, -2.33854e-10, 2.32831e-10, 4.61569e-11, 1, -3.49246e-10, 2.32831e-10, 6.98492e-10, 1, 1.90735e-06, 0.952856, 0.0325065)

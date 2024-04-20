@@ -62,8 +62,6 @@ eyePath = NodePath("../../Arrow")
 visionMaxDistance = 15.0
 flattened = true
 perceptionKey = "vision"
-normalized = false
-isState = true
 
 [node name="MinDist" type="Node" parent="Agent"]
 script = ExtResource("5_771kv")
@@ -72,13 +70,11 @@ target = NodePath("../../../Target")
 [node name="TouchReward" type="Node" parent="Agent"]
 script = ExtResource("6_mprb4")
 reward = 100.0
-targetPath = NodePath("../../../Target")
 causeEpisodeToEnd = true
 
 [node name="ArraySensor" type="Node" parent="Agent"]
 script = ExtResource("8_e67gg")
 perceptionKey = "array2"
-isState = true
 
 [node name="OrientationSensor" type="Node" parent="Agent/ArraySensor"]
 script = ExtResource("9_srm3f")

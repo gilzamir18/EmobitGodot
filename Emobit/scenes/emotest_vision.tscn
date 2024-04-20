@@ -1,0 +1,649 @@
+[gd_scene load_steps=34 format=3 uid="uid://iasm1xg3alti"]
+
+[ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_vmfvh"]
+[ext_resource type="Script" path="res://scripts/Floor.cs" id="2_1eeut"]
+[ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="3_l3bl3"]
+[ext_resource type="PackedScene" uid="uid://ckrmhlyb1wm7c" path="res://prefabs/aibot.tscn" id="4_tqel5"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RewardSensor.cs" id="5_8rs6p"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/Camera3DSensor.cs" id="5_8sy7y"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="6_76dyk"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/GroupTouchSensor.cs" id="7_201rr"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/TouchSensor.cs" id="8_ds0qj"]
+[ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="9_gu23d"]
+[ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="10_7owpl"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/StepSensor.cs" id="10_o4ar0"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/CollisionWithRewardFunc.cs" id="11_73gv5"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/DistanceToTargetReward.cs" id="12_cp0t6"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/RestlessnessReward.cs" id="13_agpok"]
+[ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="14_3bfg2"]
+[ext_resource type="PackedScene" uid="uid://b3nhj6ax7xuc5" path="res://prefabs/sensor_orientationviewer.tscn" id="15_rb51l"]
+[ext_resource type="Script" path="res://assets/scripts/ControllerConfiguration.cs" id="16_docig"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_moby4"]
+disable_ambient_light = true
+albedo_color = Color(0, 0.576471, 0.34902, 1)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_7qqln"]
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2.00001, 1e-05, 2),
+"format": 34359742465,
+"index_count": 384,
+"index_data": PackedByteArray(0, 0, 2, 0, 1, 0, 3, 0, 5, 0, 4, 0, 6, 0, 8, 0, 7, 0, 9, 0, 11, 0, 10, 0, 12, 0, 14, 0, 13, 0, 15, 0, 17, 0, 16, 0, 18, 0, 20, 0, 19, 0, 21, 0, 23, 0, 22, 0, 24, 0, 26, 0, 25, 0, 27, 0, 29, 0, 28, 0, 30, 0, 32, 0, 31, 0, 33, 0, 35, 0, 34, 0, 36, 0, 38, 0, 37, 0, 39, 0, 41, 0, 40, 0, 42, 0, 44, 0, 43, 0, 45, 0, 47, 0, 46, 0, 0, 0, 1, 0, 48, 0, 3, 0, 4, 0, 49, 0, 6, 0, 7, 0, 50, 0, 9, 0, 10, 0, 51, 0, 12, 0, 13, 0, 52, 0, 15, 0, 16, 0, 53, 0, 18, 0, 19, 0, 54, 0, 21, 0, 22, 0, 55, 0, 24, 0, 25, 0, 56, 0, 27, 0, 28, 0, 57, 0, 30, 0, 31, 0, 58, 0, 33, 0, 34, 0, 59, 0, 36, 0, 37, 0, 60, 0, 39, 0, 40, 0, 61, 0, 42, 0, 43, 0, 62, 0, 45, 0, 46, 0, 63, 0, 46, 0, 39, 0, 2, 0, 46, 0, 2, 0, 63, 0, 63, 0, 2, 0, 0, 0, 43, 0, 3, 0, 41, 0, 43, 0, 41, 0, 62, 0, 62, 0, 41, 0, 39, 0, 40, 0, 65, 0, 64, 0, 40, 0, 64, 0, 61, 0, 61, 0, 64, 0, 66, 0, 37, 0, 30, 0, 5, 0, 37, 0, 5, 0, 60, 0, 60, 0, 5, 0, 3, 0, 34, 0, 67, 0, 32, 0, 34, 0, 32, 0, 59, 0, 59, 0, 32, 0, 30, 0, 31, 0, 69, 0, 68, 0, 31, 0, 68, 0, 58, 0, 58, 0, 68, 0, 70, 0, 28, 0, 21, 0, 8, 0, 28, 0, 8, 0, 57, 0, 57, 0, 8, 0, 6, 0, 25, 0, 71, 0, 23, 0, 25, 0, 23, 0, 56, 0, 56, 0, 23, 0, 21, 0, 22, 0, 72, 0, 35, 0, 22, 0, 35, 0, 55, 0, 55, 0, 35, 0, 33, 0, 19, 0, 12, 0, 11, 0, 19, 0, 11, 0, 54, 0, 54, 0, 11, 0, 9, 0, 16, 0, 6, 0, 14, 0, 16, 0, 14, 0, 53, 0, 53, 0, 14, 0, 12, 0, 13, 0, 36, 0, 44, 0, 13, 0, 44, 0, 52, 0, 52, 0, 44, 0, 42, 0, 10, 0, 42, 0, 47, 0, 10, 0, 47, 0, 51, 0, 51, 0, 47, 0, 45, 0, 7, 0, 33, 0, 38, 0, 7, 0, 38, 0, 50, 0, 50, 0, 38, 0, 36, 0, 4, 0, 70, 0, 73, 0, 4, 0, 73, 0, 49, 0, 49, 0, 73, 0, 65, 0, 1, 0, 66, 0, 74, 0, 1, 0, 74, 0, 48, 0, 48, 0, 74, 0, 75, 0, 47, 0, 42, 0, 62, 0, 47, 0, 62, 0, 46, 0, 46, 0, 62, 0, 39, 0, 44, 0, 36, 0, 60, 0, 44, 0, 60, 0, 43, 0, 43, 0, 60, 0, 3, 0, 41, 0, 3, 0, 49, 0, 41, 0, 49, 0, 40, 0, 40, 0, 49, 0, 65, 0, 38, 0, 33, 0, 59, 0, 38, 0, 59, 0, 37, 0, 37, 0, 59, 0, 30, 0, 35, 0, 72, 0, 76, 0, 35, 0, 76, 0, 34, 0, 34, 0, 76, 0, 67, 0, 32, 0, 67, 0, 77, 0, 32, 0, 77, 0, 31, 0, 31, 0, 77, 0, 69, 0, 29, 0, 24, 0, 56, 0, 29, 0, 56, 0, 28, 0, 28, 0, 56, 0, 21, 0, 26, 0, 79, 0, 78, 0, 26, 0, 78, 0, 25, 0, 25, 0, 78, 0, 71, 0, 23, 0, 71, 0, 80, 0, 23, 0, 80, 0, 22, 0, 22, 0, 80, 0, 72, 0, 20, 0, 15, 0, 53, 0, 20, 0, 53, 0, 19, 0, 19, 0, 53, 0, 12, 0, 17, 0, 27, 0, 57, 0, 17, 0, 57, 0, 16, 0, 16, 0, 57, 0, 6, 0, 14, 0, 6, 0, 50, 0, 14, 0, 50, 0, 13, 0, 13, 0, 50, 0, 36, 0, 11, 0, 12, 0, 52, 0, 11, 0, 52, 0, 10, 0, 10, 0, 52, 0, 42, 0, 8, 0, 21, 0, 55, 0, 8, 0, 55, 0, 7, 0, 7, 0, 55, 0, 33, 0, 5, 0, 30, 0, 58, 0, 5, 0, 58, 0, 4, 0, 4, 0, 58, 0, 70, 0, 2, 0, 39, 0, 61, 0, 2, 0, 61, 0, 1, 0, 1, 0, 61, 0, 66, 0),
+"lods": [1e-10, PackedByteArray(0, 0, 63, 0, 48, 0, 63, 0, 74, 0, 48, 0, 48, 0, 74, 0, 75, 0, 63, 0, 66, 0, 74, 0, 63, 0, 45, 0, 66, 0, 45, 0, 64, 0, 66, 0, 54, 0, 64, 0, 45, 0, 54, 0, 45, 0, 51, 0, 9, 0, 54, 0, 51, 0, 54, 0, 20, 0, 64, 0, 18, 0, 20, 0, 54, 0, 64, 0, 20, 0, 65, 0, 20, 0, 73, 0, 65, 0, 15, 0, 73, 0, 20, 0, 15, 0, 70, 0, 73, 0, 15, 0, 68, 0, 70, 0, 17, 0, 68, 0, 15, 0, 27, 0, 68, 0, 17, 0, 27, 0, 67, 0, 68, 0, 67, 0, 69, 0, 68, 0, 67, 0, 77, 0, 69, 0, 27, 0, 29, 0, 67, 0, 29, 0, 72, 0, 67, 0, 72, 0, 76, 0, 67, 0, 71, 0, 72, 0, 29, 0, 71, 0, 80, 0, 72, 0, 24, 0, 71, 0, 29, 0, 26, 0, 71, 0, 24, 0, 26, 0, 78, 0, 71, 0, 26, 0, 79, 0, 78, 0)],
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 81,
+"vertex_data": PackedByteArray(0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 62)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_yumwp"]
+resource_name = "Plane"
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2.00001, 1e-05, 2),
+"attribute_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 62, 0, 0, 96, 63, 0, 0, 0, 62, 0, 0, 96, 63, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 128, 62, 0, 0, 192, 62, 0, 0, 0, 62, 0, 0, 192, 62, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 64, 63, 0, 0, 192, 62, 0, 0, 32, 63, 0, 0, 192, 62, 0, 0, 64, 63, 0, 0, 128, 63, 0, 0, 64, 63, 0, 0, 96, 63, 0, 0, 32, 63, 0, 0, 96, 63, 0, 0, 64, 63, 0, 0, 64, 63, 0, 0, 64, 63, 0, 0, 32, 63, 0, 0, 32, 63, 0, 0, 32, 63, 0, 0, 64, 63, 0, 0, 64, 63, 0, 0, 128, 63, 0, 0, 32, 63, 0, 0, 96, 63, 0, 0, 32, 63, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 96, 63, 0, 0, 96, 63, 0, 0, 96, 63, 0, 0, 128, 63, 0, 0, 128, 62, 0, 0, 64, 63, 0, 0, 0, 62, 0, 0, 32, 63, 0, 0, 0, 62, 0, 0, 64, 63, 0, 0, 128, 62, 0, 0, 128, 63, 0, 0, 0, 62, 0, 0, 96, 63, 0, 0, 0, 62, 0, 0, 128, 63, 0, 0, 0, 63, 0, 0, 128, 63, 0, 0, 192, 62, 0, 0, 96, 63, 0, 0, 192, 62, 0, 0, 128, 63, 0, 0, 128, 62, 0, 0, 128, 62, 0, 0, 0, 62, 0, 0, 0, 62, 0, 0, 0, 62, 0, 0, 128, 62, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 0, 62, 0, 0, 192, 62, 0, 0, 0, 62, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 192, 62, 0, 0, 192, 62, 0, 0, 192, 62, 0, 0, 0, 63, 0, 0, 64, 63, 0, 0, 128, 62, 0, 0, 32, 63, 0, 0, 0, 62, 0, 0, 32, 63, 0, 0, 128, 62, 0, 0, 64, 63, 0, 0, 0, 63, 0, 0, 32, 63, 0, 0, 192, 62, 0, 0, 32, 63, 0, 0, 0, 63, 0, 0, 128, 63, 0, 0, 0, 63, 0, 0, 96, 63, 0, 0, 192, 62, 0, 0, 96, 63, 0, 0, 0, 63, 0, 0, 128, 63, 0, 0, 0, 62, 0, 0, 0, 63, 0, 0, 0, 62, 0, 0, 0, 63, 0, 0, 32, 63, 0, 0, 128, 63, 0, 0, 32, 63, 0, 0, 64, 63, 0, 0, 32, 63, 0, 0, 64, 63, 0, 0, 96, 63, 0, 0, 128, 63, 0, 0, 96, 63, 0, 0, 128, 62, 0, 0, 32, 63, 0, 0, 128, 62, 0, 0, 96, 63, 0, 0, 0, 63, 0, 0, 96, 63, 0, 0, 128, 62, 0, 0, 0, 62, 0, 0, 128, 62, 0, 0, 192, 62, 0, 0, 0, 63, 0, 0, 192, 62, 0, 0, 64, 63, 0, 0, 0, 62, 0, 0, 64, 63, 0, 0, 192, 62, 0, 0, 128, 63, 0, 0, 192, 62, 0, 0, 32, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 192, 62, 0, 0, 0, 0, 0, 0, 96, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 192, 62, 0, 0, 0, 0, 0, 0, 0, 62, 0, 0, 0, 0, 0, 0, 96, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 32, 63),
+"format": 34359742487,
+"index_count": 384,
+"index_data": PackedByteArray(0, 0, 2, 0, 1, 0, 3, 0, 5, 0, 4, 0, 6, 0, 8, 0, 7, 0, 9, 0, 11, 0, 10, 0, 12, 0, 14, 0, 13, 0, 15, 0, 17, 0, 16, 0, 18, 0, 20, 0, 19, 0, 21, 0, 23, 0, 22, 0, 24, 0, 26, 0, 25, 0, 27, 0, 29, 0, 28, 0, 30, 0, 32, 0, 31, 0, 33, 0, 35, 0, 34, 0, 36, 0, 38, 0, 37, 0, 39, 0, 41, 0, 40, 0, 42, 0, 44, 0, 43, 0, 45, 0, 47, 0, 46, 0, 0, 0, 1, 0, 48, 0, 3, 0, 4, 0, 49, 0, 6, 0, 7, 0, 50, 0, 9, 0, 10, 0, 51, 0, 12, 0, 13, 0, 52, 0, 15, 0, 16, 0, 53, 0, 18, 0, 19, 0, 54, 0, 21, 0, 22, 0, 55, 0, 24, 0, 25, 0, 56, 0, 27, 0, 28, 0, 57, 0, 30, 0, 31, 0, 58, 0, 33, 0, 34, 0, 59, 0, 36, 0, 37, 0, 60, 0, 39, 0, 40, 0, 61, 0, 42, 0, 43, 0, 62, 0, 45, 0, 46, 0, 63, 0, 46, 0, 39, 0, 2, 0, 46, 0, 2, 0, 63, 0, 63, 0, 2, 0, 0, 0, 43, 0, 3, 0, 41, 0, 43, 0, 41, 0, 62, 0, 62, 0, 41, 0, 39, 0, 40, 0, 65, 0, 64, 0, 40, 0, 64, 0, 61, 0, 61, 0, 64, 0, 66, 0, 37, 0, 30, 0, 5, 0, 37, 0, 5, 0, 60, 0, 60, 0, 5, 0, 3, 0, 34, 0, 67, 0, 32, 0, 34, 0, 32, 0, 59, 0, 59, 0, 32, 0, 30, 0, 31, 0, 69, 0, 68, 0, 31, 0, 68, 0, 58, 0, 58, 0, 68, 0, 70, 0, 28, 0, 21, 0, 8, 0, 28, 0, 8, 0, 57, 0, 57, 0, 8, 0, 6, 0, 25, 0, 71, 0, 23, 0, 25, 0, 23, 0, 56, 0, 56, 0, 23, 0, 21, 0, 22, 0, 72, 0, 35, 0, 22, 0, 35, 0, 55, 0, 55, 0, 35, 0, 33, 0, 19, 0, 12, 0, 11, 0, 19, 0, 11, 0, 54, 0, 54, 0, 11, 0, 9, 0, 16, 0, 6, 0, 14, 0, 16, 0, 14, 0, 53, 0, 53, 0, 14, 0, 12, 0, 13, 0, 36, 0, 44, 0, 13, 0, 44, 0, 52, 0, 52, 0, 44, 0, 42, 0, 10, 0, 42, 0, 47, 0, 10, 0, 47, 0, 51, 0, 51, 0, 47, 0, 45, 0, 7, 0, 33, 0, 38, 0, 7, 0, 38, 0, 50, 0, 50, 0, 38, 0, 36, 0, 4, 0, 70, 0, 73, 0, 4, 0, 73, 0, 49, 0, 49, 0, 73, 0, 65, 0, 1, 0, 66, 0, 74, 0, 1, 0, 74, 0, 48, 0, 48, 0, 74, 0, 75, 0, 47, 0, 42, 0, 62, 0, 47, 0, 62, 0, 46, 0, 46, 0, 62, 0, 39, 0, 44, 0, 36, 0, 60, 0, 44, 0, 60, 0, 43, 0, 43, 0, 60, 0, 3, 0, 41, 0, 3, 0, 49, 0, 41, 0, 49, 0, 40, 0, 40, 0, 49, 0, 65, 0, 38, 0, 33, 0, 59, 0, 38, 0, 59, 0, 37, 0, 37, 0, 59, 0, 30, 0, 35, 0, 72, 0, 76, 0, 35, 0, 76, 0, 34, 0, 34, 0, 76, 0, 67, 0, 32, 0, 67, 0, 77, 0, 32, 0, 77, 0, 31, 0, 31, 0, 77, 0, 69, 0, 29, 0, 24, 0, 56, 0, 29, 0, 56, 0, 28, 0, 28, 0, 56, 0, 21, 0, 26, 0, 79, 0, 78, 0, 26, 0, 78, 0, 25, 0, 25, 0, 78, 0, 71, 0, 23, 0, 71, 0, 80, 0, 23, 0, 80, 0, 22, 0, 22, 0, 80, 0, 72, 0, 20, 0, 15, 0, 53, 0, 20, 0, 53, 0, 19, 0, 19, 0, 53, 0, 12, 0, 17, 0, 27, 0, 57, 0, 17, 0, 57, 0, 16, 0, 16, 0, 57, 0, 6, 0, 14, 0, 6, 0, 50, 0, 14, 0, 50, 0, 13, 0, 13, 0, 50, 0, 36, 0, 11, 0, 12, 0, 52, 0, 11, 0, 52, 0, 10, 0, 10, 0, 52, 0, 42, 0, 8, 0, 21, 0, 55, 0, 8, 0, 55, 0, 7, 0, 7, 0, 55, 0, 33, 0, 5, 0, 30, 0, 58, 0, 5, 0, 58, 0, 4, 0, 4, 0, 58, 0, 70, 0, 2, 0, 39, 0, 61, 0, 2, 0, 61, 0, 1, 0, 1, 0, 61, 0, 66, 0),
+"lods": [1e-10, PackedByteArray(0, 0, 63, 0, 48, 0, 63, 0, 74, 0, 48, 0, 48, 0, 74, 0, 75, 0, 63, 0, 66, 0, 74, 0, 63, 0, 45, 0, 66, 0, 45, 0, 64, 0, 66, 0, 54, 0, 64, 0, 45, 0, 54, 0, 45, 0, 51, 0, 9, 0, 54, 0, 51, 0, 54, 0, 20, 0, 64, 0, 18, 0, 20, 0, 54, 0, 64, 0, 20, 0, 65, 0, 20, 0, 73, 0, 65, 0, 15, 0, 73, 0, 20, 0, 15, 0, 70, 0, 73, 0, 15, 0, 68, 0, 70, 0, 17, 0, 68, 0, 15, 0, 27, 0, 68, 0, 17, 0, 27, 0, 67, 0, 68, 0, 67, 0, 69, 0, 68, 0, 67, 0, 77, 0, 69, 0, 27, 0, 29, 0, 67, 0, 29, 0, 72, 0, 67, 0, 72, 0, 76, 0, 67, 0, 71, 0, 72, 0, 29, 0, 71, 0, 80, 0, 72, 0, 24, 0, 71, 0, 29, 0, 26, 0, 71, 0, 24, 0, 26, 0, 78, 0, 71, 0, 26, 0, 79, 0, 78, 0)],
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 81,
+"vertex_data": PackedByteArray(0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 62, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 62, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 64, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 190, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 63, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 190, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 64, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 64, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 62, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191, 255, 127, 255, 255, 255, 255, 255, 191)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_7qqln")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qj23i"]
+size = Vector3(0.75, 1, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7vii0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke34s"]
+albedo_color = Color(0.0901961, 0.211765, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_33gy8"]
+size = Vector3(20, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_orx12"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7nvwb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gc5m7"]
+size = Vector3(10, 4.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3c5on"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ydlo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x845j"]
+albedo_color = Color(0.639216, 0.027451, 0.243137, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7obly"]
+
+[node name="Arena" type="Node3D" node_paths=PackedStringArray("radiation", "radiationPositions", "agentBody", "agentPositions", "fruit", "fruitPositions", "agent")]
+transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 0, 0, 0)
+script = ExtResource("1_vmfvh")
+radiation = NodePath("Radiation")
+radiationPositions = NodePath("RadiationPositions")
+agentBody = NodePath("IABot")
+agentPositions = NodePath("IABot/Agent/positions")
+fruit = NodePath("Fruit")
+fruitPositions = NodePath("FruitPositions")
+agent = NodePath("IABot/Agent")
+
+[node name="Floor" type="StaticBody3D" parent="." groups=["FLOOR"]]
+script = ExtResource("2_1eeut")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_lijko")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(9.5, -9.39053e-11, 1.86265e-09, 1.8008e-09, 1, -2.79397e-09, -6.51926e-09, 0, 9.80001, -4.2963e-11, 0.0206493, 5.45697e-11)
+material_override = SubResource("StandardMaterial3D_moby4")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("ArrayMesh_yumwp")
+skeleton = NodePath("")
+
+[node name="Fruit" type="StaticBody3D" parent="." groups=["TARGET"]]
+transform = Transform3D(2, -4.3201e-12, 0, -2.251e-11, 2, 0, 2.32831e-10, 6.98492e-10, 2, -6.67453, 1.61265, 7.13166)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fruit" groups=["TARGET"]]
+transform = Transform3D(1, -2.04636e-12, 0, -1.14824e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qj23i")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Fruit"]
+transform = Transform3D(0.744716, 7.07132e-11, 0, 7.7307e-11, 1.00014, -2.32831e-10, 1.16415e-10, -1.16415e-10, 0.769873, 0, 0, 0)
+mesh = SubResource("BoxMesh_7vii0")
+surface_material_override/0 = SubResource("StandardMaterial3D_ke34s")
+
+[node name="FruitPositions" type="Node" parent="."]
+
+[node name="pos1" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, 7.36979)
+
+[node name="pos2" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.14366, 0, -7.35144)
+
+[node name="pos3" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.09977, 0.005, 6.909)
+
+[node name="pos4" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1863, 0.005, -8.091)
+
+[node name="pos5" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, 2.83509)
+
+[node name="pos6" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, 0.814562)
+
+[node name="pos7" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.96715, 0.005, 2.00416)
+
+[node name="pos8" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.803566, 0.005, 2.00416)
+
+[node name="pos9" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2262, 0.005, 2.00416)
+
+[node name="pos10" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2262, 0.005, 0.665867)
+
+[node name="pos11" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2262, 0.005, 2.59896)
+
+[node name="pos12" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.47578, 0.005, 2.59896)
+
+[node name="pos13" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.03214, 0.005, -8.08307)
+
+[node name="pos14" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.03214, 0.005, -8.08307)
+
+[node name="pos15" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.03214, 0.005, -8.08307)
+
+[node name="pos16" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.03214, 0.005, 7.0498)
+
+[node name="pos17" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.03214, 0.005, 7.0498)
+
+[node name="pos18" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.36739, 0.005, 7.0498)
+
+[node name="pos19" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.21057, 0.005, 7.0498)
+
+[node name="pos20" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.21057, 0.005, 7.0498)
+
+[node name="pos21" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.21057, 0.005, -7.9718)
+
+[node name="pos22" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.21057, 0.005, -7.9718)
+
+[node name="pos23" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.31896, 0.005, -7.9718)
+
+[node name="pos24" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13332, 0.005, -7.9718)
+
+[node name="pos25" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13332, 0.005, -7.9718)
+
+[node name="LWall" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.688, 2.5057, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LWall"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LWall"]
+transform = Transform3D(0.5, 0, 0, 0, 5, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="RWall2" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.80062, 2.5057, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RWall2"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RWall2"]
+transform = Transform3D(0.5, 0, 0, 0, 5, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="BWall3" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.506, -10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BWall3"]
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BWall3"]
+transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="TWall4" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.506, 9.7173)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TWall4"]
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TWall4"]
+transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 2.32831e-10, -1.12273e-08, -1.03455e-11, -4.36557e-08, 1, 0, -1, -4.69154e-08, -0.00238766, 15.7233, -0.110544)
+projection = 1
+current = true
+size = 30.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.8739, 0)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_left = 648.0
+offset_top = 1.0
+offset_right = 799.0
+offset_bottom = 108.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(48, 48)
+render_target_update_mode = 4
+
+[node name="ControlLoop" type="Node" parent="." node_paths=PackedStringArray("agentsList")]
+script = ExtResource("3_l3bl3")
+defaultTimeScale = 10.0
+stopOnQuit = true
+agentsList = [NodePath("../IABot/Agent")]
+
+[node name="IABot" parent="." groups=["PLAYER"] instance=ExtResource("4_tqel5")]
+transform = Transform3D(1, -5.96856e-11, 2.32831e-10, 4.6839e-11, 1, -3.49246e-10, 2.32831e-10, 8.14907e-10, 1, -6.95969, 0.00542105, -7.74487)
+physics_material_override = SubResource("PhysicsMaterial_7nvwb")
+continuous_cd = false
+
+[node name="CollisionShape3D" parent="IABot" index="1"]
+transform = Transform3D(1, -6.08225e-11, 1.16415e-10, 4.63842e-11, 1, -2.32831e-10, 1.16415e-10, 4.65661e-10, 1, -0.000373307, 0.895548, 0.000962291)
+
+[node name="Agent" parent="IABot" index="3"]
+remote = true
+MaxStepsPerEpisode = 600
+
+[node name="Actuator" parent="IABot/Agent" index="0"]
+moveAmount = 5.0
+turnAmount = 1.0
+floorGroup = "FLOOR"
+
+[node name="Sensor" parent="IABot/Agent" index="1" node_paths=PackedStringArray("camera", "viewport")]
+script = ExtResource("5_8sy7y")
+camera = NodePath("../../AgentCamera")
+grayScale = true
+width = 48
+height = 48
+viewport = NodePath("../../../SubViewportContainer/SubViewport")
+stackedObservations = 3
+
+[node name="MinDist" parent="IABot/Agent" index="2"]
+target = NodePath("../../../Fruit")
+
+[node name="TouchReward" parent="IABot/Agent" index="3" node_paths=PackedStringArray("target")]
+target = NodePath("../../../Fruit")
+
+[node name="ArraySensor" parent="IABot/Agent" index="4"]
+perceptionKey = "array"
+stackedObservations = 4
+
+[node name="OrientationSensor" parent="IABot/Agent/ArraySensor" index="0" node_paths=PackedStringArray("target", "reference")]
+target = NodePath("../../../../Fruit")
+reference = NodePath("../../..")
+maxDistance = 24.0
+_normalized = true
+visibilityTest = true
+ignoreVibilityTestForDist = true
+isInput = false
+
+[node name="ActionSensor" parent="IABot/Agent/ArraySensor" index="1"]
+isInput = false
+
+[node name="RewardSensor" type="Node" parent="IABot/Agent/ArraySensor" index="2"]
+script = ExtResource("5_8rs6p")
+perceptionKey = "rewards"
+isInput = false
+
+[node name="RadiationSensor" type="Node" parent="IABot/Agent/ArraySensor" index="3" node_paths=PackedStringArray("target", "reference")]
+script = ExtResource("6_76dyk")
+target = NodePath("../../../../Radiation")
+reference = NodePath("../../..")
+maxDistance = 20.0
+info = 1
+_normalized = true
+visibilityTest = true
+perceptionKey = "rad"
+isInput = false
+
+[node name="TouchWallSensor" type="Node" parent="IABot/Agent/ArraySensor" index="4"]
+script = ExtResource("7_201rr")
+group = "WALL"
+isInput = false
+
+[node name="TouchFruitSensor" type="Node" parent="IABot/Agent/ArraySensor" index="5" node_paths=PackedStringArray("target")]
+script = ExtResource("8_ds0qj")
+target = NodePath("../../../../Fruit")
+isInput = false
+
+[node name="TouchFloorSensor" type="Node" parent="IABot/Agent/ArraySensor" index="6" node_paths=PackedStringArray("target")]
+script = ExtResource("8_ds0qj")
+target = NodePath("../../../../Floor")
+isInput = false
+
+[node name="StepSensor" type="Node" parent="IABot/Agent/ArraySensor" index="7"]
+script = ExtResource("10_o4ar0")
+maxSize = 600
+realNumber = true
+isInput = false
+
+[node name="positions" type="Node" parent="IABot/Agent" index="6"]
+
+[node name="pos1" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, -8.1963)
+
+[node name="pos2" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.97661, 0, 7.13756)
+
+[node name="pos3" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.09977, 0.005, -7.21743)
+
+[node name="pos4" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1863, 0.005, 7.67112)
+
+[node name="pos5" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.63141, 0.005, -7.87125)
+
+[node name="pos6" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5236, 0.005, -6.34716)
+
+[node name="pos7" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.334, 0.005, -6.34716)
+
+[node name="pos8" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5236, 0.005, -1.73748)
+
+[node name="pos9" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.30543, 0.005, -7.83415)
+
+[node name="pos10" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52104, 0.005, -7.83415)
+
+[node name="pos11" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.94924, 0.005, 7.60226)
+
+[node name="pos12" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7934, 0.005, 7.60226)
+
+[node name="pos13" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22821, 0.005, 7.60226)
+
+[node name="pos14" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22821, 0.005, 7.60226)
+
+[node name="pos15" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22821, 0.005, 7.60226)
+
+[node name="pos16" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22821, 0.005, -7.9757)
+
+[node name="pos17" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22821, 0.005, -6.86299)
+
+[node name="pos18" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0071, 0.005, -7.64188)
+
+[node name="pos19" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.57085, 0.005, -7.64188)
+
+[node name="pos20" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.57085, 0.005, -7.64188)
+
+[node name="pos21" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.57085, 0.005, 6.82336)
+
+[node name="pos22" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.57085, 0.005, 6.82336)
+
+[node name="pos23" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.90178, 0.005, 6.82336)
+
+[node name="pos24" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.894577, 0.005, 6.82336)
+
+[node name="pos25" type="Node3D" parent="IABot/Agent/positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.45957, 0.005, -0.29799)
+
+[node name="RemoteConf" type="Node" parent="IABot/Agent" index="7"]
+script = ExtResource("9_gu23d")
+receiveBufferSize = 819200
+sendBufferSize = 819200
+
+[node name="WASDController" type="Node" parent="IABot/Agent" index="8"]
+script = ExtResource("10_7owpl")
+speed = 1.0
+
+[node name="CollisionWall" type="Node" parent="IABot/Agent" index="9"]
+script = ExtResource("11_73gv5")
+group = "WALL"
+
+[node name="RadiationReward" type="Node" parent="IABot/Agent" index="10" node_paths=PackedStringArray("target")]
+script = ExtResource("12_cp0t6")
+target = NodePath("../../../Radiation")
+maxReward = -1.0
+causeEpisodeToEnd = true
+
+[node name="RestlessnessReward" type="Node" parent="IABot/Agent" index="11"]
+script = ExtResource("13_agpok")
+minDist = 0.01
+
+[node name="LoopConfig" type="Node" parent="IABot/Agent" index="12"]
+script = ExtResource("16_docig")
+skipFrame = 8
+
+[node name="AgentCamera" type="Camera3D" parent="IABot"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74227e-08, 0, -1, 0, 2.54009, 0.157601)
+
+[node name="Eye" type="Node3D" parent="IABot"]
+transform = Transform3D(1, -2.33854e-10, 2.32831e-10, 4.61569e-11, 1, -3.49246e-10, 2.32831e-10, 6.98492e-10, 1, 1.90735e-06, 0.952856, 0.0325065)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)
+
+[node name="ShowSteps" type="Label" parent="."]
+offset_right = 152.0
+offset_bottom = 39.0
+script = ExtResource("14_3bfg2")
+agentPath = NodePath("../IABot/Agent")
+
+[node name="Block1" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -8.87894e-11, 2.32831e-10, 7.58291e-11, 1, -3.49246e-10, 3.49246e-10, 8.14907e-10, 1, -0.0139282, 2.72681, -7.61861)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block1"]
+transform = Transform3D(0.999999, 2.80806e-11, 0, 2.51134e-10, 0.999999, -1.16415e-09, 1.04774e-09, -1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_gc5m7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block1"]
+transform = Transform3D(10, 0, 0, 0, 4.5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Block2" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -9.06084e-11, 4.65661e-10, 7.40101e-11, 1, -3.49246e-10, 4.65661e-10, 6.98492e-10, 1, -0.00561791, 2.72138, -2.56197)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block2"]
+transform = Transform3D(0.999999, 2.80806e-11, 0, 2.51134e-10, 0.999999, -1.16415e-09, 1.04774e-09, -1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_gc5m7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block2"]
+transform = Transform3D(10, 4.90218e-10, -3.72529e-09, 1.45519e-11, 4.5, 2.32831e-09, -7.45058e-09, 1.39698e-09, 5, -9.50317e-05, 6.27041e-05, -0.0578234)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Block3" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -9.06084e-11, 4.65661e-10, 7.38964e-11, 1, -3.49246e-10, 5.82077e-10, 6.98492e-10, 1, 0.00261096, 2.716, 2.44509)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block3"]
+transform = Transform3D(0.999999, 2.80806e-11, 0, 2.51134e-10, 0.999999, -1.16415e-09, 1.04774e-09, -1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_gc5m7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block3"]
+transform = Transform3D(10, 3.73802e-10, -9.31323e-10, 5.45697e-12, 4.5, 1.39698e-09, 0, 9.31323e-10, 5, -0.000190063, 0.000124216, -0.115648)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Block4" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -9.06084e-11, 4.65661e-10, 7.38964e-11, 1, -3.49246e-10, 5.82077e-10, 6.98492e-10, 1, 0.0109213, 2.71057, 7.50174)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block4"]
+transform = Transform3D(0.999999, 2.80806e-11, 0, 2.51134e-10, 0.999999, -1.16415e-09, 1.04774e-09, -1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_gc5m7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block4"]
+transform = Transform3D(10, 2.58296e-10, -9.31323e-10, 5.45697e-12, 4.5, 1.39698e-09, 0, 9.31323e-10, 5, -0.000325894, 0.000212908, -0.198298)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Radiation" type="StaticBody3D" parent="."]
+transform = Transform3D(1, -2.6148e-12, 0, -1.13687e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 6.79141, 0.547486, -2.79397e-09)
+collision_layer = 2
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Radiation"]
+mesh = SubResource("BoxMesh_6ydlo")
+surface_material_override/0 = SubResource("StandardMaterial3D_x845j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Radiation"]
+transform = Transform3D(1, -2.04636e-12, 0, 1.81899e-11, 1, 0, 1.16415e-10, 1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_7obly")
+
+[node name="RadiationPositions" type="Node" parent="."]
+
+[node name="pos1" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.02701, 0, -0.290406)
+
+[node name="pos2" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.04253, 0, -2.96699)
+
+[node name="pos3" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3813, 0, -0.980247)
+
+[node name="pos4" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.13216, 0, -2.31854)
+
+[node name="pos5" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.95827, 0, -7.1451)
+
+[node name="pos6" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.327991, 0, 1.9567)
+
+[node name="pos7" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.118107, 0, -7.63752)
+
+[node name="pos8" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.27597, 0, 1.48629)
+
+[node name="pos9" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.30769, 0, 2.37849)
+
+[node name="pos10" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.87077, 0, -7.28696)
+
+[node name="pos11" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.279941, 0, 2.42583)
+
+[node name="pos12" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.279941, 0, 2.42583)
+
+[node name="pos13" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.84141, 0, -3.47154)
+
+[node name="pos14" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.84141, 0, -0.467216)
+
+[node name="pos15" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.84141, 0, 2.98219)
+
+[node name="pos16" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.84141, 0, 2.98219)
+
+[node name="pos17" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.84141, 0, -1.13484)
+
+[node name="pos18" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.84141, 0, -2.69264)
+
+[node name="pos19" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, -2.69264)
+
+[node name="pos20" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, 1.98075)
+
+[node name="pos21" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, 1.98075)
+
+[node name="pos22" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, -0.355942)
+
+[node name="pos23" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, 2.20329)
+
+[node name="pos24" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, 2.20329)
+
+[node name="pos25" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, -3.91662)
+
+[node name="OrientationViewer" parent="." node_paths=PackedStringArray("orientationSensor") instance=ExtResource("15_rb51l")]
+offset_top = 144.0
+offset_right = -86.0
+orientationSensor = NodePath("../IABot/Agent/ArraySensor/OrientationSensor")
+
+[node name="RadiationViewer" parent="." node_paths=PackedStringArray("orientationSensor") instance=ExtResource("15_rb51l")]
+offset_top = 52.0
+offset_bottom = -149.0
+orientationSensor = NodePath("../IABot/Agent/ArraySensor/RadiationSensor")
+title = "Radiation Sensor"
+
+[node name="LabelTitle" parent="RadiationViewer" index="0"]
+visible = false
+offset_left = 2.0
+offset_top = -3.0
+offset_right = 176.0
+offset_bottom = 20.0
+text = "Radiation"
+
+[node name="Angle" parent="RadiationViewer" index="1"]
+visible = false
+
+[node name="Distance" parent="RadiationViewer" index="2"]
+offset_top = 36.0
+offset_bottom = 52.0
+
+[node name="LabelAngle" parent="RadiationViewer" index="3"]
+visible = false
+
+[node name="LabelDistance" parent="RadiationViewer" index="4"]
+offset_top = 13.0
+offset_bottom = 36.0
+text = "Radiation"
+
+[editable path="IABot"]
+[editable path="RadiationViewer"]
