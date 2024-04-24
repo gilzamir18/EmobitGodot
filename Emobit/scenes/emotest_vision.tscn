@@ -304,7 +304,7 @@ stackedObservations = 4
 
 [node name="OrientationSensor" parent="IABot/Agent/ArraySensor" index="0" node_paths=PackedStringArray("target", "reference")]
 target = NodePath("../../../../Fruit")
-reference = NodePath("../../..")
+reference = NodePath("../../../Eye")
 maxDistance = 24.0
 _normalized = true
 visibilityTest = true
@@ -322,7 +322,7 @@ isInput = false
 [node name="RadiationSensor" type="Node" parent="IABot/Agent/ArraySensor" index="3" node_paths=PackedStringArray("target", "reference")]
 script = ExtResource("6_76dyk")
 target = NodePath("../../../../Radiation")
-reference = NodePath("../../..")
+reference = NodePath("../../../Eye")
 maxDistance = 20.0
 info = 1
 _normalized = true
@@ -335,14 +335,12 @@ script = ExtResource("7_201rr")
 group = "WALL"
 isInput = false
 
-[node name="TouchFruitSensor" type="Node" parent="IABot/Agent/ArraySensor" index="5" node_paths=PackedStringArray("target")]
+[node name="TouchFruitSensor" type="Node" parent="IABot/Agent/ArraySensor" index="5"]
 script = ExtResource("8_ds0qj")
-target = NodePath("../../../../Fruit")
 isInput = false
 
-[node name="TouchFloorSensor" type="Node" parent="IABot/Agent/ArraySensor" index="6" node_paths=PackedStringArray("target")]
+[node name="TouchFloorSensor" type="Node" parent="IABot/Agent/ArraySensor" index="6"]
 script = ExtResource("8_ds0qj")
-target = NodePath("../../../../Floor")
 isInput = false
 
 [node name="StepSensor" type="Node" parent="IABot/Agent/ArraySensor" index="7"]

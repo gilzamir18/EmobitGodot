@@ -11,7 +11,7 @@ checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./logs/', 
 
 
 env = gym.make("AI4UEnv-v0", rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
-model = SAC(MultiInputPolicy, env, learning_starts=100, tensorboard_log='tflog', verbose=1)
+model = SAC(MultiInputPolicy, env, learning_starts=10000, tensorboard_log='tflog', verbose=1)
 model.set_env(env)
 print("Training....")
 print(env.observation_space)
