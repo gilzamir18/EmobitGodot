@@ -12,7 +12,7 @@ checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./logs/', 
 
 env = gym.make("AI4UEnv-v0", rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 policy_kwargs = dict(net_arch=[1024, 512])
-model = SAC(MultiInputPolicy, env, learning_starts=10000, policy_kwargs=policy_kwargs, tensorboard_log='tflog', verbose=1)
+model = SAC(MlpPolicy, env, learning_starts=10000, policy_kwargs=policy_kwargs, tensorboard_log='tflog', verbose=1)
 model.set_env(env)
 print("Training....")
 model.learn(total_timesteps=5000000, callback=checkpoint_callback, log_interval=5)

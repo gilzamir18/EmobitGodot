@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://86d62cht5ebv"]
+[gd_scene load_steps=38 format=3 uid="uid://86d62cht5ebv"]
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_motgv"]
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="2_2krys"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://assets/scripts/RL/actuators/RBMoveActuator.cs" id="6_b1hep"]
 [ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="6_rhbdg"]
 [ext_resource type="Script" path="res://assets/scripts/RL/sensors/RayCastingSensor.cs" id="7_1pk1g"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/MinDistReward.cs" id="8_igovt"]
 [ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="9_dhhie"]
 [ext_resource type="Script" path="res://assets/scripts/RL/events/TouchRewardFunc.cs" id="9_g0v0d"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="10_57pfr"]
@@ -300,10 +299,6 @@ jumpPower = 0.0
 jumpForwardPower = 0.0
 floorGroup = "FLOOR"
 actionName = "move"
-
-[node name="MinDist" type="Node" parent="IABot/Agent"]
-script = ExtResource("8_igovt")
-target = NodePath("../../../Fruit")
 
 [node name="FruitReward" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("target")]
 script = ExtResource("9_g0v0d")
