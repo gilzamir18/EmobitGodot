@@ -18,6 +18,9 @@ public partial class HomeostaticHUD : Control
 	private Vector2 alertSize = new Vector2(20, 20);
 
 	[Export]
+	private float precision = 0.001f;
+
+	[Export]
 	private bool test = false;
 
 	private HomeostaticVariable[] variables;
@@ -47,7 +50,7 @@ public partial class HomeostaticHUD : Control
 			var2.Value = 0.4f;
 
 			SetupVariables(new HomeostaticVariable[]{var1, var2});
-			Update();
+			UpdateSliders();
 		}
     }
 
@@ -68,10 +71,12 @@ public partial class HomeostaticHUD : Control
 			HSlider slider = new HSlider();
 			slider.MinValue = v.rangeMin;
 			slider.MaxValue = v.rangeMax;
+			slider.Step = precision;
+			slider.Rounded = false;
 
 			slider.Value = v.Value;
 			slider.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-			
+
 			sliders[i] = slider;
 
 
@@ -88,12 +93,12 @@ public partial class HomeostaticHUD : Control
 	}
 
 
-	public void Update()
+	public void UpdateSliders()
 	{
 		for (int i = 0; i < variables.Length; i++)
 		{
+			
 			sliders[i].Value = variables[i].Value;
-
 			if (variables[i].Check())
 			{
 				alerts[i].Color = checkInColor;
@@ -102,6 +107,7 @@ public partial class HomeostaticHUD : Control
 			{
 				alerts[i].Color = checkOutColor;
 			}
+			//GD.Print(variables[i].name + " :::: "  + variables[i].Value);
 		}
 	}
 }

@@ -1,20 +1,26 @@
-[gd_scene load_steps=30 format=3 uid="uid://86d62cht5ebv"]
+[gd_scene load_steps=39 format=3 uid="uid://86d62cht5ebv"]
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_motgv"]
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="2_2krys"]
 [ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="3_kdrxr"]
-[ext_resource type="PackedScene" uid="uid://ckrmhlyb1wm7c" path="res://prefabs/aibot.tscn" id="4_bv7kd"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RewardSensor.cs" id="5_y3hw6"]
+[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://assets/3DModel/Arrow.dae" id="4_wjpdv"]
+[ext_resource type="Script" path="res://assets/scripts/RL/agents/BasicAgent.cs" id="5_qbm8j"]
+[ext_resource type="Script" path="res://assets/scripts/RL/actuators/RBMoveActuator.cs" id="6_b1hep"]
 [ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="6_rhbdg"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/GroupTouchSensor.cs" id="7_hseka"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/TouchSensor.cs" id="8_uajhb"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RayCastingSensor.cs" id="7_1pk1g"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/MinDistReward.cs" id="8_igovt"]
 [ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="9_dhhie"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/TouchRewardFunc.cs" id="9_g0v0d"]
+[ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="10_57pfr"]
 [ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="10_jp4mb"]
 [ext_resource type="Script" path="res://assets/scripts/RL/events/CollisionWithRewardFunc.cs" id="11_0f7l7"]
 [ext_resource type="Script" path="res://assets/scripts/RL/events/DistanceToTargetReward.cs" id="12_oyeod"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/RestlessnessReward.cs" id="13_jm67m"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/ActionSensor.cs" id="12_ung6y"]
+[ext_resource type="Script" path="res://assets/scripts/RL/sensors/GroupTouchSensor.cs" id="13_wipa3"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="14_n2baf"]
-[ext_resource type="PackedScene" uid="uid://b3nhj6ax7xuc5" path="res://prefabs/sensor_orientationviewer.tscn" id="15_drs5w"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/AndRewardFunc.cs" id="17_ncy6y"]
+[ext_resource type="Script" path="res://assets/scripts/RL/events/EvalBoolValue.cs" id="18_nhmt1"]
+[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://assets/prefabs/HomeostaticHUD.tscn" id="20_6gl7h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
 size = Vector3(20, 0.1, 20)
@@ -66,6 +72,13 @@ albedo_color = Color(0.0901961, 0.211765, 1, 1)
 size = Vector3(20, 5, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_orx12"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_768m2"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vl1w0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jxcle"]
+albedo_color = Color(0.815686, 0.152941, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gc5m7"]
 size = Vector3(10, 4.5, 5)
@@ -250,80 +263,109 @@ defaultTimeScale = 10.0
 stopOnQuit = true
 agentsList = [NodePath("../IABot/Agent")]
 
-[node name="IABot" parent="." groups=["PLAYER"] instance=ExtResource("4_bv7kd")]
+[node name="IABot" type="RigidBody3D" parent="." groups=["PLAYER"]]
 transform = Transform3D(1, -5.96856e-11, 2.32831e-10, 4.6839e-11, 1, -3.49246e-10, 2.32831e-10, 8.14907e-10, 1, -6.95969, 0.00542105, -7.74487)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+sleeping = true
+can_sleep = false
+continuous_cd = true
+max_contacts_reported = 10000
+contact_monitor = true
+angular_damp = 5.0
 
-[node name="CollisionShape3D" parent="IABot" index="1"]
+[node name="Arrow" parent="IABot" instance=ExtResource("4_wjpdv")]
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 1.29594, 0.474278)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IABot"]
 transform = Transform3D(1, -6.08225e-11, 1.16415e-10, 4.63842e-11, 1, -2.32831e-10, 1.16415e-10, 4.65661e-10, 1, -0.000373307, 0.895548, 0.000962291)
+shape = SubResource("CapsuleShape3D_768m2")
 
-[node name="Agent" parent="IABot" index="3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="IABot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.859779, 0)
+mesh = SubResource("CapsuleMesh_vl1w0")
+surface_material_override/0 = SubResource("StandardMaterial3D_jxcle")
+
+[node name="Agent" type="Node" parent="IABot"]
+script = ExtResource("5_qbm8j")
+avatarPath = NodePath("..")
 remote = true
+doneAtNegativeReward = false
 MaxStepsPerEpisode = 600
 
-[node name="Actuator" parent="IABot/Agent" index="0"]
+[node name="Actuator" type="Node" parent="IABot/Agent"]
+script = ExtResource("6_b1hep")
 moveAmount = 5.0
-turnAmount = 1.0
+jumpPower = 0.0
+jumpForwardPower = 0.0
 floorGroup = "FLOOR"
+actionName = "move"
 
-[node name="Sensor" parent="IABot/Agent" index="1" node_paths=PackedStringArray("eye")]
-hSize = 62
-vSize = 3
-eye = NodePath("../../Eye")
-stackedObservations = 4
-
-[node name="MinDist" parent="IABot/Agent" index="2"]
+[node name="MinDist" type="Node" parent="IABot/Agent"]
+script = ExtResource("8_igovt")
 target = NodePath("../../../Fruit")
 
-[node name="TouchReward" parent="IABot/Agent" index="3" node_paths=PackedStringArray("target")]
+[node name="FruitReward" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("target")]
+script = ExtResource("9_g0v0d")
+reward = 100.0
 target = NodePath("../../../Fruit")
+causeEpisodeToEnd = true
 
-[node name="ArraySensor" parent="IABot/Agent" index="4"]
+[node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD")]
+script = ExtResource("10_57pfr")
+homeostaticHUD = NodePath("../../../HVariablesHUD")
+emotionHUD = NodePath("../../../EmotionsHUD")
+bodyProtection = 1
 perceptionKey = "array"
 stackedObservations = 4
 
-[node name="OrientationSensor" parent="IABot/Agent/ArraySensor" index="0" node_paths=PackedStringArray("target", "reference")]
+[node name="RaycastingSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("eye")]
+script = ExtResource("7_1pk1g")
+groupCode = PackedInt32Array(50, 100, 200)
+groupName = PackedStringArray("FLOOR", "PLAYER", "TARGET")
+collisionMask = 2147483647
+hSize = 62
+vSize = 3
+verticalShift = 0.0
+eye = NodePath("../../../Eye")
+fieldOfView = 55.0
+flattened = true
+_normalized = false
+perceptionKey = "vision"
+isInput = false
+
+[node name="FruitSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("target", "reference")]
+script = ExtResource("6_rhbdg")
 target = NodePath("../../../../Fruit")
 reference = NodePath("../../..")
-maxDistance = 15.0
-_normalized = true
+maxDistance = 200.0
 visibilityTest = true
+ignoreVibilityTestForDist = true
+perceptionKey = "orientation"
 isInput = false
 
-[node name="ActionSensor" parent="IABot/Agent/ArraySensor" index="1"]
+[node name="ActionSensor" type="Node" parent="IABot/Agent/PipelineSensor"]
+script = ExtResource("12_ung6y")
+actionName = "move"
+actionSize = 4
+perceptionKey = "actions"
 isInput = false
 
-[node name="RewardSensor" type="Node" parent="IABot/Agent/ArraySensor" index="2"]
-script = ExtResource("5_y3hw6")
-perceptionKey = "rewards"
-isInput = false
-
-[node name="RadiationSensor" type="Node" parent="IABot/Agent/ArraySensor" index="3" node_paths=PackedStringArray("target", "reference")]
+[node name="RadiationSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("target", "reference")]
 script = ExtResource("6_rhbdg")
 target = NodePath("../../../../Radiation")
 reference = NodePath("../../..")
-maxDistance = 20.0
+maxDistance = 30.0
 info = 1
-_normalized = true
 visibilityTest = true
-perceptionKey = "rad"
 isInput = false
 
-[node name="TouchWallSensor" type="Node" parent="IABot/Agent/ArraySensor" index="4"]
-script = ExtResource("7_hseka")
+[node name="CollisionWithWallSensor" type="Node" parent="IABot/Agent/PipelineSensor"]
+script = ExtResource("13_wipa3")
 group = "WALL"
 isInput = false
 
-[node name="TouchFruitSensor" type="Node" parent="IABot/Agent/ArraySensor" index="5" node_paths=PackedStringArray("target")]
-script = ExtResource("8_uajhb")
-target = NodePath("../../../../Fruit")
-isInput = false
-
-[node name="TouchFloorSensor" type="Node" parent="IABot/Agent/ArraySensor" index="6" node_paths=PackedStringArray("target")]
-script = ExtResource("8_uajhb")
-target = NodePath("../../../../Floor")
-isInput = false
-
-[node name="positions" type="Node" parent="IABot/Agent" index="5"]
+[node name="positions" type="Node" parent="IABot/Agent"]
 
 [node name="pos1" type="Node3D" parent="IABot/Agent/positions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, -8.1963)
@@ -400,30 +442,37 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.894577, 0.005, 6.82336)
 [node name="pos25" type="Node3D" parent="IABot/Agent/positions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.45957, 0.005, -0.29799)
 
-[node name="RemoteConf" type="Node" parent="IABot/Agent" index="6"]
+[node name="RemoteConf" type="Node" parent="IABot/Agent"]
 script = ExtResource("9_dhhie")
 receiveBufferSize = 81920
 sendBufferSize = 81920
 
-[node name="WASDController" type="Node" parent="IABot/Agent" index="7"]
+[node name="WASDController" type="Node" parent="IABot/Agent"]
 script = ExtResource("10_jp4mb")
 speed = 1.0
 
-[node name="CollisionWall" type="Node" parent="IABot/Agent" index="8"]
+[node name="CollisionWall" type="Node" parent="IABot/Agent"]
 script = ExtResource("11_0f7l7")
 group = "WALL"
 
-[node name="RadiationReward" type="Node" parent="IABot/Agent" index="9" node_paths=PackedStringArray("target")]
-script = ExtResource("12_oyeod")
-target = NodePath("../../../Radiation")
-maxReward = -1.0
+[node name="RadiationReward" type="Node" parent="IABot/Agent"]
+script = ExtResource("17_ncy6y")
+reward = -1.0
 causeEpisodeToEnd = true
 
-[node name="RestlessnessReward" type="Node" parent="IABot/Agent" index="10"]
-script = ExtResource("13_jm67m")
+[node name="BodyIsNotProtected" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
+script = ExtResource("18_nhmt1")
+property = "HasRadiationProtection"
+reward = 0.0
+target = NodePath("../../PipelineSensor")
+
+[node name="CheckRadiationDistance" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
+script = ExtResource("12_oyeod")
+target = NodePath("../../../../Radiation")
+squareInverse = false
 
 [node name="Eye" type="Node3D" parent="IABot"]
-transform = Transform3D(1, -2.33854e-10, 2.32831e-10, 4.61569e-11, 1, -3.49246e-10, 2.32831e-10, 6.98492e-10, 1, 1.90735e-06, 0.952856, 0.0325065)
+transform = Transform3D(1, 0.00174533, 0, -0.0015115, 0.866025, -0.500001, -0.000872666, 0.5, 0.866028, -0.0390291, 3.00734, 0.924458)
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)
@@ -482,7 +531,7 @@ mesh = SubResource("BoxMesh_3c5on")
 
 [node name="Radiation" type="StaticBody3D" parent="."]
 transform = Transform3D(1, -2.6148e-12, 0, -1.13687e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 6.79141, 0.547486, -2.79397e-09)
-collision_layer = 2
+collision_layer = 2147483648
 axis_lock_linear_x = true
 axis_lock_linear_y = true
 axis_lock_linear_z = true
@@ -575,39 +624,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, 2.20329)
 [node name="pos25" type="Node3D" parent="RadiationPositions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40129, 0, -3.91662)
 
-[node name="OrientationViewer" parent="." node_paths=PackedStringArray("orientationSensor") instance=ExtResource("15_drs5w")]
-offset_top = 144.0
-offset_right = -86.0
-orientationSensor = NodePath("../IABot/Agent/ArraySensor/OrientationSensor")
+[node name="HVariablesHUD" parent="." instance=ExtResource("20_6gl7h")]
+custom_minimum_size = Vector2(20, 20)
+offset_top = 41.0
+offset_right = 263.0
+offset_bottom = 277.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+test = false
 
-[node name="RadiationViewer" parent="." node_paths=PackedStringArray("orientationSensor") instance=ExtResource("15_drs5w")]
-offset_top = 52.0
-offset_bottom = -149.0
-orientationSensor = NodePath("../IABot/Agent/ArraySensor/RadiationSensor")
-title = "Radiation Sensor"
-
-[node name="LabelTitle" parent="RadiationViewer" index="0"]
-visible = false
-offset_left = 2.0
-offset_top = -3.0
-offset_right = 176.0
-offset_bottom = 20.0
-text = "Radiation"
-
-[node name="Angle" parent="RadiationViewer" index="1"]
-visible = false
-
-[node name="Distance" parent="RadiationViewer" index="2"]
-offset_top = 36.0
-offset_bottom = 52.0
-
-[node name="LabelAngle" parent="RadiationViewer" index="3"]
-visible = false
-
-[node name="LabelDistance" parent="RadiationViewer" index="4"]
-offset_top = 13.0
-offset_bottom = 36.0
-text = "Radiation"
-
-[editable path="IABot"]
-[editable path="RadiationViewer"]
+[node name="EmotionsHUD" parent="." instance=ExtResource("20_6gl7h")]
+custom_minimum_size = Vector2(20, 20)
+offset_left = 539.0
+offset_top = 2.0
+offset_right = 799.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+test = false
