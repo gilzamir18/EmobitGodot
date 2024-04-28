@@ -62,14 +62,21 @@ public sealed class PerceptionModule
 
         variables[PipelineSensor.FRUIT_BRIGHT].Value = (1 + fruitDirection)/2.0f;
 
-        if (fruitDistance >= 0 && fruitDistance < minFruitDistance)
+
+        var delta = fruitDistance - minFruitDistance;
+
+        //GD.Print($"{fruitDistance} ==== {minFruitDistance} ==== {delta}");
+
+
+        if (minFruitDistance == float.PositiveInfinity || 
+                (fruitDistance > 0 && delta < 0 && Math.Abs(delta) > 0.000001) )
         {
             minFruitDistance = fruitDistance;
             variables[PipelineSensor.SATISFACTION].AddValue(0.09f);
         }
         else
         {
-            variables[PipelineSensor.SATISFACTION].AddValue(-0.007f);
+            variables[PipelineSensor.SATISFACTION].AddValue(-0.01f);
         }
 
         bool fruitVisible = visionData.Contains(FRUIT_ID);

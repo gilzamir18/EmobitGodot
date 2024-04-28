@@ -97,7 +97,7 @@ public partial class PipelineSensor: Sensor
         variables = new HomeostaticVariable[]{illness, pain, fruitSmell, fruitBright, satisfaction, frustration, tiredness};
 
         type = SensorType.sfloatarray;
-        shape = new int[]{ stackedObservations * (variables.Length * 5 + rayCastingSensor.shape[0] +  actionSensor.shape[0] + 1) };
+        shape = new int[]{ stackedObservations * (variables.Length * 5 + rayCastingSensor.shape[0] +  actionSensor.shape[0] + 2) };
         rangeMin = -1;
         rangeMax = 1;
 
