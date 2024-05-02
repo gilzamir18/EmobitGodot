@@ -54,7 +54,7 @@ public partial class PipelineSensor: Sensor
     private RigidBody3D agentBody;
 
     private Dictionary<string, Emotion> emotions;
-    private HomeostaticVariable[] emotionalValues;
+    private List<HomeostaticVariable> emotionalValues;
 
     private HomeostaticVariable illness, pain, fruitBright, fruitSmell, satisfaction, frustration, tiredness;
     
@@ -72,21 +72,11 @@ public partial class PipelineSensor: Sensor
 
     public override void OnSetup(Agent agent)
     {   
-
-
-
         this.agent = (BasicAgent) agent;
 
         this.agent.endOfStepEvent += UpdateReward;
 
         agentBody = (RigidBody3D) this.agent.GetAvatarBody();
-
-
-        if (secondaryEmotionModule != null)
-        {
-            secondaryEmotionModule.SetPipeline(this);
-            secondaryEmotionModule.SetAgent(this.agent);
-        }
 
         fruitSensor = GetNode<OrientationSensor>("FruitSensor");
         radiationSensor = GetNode<OrientationSensor>("RadiationSensor");
@@ -122,9 +112,17 @@ public partial class PipelineSensor: Sensor
         w = new float[variables.Length];
 
         SetupPrimaryEmotions();
+        
+        if (secondaryEmotionModule != null)
+        {
+            secondaryEmotionModule.SetPipeline(this);
+            secondaryEmotionModule.SetAgent(this.agent);
+            secondaryEmotionModule.SetEmotions(emotions, emotionalValues);
+        }
+
         if (emotionHUD != null)
         {
-            emotionHUD.SetupVariables(emotionalValues);
+            emotionHUD.SetupVariables(emotionalValues.ToArray());
         }
         history = new HistoryStack<float>(shape[0]);
     }
@@ -187,6 +185,9 @@ public partial class PipelineSensor: Sensor
             else if (em.Key == "joyApprx")
             {
                 emotionalValues[2].Value = 0;
+            } else if (em.Key == "distrGoal")
+            {
+                emotionalValues[3].Value = 0;
             }
         }
 
@@ -277,6 +278,7 @@ public partial class PipelineSensor: Sensor
         emotionalValues[0].Value = emotions["fearRad"].Intensity;
         emotionalValues[1].Value = emotions["fearPain"].Intensity;
         emotionalValues[2].Value = emotions["joyApprx"].Intensity;
+        emotionalValues[3].Value = emotions["distrGoal"].Intensity;
 
         //GD.Print(emotions["fearPain"].Accumulator);
 
@@ -298,6 +300,7 @@ public partial class PipelineSensor: Sensor
         emotions["fearRad"] = new Emotion("fearRad", new int[]{ILLNESS}, false);
         emotions["fearPain"] = new Emotion("fearPain", new int[]{PAIN}, false);
         emotions["joyApprx"] = new Emotion("joyApprx", new int[]{SATISFACTION}, true);
+        emotions["distrGoal"] = new Emotion("distrGoal", new int[]{FRUSTRATION}, false);
 
         HomeostaticVariable fearRad = new HomeostaticVariable();
         fearRad.name = "fearRad";
@@ -324,9 +327,23 @@ public partial class PipelineSensor: Sensor
         joyApprx.rangeMax = 1;
         joyApprx.Value = emotions["joyApprx"].Intensity;
 
-        this.emotionalValues = new HomeostaticVariable[]{fearRad, fearPain, joyApprx};
-    }
 
+        HomeostaticVariable distrGoal = new HomeostaticVariable();
+        distrGoal.name = "distrGoal";
+        distrGoal.minValue = 0;
+        distrGoal.maxValue = 1;
+        distrGoal.rangeMin = 0;
+        distrGoal.rangeMax = 1;
+        distrGoal.Value = emotions["distrGoal"].Intensity;
+
+        //this.emotionalValues = new HomeostaticVariable[]{fearRad, fearPain, joyApprx};
+
+        this.emotionalValues = new();
+        this.emotionalValues.Add(fearRad);
+        this.emotionalValues.Add(fearPain);
+        this.emotionalValues.Add(joyApprx);
+        this.emotionalValues.Add(distrGoal);
+    }
 
     private void SetupHomestaticVariables()
     {
@@ -350,7 +367,6 @@ public partial class PipelineSensor: Sensor
 
         tiredness = new HomeostaticVariable();
         tiredness.name = "Tiredness";
-
     }
 
     private void ResetHomestaticVariables()
