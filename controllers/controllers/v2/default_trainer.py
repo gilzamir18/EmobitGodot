@@ -13,11 +13,11 @@ model = None
 checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./logs/', name_prefix='rl_model')
 
 def step_callback(last_obs, action):
-    if model is None:
-        qvalue = model.critic.forward(torch.from_numpy(self.last_obs).cuda(), torch.from_numpy(action).cuda())
+    ndaction = np.array([action])
+    if model is not None:
+        qvalue, _ = model.critic.forward(torch.from_numpy(last_obs).cuda(), torch.from_numpy(ndaction).cuda())
         qvalue = qvalue.cpu().detach().item()
-        return {'qvalue': qvalue}
-    return {}
+        BasicGymController.add_field('qvalue', qvalue)
 
 BasicGymController.step_callback = step_callback
 

@@ -6,20 +6,11 @@ import numpy as np
 from stable_baselines3 import SAC
 from stable_baselines3.sac import MultiInputPolicy, MlpPolicy
 from stable_baselines3.common.callbacks import CheckpointCallback
-import torch
+
 
 model = None
 
 checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./logs/', name_prefix='rl_model')
-
-def step_callback(last_obs, action):
-    if model is None:
-        qvalue = model.critic.forward(torch.from_numpy(self.last_obs).cuda(), torch.from_numpy(action).cuda())
-        qvalue = qvalue.cpu().detach().item()
-        return {'qvalue': qvalue}
-    return {}
-
-BasicGymController.step_callback = step_callback
 
 env = gym.make("AI4UEnv-v0", rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
 policy_kwargs = dict(net_arch=[1024, 512])

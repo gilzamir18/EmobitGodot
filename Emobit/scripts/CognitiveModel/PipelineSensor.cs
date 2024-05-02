@@ -20,6 +20,9 @@ public partial class PipelineSensor: Sensor
     [Export]
     private BodyProtection bodyProtection = BodyProtection.None;
 
+    [Export]
+    private SecondaryEmotionModule secondaryEmotionModule;
+
     private BodyProtection _bodyProtection;
 
 
@@ -70,11 +73,20 @@ public partial class PipelineSensor: Sensor
     public override void OnSetup(Agent agent)
     {   
 
+
+
         this.agent = (BasicAgent) agent;
 
         this.agent.endOfStepEvent += UpdateReward;
 
         agentBody = (RigidBody3D) this.agent.GetAvatarBody();
+
+
+        if (secondaryEmotionModule != null)
+        {
+            secondaryEmotionModule.SetPipeline(this);
+            secondaryEmotionModule.SetAgent(this.agent);
+        }
 
         fruitSensor = GetNode<OrientationSensor>("FruitSensor");
         radiationSensor = GetNode<OrientationSensor>("RadiationSensor");
@@ -128,6 +140,10 @@ public partial class PipelineSensor: Sensor
 
     public override void OnReset(Agent agent)
     {
+        if (secondaryEmotionModule != null)
+        {
+            secondaryEmotionModule.Reset();
+        }
 
         if (bodyProtection == BodyProtection.Random)
         {
@@ -247,7 +263,14 @@ public partial class PipelineSensor: Sensor
 
         PerceptionModule.Percept(variables, fruitDirection, fruitDist, radiationDist, agentDist, visionData, lastActions, collisionWall);
         PrimaryMotivationModule.Attention(variables, hC);
+        
         PrimaryEmotionModule.Evaluate(emotions, variables);
+
+        if (this.secondaryEmotionModule != null)
+        {
+            this.secondaryEmotionModule.Update(emotions);
+        }
+
         this.lastReward = RewardModule.Rewarding(emotions, variables, w, hC)/700.0f;
         this.sumOfRewards += this.lastReward;
 
