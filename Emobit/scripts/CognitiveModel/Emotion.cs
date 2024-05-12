@@ -29,6 +29,7 @@ public partial class Emotion
 
     public int Signal => positive ? 1 : -1;
 
+    public bool IsPositive => positive;
 
 
     public Emotion(string code, int[] stimulus, bool positive, float decay = 0.01f, float initialValue=0.0f, float maxAccumulator = 2500)
@@ -93,7 +94,7 @@ public partial class Emotion
             }
             else if (v < 0)
             {
-                accumulator = Clip(accumulator + v * accumulator, 0, maxAccumulator);
+                accumulator = Clip(accumulator + v * Math.Abs(accumulator), 0, maxAccumulator);
             }
         }
         else

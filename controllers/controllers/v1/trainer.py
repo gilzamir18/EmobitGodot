@@ -17,7 +17,7 @@ policy_kwargs = dict(net_arch=[1024, 512])
 model = SAC(MlpPolicy, env, learning_starts=10000, policy_kwargs=policy_kwargs, tensorboard_log='tflog', verbose=1)
 model.set_env(env)
 print("Training....")
-model.learn(total_timesteps=5000000, callback=checkpoint_callback, log_interval=5)
+model.learn(total_timesteps=700000, callback=checkpoint_callback, log_interval=5)
 model.save("sac1m")
 print("Trained...")
 del model # remove to demonstrate saving and loading

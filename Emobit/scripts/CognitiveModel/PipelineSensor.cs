@@ -23,8 +23,22 @@ public partial class PipelineSensor: Sensor
     [Export]
     private SecondaryEmotionModule secondaryEmotionModule;
 
+    [Export]
+    private int predefinedBehavior = -1;
+
+    [Export]
+    private Node3D radiation;
+
     private BodyProtection _bodyProtection;
 
+    public bool RadiationEnabled {get; set;} = true;
+
+    public bool RadiationOn {get; set;} = false;
+
+    public int MinDistToStartRadiation {get; set;} = 3;
+    public int MaxDistToStartRadiation {get; set;} = 5;
+
+    private int distToStartRadiation;
 
     public bool HasRadiationProtection
     {
@@ -100,8 +114,8 @@ public partial class PipelineSensor: Sensor
 
         type = SensorType.sfloatarray;
         shape = new int[]{ stackedObservations * (variables.Length * 5 + rayCastingSensor.shape[0] +  actionSensor.shape[0] + 2) };
-        rangeMin = -1;
-        rangeMax = 1;
+        rangeMin = -10;
+        rangeMax = 10;
 
         if (homeostaticHUD != null)
         {
@@ -143,22 +157,42 @@ public partial class PipelineSensor: Sensor
             secondaryEmotionModule.Reset();
         }
 
+        radiation.Visible = false;
+
+        if (GD.RandRange(0, 1)==1)
+        {
+            RadiationEnabled = true;
+        }
+        else
+        {
+            RadiationEnabled = false;
+        }
+
+
+        RadiationOn = false;
+
+        distToStartRadiation = GD.RandRange(MinDistToStartRadiation, MaxDistToStartRadiation);
+        //GD.Print(RadiationEnabled + " ::: " + distToStartRadiation);
+        
+
         if (bodyProtection == BodyProtection.Random)
         {
             if (GD.RandRange(0, 1) == 0)
             {
                 _bodyProtection = BodyProtection.None;
+                (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 1f, 0.0f, 1.0f);
             }
             else
             {
                 _bodyProtection = BodyProtection.Radiation;
+                (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 0.3f, 0.3f, 1.0f);
             }
         }
         else
         {
             _bodyProtection = bodyProtection;
         }
-
+        //GD.Print(_bodyProtection);
 
         fruitSensor.OnReset(agent);
         radiationSensor.OnReset(agent);
@@ -248,6 +282,20 @@ public partial class PipelineSensor: Sensor
         var fruitDist = fruitData[1];
         
         float radiationDist = radiationSensor.GetFloatArrayValue()[0];
+
+        if (RadiationEnabled)
+        {
+            if (!RadiationOn && radiationDist >= 0 && radiationDist < distToStartRadiation)
+            {
+                RadiationOn = true;
+                radiation.Visible = true;
+            }
+        }
+        else
+        {
+            radiationDist = -1;
+        }
+
         
         visionData = rayCastingSensor.GetFloatArrayValue();
         
@@ -371,22 +419,29 @@ public partial class PipelineSensor: Sensor
 
     private void ResetHomestaticVariables()
     {
-            //ILLNESS = 0, PAIN = 1, SMELLING = 2, SHINE=3, SATISFACTION=4, DISTRESS=5
-            int[,] options = new int[,]{ {0, 0, 1, 1, 1, 3}, //rota mais distante 
-                                         {0, 0, 1, 1, 1, 0}, //rota mais longa sem muita convicção
-                                         {3, 0, 1, 1, 1, 3}, //rota mais curta sem muita convicação
-                                         {3, 0, 1, 1, 1, 0}, //rota mais curta com muita convicção
-                                         {2, 0, 1, 1, 1, 0}, //rota mais curta com muita convicção
+            // ILLNESS = 0, PAIN = 1, FRUIT_SMELL = 2, FRUIT_BRIGHT = 3, SATISFACTION = 4, FRUSTRATION = 5, TIREDNESS = 6;
+            int[,] options = new int[,]{ {0, 0, 1, 1, 1, 3, 1}, //rota mais distante 
+                                         {0, 0, 1, 1, 1, 0, 1}, //rota mais longa sem muita convicção
+                                         {3, 0, 1, 1, 1, 3, 1}, //rota mais curta sem muita convicação
+                                         {3, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
+                                         {2, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
                                         };
 
             int idx = 0;
-            if (GD.RandRange(0, 1) == 1)
+            if (predefinedBehavior >= 0)
             {
-                idx = GD.RandRange(0, 1);
+                idx = predefinedBehavior;
             }
             else
             {
-                idx = GD.RandRange(2, 4);
+                if (GD.RandRange(0, 1) == 1)
+                {
+                    idx = GD.RandRange(0, 1);
+                }
+                else
+                {
+                    idx = GD.RandRange(2, 4);
+                }
             }
 
 
@@ -433,7 +488,7 @@ public partial class PipelineSensor: Sensor
             frustration.Value = 0.0f;
         
             tiredness.minValue = 0.0f;
-            tiredness.maxValue = 0.5f;//new float[]{0.1f, 0.5f, 0.9f, 1.0f}[Random.Range(0, 4)];
+            tiredness.maxValue = new float[]{0.1f, 0.5f, 0.9f, 1.0f}[options[idx, TIREDNESS]];
             tiredness.rangeMin = 0;
             tiredness.rangeMax = 1;
             tiredness.SetCentroid(0);

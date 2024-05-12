@@ -1,4 +1,5 @@
 using ai4u.ext;
+using ai4u.math;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -30,29 +31,73 @@ public sealed class PrimaryEmotionModule
 
             for (int i = 0; i < sts.Length; i++)
             {
-                var v = variables[sts[i]];
                 
+                var varIdx =  sts[i];
+
+                var v = variables[varIdx];
                 var dt = v.DistanceToCentroid;
+               
+                var delta = dt - dMinusOne[varIdx];
 
-                var delta = dt - dMinusOne[i];
+                dMinusOne[varIdx] = dt;
 
-                dMinusOne[i] = dt;
-
-                /*if (em.Code == "fearPain")
+                if (em.IsPositive)
                 {
-                    GD.Print("Delta: " + delta);
-                }*/
-                if (delta > 0)
-                {
-                    em.AddValue(10*delta);
-                }
-                else if (delta < 0)
-                {
-                    em.AddValue(delta, true);
+                    if (v.Check())
+                    {
+                        if (delta <= 0)
+                        {
+                            em.AddValue(10*Math.Abs(delta));
+                        }
+                        else if (delta > 0)
+                        {
+                            em.AddValue(-delta, true);
+                        }
+                    }
+                    else
+                    {
+                        if (delta < 0)
+                        {
+                            em.AddValue(10*Math.Abs(delta));
+                        }
+                        else if (delta > 0)
+                        {
+                            em.AddValue(-delta, true);
+                        }
+                        else
+                        {
+                            em.AddValue(-0.2f, true);
+                        }
+                    }
                 }
                 else
                 {
-                    em.AddValue(-0.2f, true);
+                    if (v.Check())
+                    {
+                        if (delta > 0)
+                        {
+                            em.AddValue(10*delta);
+                        }
+                        else if (delta < 0)
+                        {
+                            em.AddValue(delta, true);
+                        }
+                        else
+                        {
+                            em.AddValue(-0.2f, true);
+                        }
+                    }
+                    else
+                    {
+                        if (delta >= 0)
+                        {
+                            em.AddValue(10*delta);
+                        }
+                        else if (delta < 0)
+                        {
+                            em.AddValue(delta, true);
+                        }
+                    }
                 }
             }
         }

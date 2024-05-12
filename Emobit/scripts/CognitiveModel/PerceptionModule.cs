@@ -43,11 +43,11 @@ public sealed class PerceptionModule
 
         if (collisionWall > 0)
         {
-            variables[PipelineSensor.PAIN].AddValue(collisionWall * 0.01f);
+            variables[PipelineSensor.PAIN].AddValue(collisionWall * 0.001f);
         }
         else
         {
-            variables[PipelineSensor.PAIN].AddValue(-0.01f);
+            variables[PipelineSensor.PAIN].AddValue(-0.0001f);
         }
 
 
@@ -65,8 +65,6 @@ public sealed class PerceptionModule
 
         var delta = fruitDistance - minFruitDistance;
 
-        //GD.Print($"{fruitDistance} ==== {minFruitDistance} ==== {delta}");
-
 
         if (minFruitDistance == float.PositiveInfinity || 
                 (fruitDistance > 0 && delta < 0 && Math.Abs(delta) > 0.000001) )
@@ -79,24 +77,24 @@ public sealed class PerceptionModule
             variables[PipelineSensor.SATISFACTION].AddValue(-0.01f);
         }
 
-        bool fruitVisible = visionData.Contains(FRUIT_ID);
+        bool fruitVisible = fruitDirection >= -1;//visionData.Contains(FRUIT_ID);
 
         if (fruitVisible)
         {
-            variables[PipelineSensor.FRUSTRATION].AddValue(-0.02f);
+            variables[PipelineSensor.FRUSTRATION].AddValue(-0.05f);
         }
         else
         {
-            variables[PipelineSensor.FRUSTRATION].AddValue(0.01f);
+            variables[PipelineSensor.FRUSTRATION].AddValue(0.001f);
         }
 
         if (agentDist <= 0.1)
         {
-            variables[PipelineSensor.TIREDNESS].AddValue(0.01f);
+            variables[PipelineSensor.TIREDNESS].AddValue(0.001f);
         }
         else
         {
-            variables[PipelineSensor.TIREDNESS].AddValue(-0.008f);
+            variables[PipelineSensor.TIREDNESS].AddValue(-0.0001f);
         }
     }
 

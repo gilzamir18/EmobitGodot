@@ -33,7 +33,7 @@ public sealed class PrimaryMotivationModule
             var delta = distanceToCentroid - previousHomeostaticDistance[i];
             previousHomeostaticDistance[i] = distanceToCentroid;
         
-            float v = delta > 0 ? 1 : 0;
+            float v = delta >= 0 ? 1 : 0;
 
             hC[i] = u + (1 - u) * (1 - 3 * v);
         }
