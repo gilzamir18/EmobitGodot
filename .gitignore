@@ -8,3 +8,6 @@ controllers/controllers/controller1/tflog
 *.zip
 *.0
 
+controllers/controllers/v3/models_*
+/controllers/controllers/v3/t1
+/controllers/controllers/v3/t1

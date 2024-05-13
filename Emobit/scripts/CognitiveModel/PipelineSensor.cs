@@ -35,7 +35,9 @@ public partial class PipelineSensor: Sensor
 
     public bool RadiationOn {get; set;} = false;
 
+    [Export]
     public int MinDistToStartRadiation {get; set;} = 3;
+    [Export]
     public int MaxDistToStartRadiation {get; set;} = 5;
 
     private int distToStartRadiation;

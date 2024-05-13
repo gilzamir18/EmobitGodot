@@ -286,6 +286,8 @@ emotionHUD = NodePath("../../../EmotionsHUD")
 bodyProtection = 2
 secondaryEmotionModule = NodePath("../SecondaryEmotionModule")
 radiation = NodePath("../../../Radiation")
+MinDistToStartRadiation = 4
+MaxDistToStartRadiation = 8
 perceptionKey = "array"
 stackedObservations = 4
 
