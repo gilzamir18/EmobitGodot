@@ -262,7 +262,7 @@ script = ExtResource("5_ms37f")
 avatarPath = NodePath("..")
 remote = true
 doneAtNegativeReward = false
-MaxStepsPerEpisode = 600
+MaxStepsPerEpisode = 400
 
 [node name="Actuator" type="Node" parent="IABot/Agent"]
 script = ExtResource("6_qw0i5")
@@ -286,7 +286,7 @@ emotionHUD = NodePath("../../../EmotionsHUD")
 bodyProtection = 2
 secondaryEmotionModule = NodePath("../SecondaryEmotionModule")
 radiation = NodePath("../../../Radiation")
-MinDistToStartRadiation = 4
+MinDistToStartRadiation = 5
 MaxDistToStartRadiation = 8
 perceptionKey = "array"
 stackedObservations = 4

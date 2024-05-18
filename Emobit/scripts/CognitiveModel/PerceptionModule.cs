@@ -43,11 +43,11 @@ public sealed class PerceptionModule
 
         if (collisionWall > 0)
         {
-            variables[PipelineSensor.PAIN].AddValue(collisionWall * 0.001f);
+            variables[PipelineSensor.PAIN].AddValue(collisionWall * 0.009f);
         }
         else
         {
-            variables[PipelineSensor.PAIN].AddValue(-0.0001f);
+            variables[PipelineSensor.PAIN].AddValue(-0.009f);
         }
 
 

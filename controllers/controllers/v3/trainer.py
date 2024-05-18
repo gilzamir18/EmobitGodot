@@ -89,7 +89,7 @@ training.start()
 
 
 print("Training....")
-model.learn(total_timesteps=1100000, callback=checkpoint_callback, log_interval=5)
+model.learn(total_timesteps=2100000, callback=checkpoint_callback, log_interval=5)
 model.save("sac1m")
 print("Trained...")
 del model # remove to demonstrate saving and loading

@@ -170,7 +170,6 @@ public partial class PipelineSensor: Sensor
             RadiationEnabled = false;
         }
 
-
         RadiationOn = false;
 
         distToStartRadiation = GD.RandRange(MinDistToStartRadiation, MaxDistToStartRadiation);

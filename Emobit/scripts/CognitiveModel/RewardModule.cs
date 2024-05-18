@@ -1,4 +1,5 @@
 using ai4u.ext;
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +33,11 @@ public sealed class RewardModule
 
         if (fearPain.Intensity > 0)
         {
-            w[1] = 0;
+            w[1] = 1;
         }
         else
         {
-            w[1] = 1;
+            w[1] = 0;
         }
 
         var difjoy = joyApprx.Intensity - beforeJoy;
