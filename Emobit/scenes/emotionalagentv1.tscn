@@ -266,7 +266,7 @@ MaxStepsPerEpisode = 600
 [node name="Actuator" type="Node" parent="IABot/Agent"]
 script = ExtResource("6_b1hep")
 moveAmount = 5.0
-turnAmount = 5.0
+turnAmount = 2.0
 jumpPower = 0.0
 jumpForwardPower = 0.0
 floorGroup = "FLOOR"
@@ -278,11 +278,12 @@ reward = 100.0
 target = NodePath("../../../Fruit")
 causeEpisodeToEnd = true
 
-[node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD")]
+[node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD", "radiation")]
 script = ExtResource("10_57pfr")
 homeostaticHUD = NodePath("../../../HVariablesHUD")
 emotionHUD = NodePath("../../../EmotionsHUD")
 bodyProtection = 2
+radiation = NodePath("../../../Radiation")
 perceptionKey = "array"
 stackedObservations = 4
 
@@ -423,6 +424,13 @@ script = ExtResource("17_ncy6y")
 reward = -1.0
 causeEpisodeToEnd = true
 
+[node name="RadiationOn" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
+script = ExtResource("18_nhmt1")
+property = "RadiationOn"
+value = true
+reward = 0.0
+target = NodePath("../../PipelineSensor")
+
 [node name="BodyIsNotProtected" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
 script = ExtResource("18_nhmt1")
 property = "HasRadiationProtection"
@@ -432,6 +440,7 @@ target = NodePath("../../PipelineSensor")
 [node name="CheckRadiationDistance" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
 script = ExtResource("12_oyeod")
 target = NodePath("../../../../Radiation")
+minDistance = 2.0
 squareInverse = false
 
 [node name="Eye" type="Node3D" parent="IABot"]
