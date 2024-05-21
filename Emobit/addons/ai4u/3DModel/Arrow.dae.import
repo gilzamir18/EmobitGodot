@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://5ikmnjyidtck"
-path="res://.godot/imported/Arrow.dae-5af16da249a0b2844136a982902c5685.scn"
+path="res://.godot/imported/Arrow.dae-236bf97be767392dc31e916e1b8e99f1.scn"
 
 [deps]
 
-source_file="res://assets/3DModel/Arrow.dae"
-dest_files=["res://.godot/imported/Arrow.dae-5af16da249a0b2844136a982902c5685.scn"]
+source_file="res://addons/ai4u/3DModel/Arrow.dae"
+dest_files=["res://.godot/imported/Arrow.dae-236bf97be767392dc31e916e1b8e99f1.scn"]
 
 [params]
 

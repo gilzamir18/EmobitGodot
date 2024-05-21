@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Godot;
 using ai4u;
+using System.Diagnostics;
 
 namespace  ai4u
 {

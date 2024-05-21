@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cfojtap06rbca"
-path="res://.godot/imported/plane8.dae-0762bae6839a2bedddf70ff8edbc95f2.scn"
+path="res://.godot/imported/plane8.dae-53c51001f86fdf0a911cb337ba7289ac.scn"
 
 [deps]
 
-source_file="res://assets/3DModel/plane8.dae"
-dest_files=["res://.godot/imported/plane8.dae-0762bae6839a2bedddf70ff8edbc95f2.scn"]
+source_file="res://addons/ai4u/3DModel/plane8.dae"
+dest_files=["res://.godot/imported/plane8.dae-53c51001f86fdf0a911cb337ba7289ac.scn"]
 
 [params]
 

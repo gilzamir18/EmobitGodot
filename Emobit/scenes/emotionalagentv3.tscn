@@ -2,24 +2,24 @@
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_h6hmq"]
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="2_yerhy"]
-[ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="3_l2kt4"]
-[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://assets/3DModel/Arrow.dae" id="4_0yein"]
-[ext_resource type="Script" path="res://assets/scripts/RL/agents/BasicAgent.cs" id="5_ms37f"]
-[ext_resource type="Script" path="res://assets/scripts/RL/actuators/RBMoveActuator.cs" id="6_qw0i5"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/TouchRewardFunc.cs" id="7_uk3ol"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControlRequestor.cs" id="3_l2kt4"]
+[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://addons/ai4u/3DModel/Arrow.dae" id="4_0yein"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/agents/BasicAgent.cs" id="5_ms37f"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/actuators/RBMoveActuator.cs" id="6_qw0i5"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/TouchRewardFunc.cs" id="7_uk3ol"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="8_okav3"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RayCastingSensor.cs" id="9_pmi0c"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="10_pockn"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/ActionSensor.cs" id="11_bykov"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/GroupTouchSensor.cs" id="12_ffchu"]
-[ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="13_0inqu"]
-[ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="14_cs04x"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/AndRewardFunc.cs" id="15_xjcot"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/EvalBoolValue.cs" id="16_fqnri"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/DistanceToTargetReward.cs" id="17_62fax"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/RayCastingSensor.cs" id="9_pmi0c"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/OrientationSensor.cs" id="10_pockn"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/ActionSensor.cs" id="11_bykov"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/GroupTouchSensor.cs" id="12_ffchu"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RemoteConfiguration.cs" id="13_0inqu"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="14_cs04x"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="15_xjcot"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="16_fqnri"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetReward.cs" id="17_62fax"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/SecondaryEmotionModule.cs" id="18_u0y0p"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="19_ot61t"]
-[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://assets/prefabs/HomeostaticHUD.tscn" id="20_57vcx"]
+[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="20_57vcx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
 size = Vector3(20, 0.1, 20)
@@ -230,7 +230,6 @@ transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.87
 
 [node name="ControlLoop" type="Node" parent="." node_paths=PackedStringArray("agentsList")]
 script = ExtResource("3_l2kt4")
-defaultTimeScale = 10.0
 stopOnQuit = true
 agentsList = [NodePath("../IABot/Agent")]
 
@@ -260,7 +259,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_jxcle")
 [node name="Agent" type="Node" parent="IABot"]
 script = ExtResource("5_ms37f")
 avatarPath = NodePath("..")
-remote = true
 doneAtNegativeReward = false
 MaxStepsPerEpisode = 400
 
@@ -613,7 +611,6 @@ offset_right = 263.0
 offset_bottom = 277.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-test = false
 
 [node name="EmotionsHUD" parent="." instance=ExtResource("20_57vcx")]
 custom_minimum_size = Vector2(20, 20)
@@ -622,4 +619,3 @@ offset_top = 2.0
 offset_right = 799.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
-test = false

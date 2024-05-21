@@ -2,23 +2,23 @@
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_motgv"]
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="2_2krys"]
-[ext_resource type="Script" path="res://assets/scripts/ControlRequestor.cs" id="3_kdrxr"]
-[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://assets/3DModel/Arrow.dae" id="4_wjpdv"]
-[ext_resource type="Script" path="res://assets/scripts/RL/agents/BasicAgent.cs" id="5_qbm8j"]
-[ext_resource type="Script" path="res://assets/scripts/RL/actuators/RBMoveActuator.cs" id="6_b1hep"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/OrientationSensor.cs" id="6_rhbdg"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/RayCastingSensor.cs" id="7_1pk1g"]
-[ext_resource type="Script" path="res://assets/scripts/RemoteConfiguration.cs" id="9_dhhie"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/TouchRewardFunc.cs" id="9_g0v0d"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControlRequestor.cs" id="3_kdrxr"]
+[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://addons/ai4u/3DModel/Arrow.dae" id="4_wjpdv"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/agents/BasicAgent.cs" id="5_qbm8j"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/actuators/RBMoveActuator.cs" id="6_b1hep"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/OrientationSensor.cs" id="6_rhbdg"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/RayCastingSensor.cs" id="7_1pk1g"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RemoteConfiguration.cs" id="9_dhhie"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/TouchRewardFunc.cs" id="9_g0v0d"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="10_57pfr"]
-[ext_resource type="Script" path="res://assets/scripts/RL/controllers/WASDRBMoveController.cs" id="10_jp4mb"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/DistanceToTargetReward.cs" id="12_oyeod"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/ActionSensor.cs" id="12_ung6y"]
-[ext_resource type="Script" path="res://assets/scripts/RL/sensors/GroupTouchSensor.cs" id="13_wipa3"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="10_jp4mb"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetReward.cs" id="12_oyeod"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/ActionSensor.cs" id="12_ung6y"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/GroupTouchSensor.cs" id="13_wipa3"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="14_n2baf"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/AndRewardFunc.cs" id="17_ncy6y"]
-[ext_resource type="Script" path="res://assets/scripts/RL/events/EvalBoolValue.cs" id="18_nhmt1"]
-[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://assets/prefabs/HomeostaticHUD.tscn" id="20_6gl7h"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="17_ncy6y"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="18_nhmt1"]
+[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="20_6gl7h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
 size = Vector3(20, 0.1, 20)
@@ -604,7 +604,6 @@ offset_right = 263.0
 offset_bottom = 277.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-test = false
 
 [node name="EmotionsHUD" parent="." instance=ExtResource("20_6gl7h")]
 custom_minimum_size = Vector2(20, 20)
@@ -613,4 +612,3 @@ offset_top = 2.0
 offset_right = 799.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
-test = false

@@ -280,8 +280,11 @@ public partial class SecondaryEmotionModule : Node
 		this.maxTD = float.NegativeInfinity;
 		emotions["joyTD"].Reset();
 		emotions["distrTD"].Reset();
-		emotions["hopeR"].Reset();
-		emotions["surpriseD+"].Reset();
-		emotions["surpriseD-"].Reset();
+		if (enableHopeAndSurprise)
+		{
+			emotions["hopeR"].Reset();
+			emotions["surpriseD+"].Reset();
+			emotions["surpriseD-"].Reset();
+		}
 	}
 }

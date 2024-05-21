@@ -20,6 +20,10 @@ namespace ai4u
 
         public bool stayInCollision = false;
 
+        private bool isCharacterBody = false;
+
+        private CharacterBody3D chBody;
+
         public override void OnSetup(Agent agent)
         {
             if (!configured)
@@ -27,9 +31,23 @@ namespace ai4u
                 configured = true;
                 agent.AddResetListener(this);
                 this.agent = (BasicAgent)agent;
-                RigidBody3D body = this.agent.GetAvatarBody() as RigidBody3D;
-                body.BodyEntered += OnEntered;
-                body.BodyExited += OnExited;
+
+                var body = this.agent.GetAvatarBody();
+                if (body.GetType() == typeof(RigidBody3D))
+                {
+                    ((RigidBody3D)body).BodyEntered += OnEntered;
+                    ((RigidBody3D)body).BodyExited += OnExited;
+                    isCharacterBody = false;
+                }
+                else if (body.GetType() == typeof(CharacterBody3D))
+                {
+                    isCharacterBody = true;
+                    chBody = (CharacterBody3D) body;
+                }
+                else
+                {
+                    throw new Exception("The type of the agent avatar is invalid!");
+                }
             }
         }
 
@@ -65,6 +83,21 @@ namespace ai4u
         public override void _PhysicsProcess(double delta)
         {
             base._PhysicsProcess(delta);
+            if (isCharacterBody)
+            {
+                var nc = chBody.GetSlideCollisionCount();
+                for (int i = 0; i < nc; i++)
+                {
+                    var kc = chBody.GetSlideCollision(i);
+    
+                    var n = (Node)kc.GetCollider();
+                    if (n.IsInGroup(group))
+                    {
+                        acmReward += this.reward;
+                    }
+                }
+            }
+         
             if (stayInCollision)
             {
                 acmReward += this.reward;
