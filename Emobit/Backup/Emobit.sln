@@ -1,15 +1,12 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34616.47
-MinimumVisualStudioVersion = 10.0.40219.1
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emobit", "Emobit.csproj", "{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		ExportDebug|Any CPU = ExportDebug|Any CPU
-		ExportRelease|Any CPU = ExportRelease|Any CPU
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -18,11 +15,5 @@ Global
 		{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D044E0C1-F6AE-41E4-BEF2-EF352D79D327}
 	EndGlobalSection
 EndGlobal

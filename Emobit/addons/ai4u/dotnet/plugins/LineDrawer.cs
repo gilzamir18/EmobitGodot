@@ -9,14 +9,12 @@ partial class LineDrawer: MeshInstance3D
 
 	private ImmediateMesh imesh;
 
-	public override void _Ready()
+	public LineDrawer()
 	{
-		linesA = new ();
-		imesh = new ImmediateMesh();
-		Mesh = imesh;
+		linesA = new ();	
 	}
 
-	public void StartInEditor()
+	public void StartMeshes()
 	{
 		linesA = new ();
 		imesh = new ImmediateMesh();
@@ -38,7 +36,16 @@ partial class LineDrawer: MeshInstance3D
 
 	public void Clear()
 	{
+		if (linesA == null)
+		{
+			linesA = new();
+		}
 		linesA.Clear();
+
+		if (imesh == null)
+		{
+			imesh = new ImmediateMesh();
+		}
 		imesh.ClearSurfaces();
 	}
 

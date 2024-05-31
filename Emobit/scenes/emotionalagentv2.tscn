@@ -16,7 +16,7 @@
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="14_4rc22"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="15_8r7vy"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="16_murkj"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetReward.cs" id="17_i0dk4"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetRewardFunc.cs" id="17_i0dk4"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="18_2uvpg"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/SecondaryEmotionModule.cs" id="18_hxlpe"]
 [ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="19_lsyyr"]
@@ -258,7 +258,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_jxcle")
 
 [node name="Agent" type="Node" parent="IABot"]
 script = ExtResource("5_aficl")
-avatarPath = NodePath("..")
 doneAtNegativeReward = false
 MaxStepsPerEpisode = 600
 
@@ -297,6 +296,7 @@ vSize = 3
 verticalShift = 0.0
 eye = NodePath("../../../Eye")
 fieldOfView = 60.0
+debugEnabled = true
 flattened = true
 _normalized = false
 perceptionKey = "vision"
@@ -439,7 +439,7 @@ squareInverse = false
 script = ExtResource("18_hxlpe")
 
 [node name="Eye" type="Node3D" parent="IABot"]
-transform = Transform3D(1, 0.00174533, 0, -0.0015115, 0.866025, -0.500001, -0.000872666, 0.5, 0.866028, -0.0390291, 3.00734, 0.924458)
+transform = Transform3D(1, 0.00174533, 1.16415e-10, -0.0015115, 0.866025, -0.500001, -0.000872666, 0.5, 0.866028, -0.0390291, 3.00734, 0.924458)
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)

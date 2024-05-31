@@ -17,6 +17,8 @@ public class AgentControlInfo
 
 	public string lastEnvResetId = "";
 
+	public double deltaTime = 0;
+
 	public bool envmode = true;
 }
 
@@ -361,7 +363,7 @@ public abstract partial class Agent : Node
 		}
 	}
 
-	public virtual void AgentRestart()
+	public virtual void AgentStart()
 	{
 		
 	}

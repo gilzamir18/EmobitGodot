@@ -4,7 +4,7 @@ using System;
 
 namespace ai4u;
 
-public partial class CBMoveActuator : Actuator
+public partial class CBMoveActuator : MoveActuator
 {
     //forces applied on the x, y and z axes.    
     private float move, turn, jump, jumpForward;
@@ -22,9 +22,16 @@ public partial class CBMoveActuator : Actuator
     private float precision = 0.001f;
     [Export]
     private float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+    
     [Export]
     private float lerpFactor = 0.4f;
 
+
+    [ExportCategory("Action Shape")]
+    [Export]
+    private float[] actionRangeMin = new float[]{0, -1, -1, -1};
+    [Export]
+    private float[] actionRangeMax = new float[]{1, 1, 1, 1};
 
     private BasicAgent agent;
     
@@ -42,15 +49,15 @@ public partial class CBMoveActuator : Actuator
     {
         shape = new int[1]{4};
         isContinuous = true;
-        rangeMin = new float[]{0, -1, 0, 0};
-        rangeMax = new float[]{1, 1, 1, 1};
+        rangeMin = actionRangeMin;
+        rangeMax = actionRangeMax;
         this.agent = (BasicAgent) agent;
         agent.AddResetListener(this);
         body = this.agent.GetAvatarBody() as CharacterBody3D;
         this.spaceState = body.GetWorld3D().DirectSpaceState;
     }
 
-    public bool OnGround
+    public override bool OnGround
     {
         get
         {
@@ -60,7 +67,7 @@ public partial class CBMoveActuator : Actuator
 
     public override void Act()
     {
-        double delta = this.agent.GetPhysicsProcessDeltaTime();
+        double delta = this.agent.ControlInfo.deltaTime;
         Vector3 velocity = body.Velocity;
         if (agent != null && !agent.Done)
         {
@@ -83,6 +90,11 @@ public partial class CBMoveActuator : Actuator
             {
                 jumpForward = 0;
             }
+
+            if (Mathf.Abs(move) < precision)
+            {
+                move = 0;
+            }
             
             // Add the gravity.
             if (!body.IsOnFloor())
@@ -93,11 +105,7 @@ public partial class CBMoveActuator : Actuator
             {
                 if ( Math.Abs(turn) > 0)
                 {
-                    var newdirection = Quaternion.FromEuler(new Vector3(0, turn * turnAmount, 0)) * body.Basis.Z;
-                
-                    var targetposition = body.Position + newdirection;
-
-                    body.LookAt(targetposition);
+                    body.Rotate(body.Basis.Y, Mathf.DegToRad(-turn * turnAmount * 100 * (float)delta));
                 }
 
                 // Get the input direction and handle the movement/deceleration.
@@ -125,21 +133,9 @@ public partial class CBMoveActuator : Actuator
 
                 if (!forwarding)
                 {
-                    var o = body.Transform.Basis.Z;
-                    if (Mathf.Abs(o.X) > precision)
-                    {
-                        velocity.X = Mathf.Lerp(velocity.X, 0, lerpFactor);
-                    }
-
-                    if (Mathf.Abs(o.Y) > precision)
-                    {
-                        velocity.Y = Mathf.Lerp(velocity.Y, 0, lerpFactor);
-                    }
-
-                    if (Mathf.Abs(o.Z) > precision)
-                    {
-                        velocity.Z = Mathf.Lerp(velocity.Z, 0, lerpFactor);
-                    }
+                    velocity.X = Mathf.Lerp(velocity.X, 0, lerpFactor);
+                    velocity.Y = Mathf.Lerp(velocity.Y, 0, lerpFactor);
+                    velocity.Z = Mathf.Lerp(velocity.Z, 0, lerpFactor);
                 }
             }
             body.Velocity = velocity;

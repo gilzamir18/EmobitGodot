@@ -16,7 +16,7 @@
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="14_cs04x"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="15_xjcot"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="16_fqnri"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetReward.cs" id="17_62fax"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetRewardFunc.cs" id="17_62fax"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/SecondaryEmotionModule.cs" id="18_u0y0p"]
 [ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="19_ot61t"]
 [ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="20_57vcx"]

@@ -9,6 +9,7 @@ anchors_preset = 0
 offset_right = 801.0
 offset_bottom = 279.0
 script = ExtResource("1_4s2wj")
+test = true
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 0
