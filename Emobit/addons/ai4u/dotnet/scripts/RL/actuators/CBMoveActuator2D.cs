@@ -4,7 +4,7 @@ using System;
 
 namespace ai4u;
 
-public partial class CBMoveActuator : MoveActuator
+public partial class CBMoveActuator2D : MoveActuator
 {
     //forces applied on the x, y and z axes.    
     private float move, turn, jump, jumpForward;
@@ -21,11 +21,13 @@ public partial class CBMoveActuator : MoveActuator
     [Export]
     private float precision = 0.001f;
     [Export]
-    private float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+    private float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
     
     [Export]
     private float lerpFactor = 0.4f;
 
+    [Export]
+    private bool flipWhenTurn = true;
 
     [ExportCategory("Action Shape")]
     [Export]
@@ -35,14 +37,27 @@ public partial class CBMoveActuator : MoveActuator
 
     private BasicAgent agent;
     
-    private CharacterBody3D body;
-    private PhysicsDirectSpaceState3D spaceState;
+    private CharacterBody2D body;
+    private PhysicsDirectSpaceState2D spaceState;
 
-    private CollisionShape3D collisionShape;
+    private CollisionShape2D collisionShape;
 
-    public CBMoveActuator()
+    public CBMoveActuator2D()
     {
 
+    }
+
+    public float Gravity 
+    {
+        get
+        {
+            return gravity;
+        }
+
+        set 
+        {
+            gravity = value;
+        }
     }
 
     public override void OnSetup(Agent agent)
@@ -53,8 +68,8 @@ public partial class CBMoveActuator : MoveActuator
         rangeMax = actionRangeMax;
         this.agent = (BasicAgent) agent;
         agent.AddResetListener(this);
-        body = this.agent.GetAvatarBody() as CharacterBody3D;
-        this.spaceState = body.GetWorld3D().DirectSpaceState;
+        body = this.agent.GetAvatarBody() as CharacterBody2D;
+        this.spaceState = body.GetWorld2D().DirectSpaceState;
     }
 
     public override bool OnGround
@@ -68,7 +83,7 @@ public partial class CBMoveActuator : MoveActuator
     public override void Act()
     {
         double delta = this.agent.ControlInfo.deltaTime;
-        Vector3 velocity = body.Velocity;
+        Vector2 velocity = body.Velocity;
         if (agent != null && !agent.Done)
         {
             float[] action = agent.GetActionArgAsFloatArray();
@@ -99,35 +114,45 @@ public partial class CBMoveActuator : MoveActuator
             // Add the gravity.
             if (!body.IsOnFloor())
             {
-			    velocity.Y -= gravity * (float)delta * 10;
+			    velocity.Y += gravity * 10 * (float)delta;
             }
             else
             {
-                if ( Math.Abs(turn) > 0)
+                if ( Math.Abs(turn) > precision)
                 {
-                    body.Rotate(body.Basis.Y, Mathf.DegToRad(-turn * turnAmount));
+                    if (flipWhenTurn && Math.Abs(turnAmount) > precision)
+                    {
+                        if ( (turn > 0 && body.Transform.Scale.Y < 0) || (turn < 0 && body.Transform.Scale.Y > 0))
+                        {
+                            body.Scale *= new Vector2(-1, 1);
+                        }
+                    }
+                    else
+                    {
+                        body.Rotate(Mathf.DegToRad(-turn * turnAmount));
+                    }
                 }
 
                 // Get the input direction and handle the movement/deceleration.
-                Vector3 direction = body.Transform.Basis.Z.Normalized();
+                Vector2 direction = body.GlobalTransform.X.Normalized();
 
                 if (jump > 0)
                 {
-                    velocity += body.Transform.Basis.Y * jump * jumpPower;
+                    velocity -= body.GlobalTransform.Y * jump * jumpPower * 100;
                 }
 
                 bool forwarding = false;
 
                 if (jumpForward > 0)
                 {
-                    velocity += body.Transform.Basis.Y * jumpForwardPower * jumpForward * 100;
-                    velocity += body.Transform.Basis.Z * jumpForwardPower * jumpForward * 100;
+                    velocity -= body.GlobalTransform.Y * jumpForwardPower * jumpForward * 100;
+                    velocity += body.GlobalTransform.X * jumpForwardPower * jumpForward * 100;
                     forwarding = true;
                 }
                 
                 if (Mathf.Abs(move) > precision)
                 {
-                    velocity +=  body.Transform.Basis.Z * moveAmount * move;
+                    velocity +=  body.GlobalTransform.X * moveAmount * move * Mathf.Sign(body.Transform.Scale.Y);
                     forwarding = true;    
                 }
 
@@ -135,7 +160,6 @@ public partial class CBMoveActuator : MoveActuator
                 {
                     velocity.X = Mathf.Lerp(velocity.X, 0, lerpFactor);
                     velocity.Y = Mathf.Lerp(velocity.Y, 0, lerpFactor);
-                    velocity.Z = Mathf.Lerp(velocity.Z, 0, lerpFactor);
                 }
             }
             body.Velocity = velocity;

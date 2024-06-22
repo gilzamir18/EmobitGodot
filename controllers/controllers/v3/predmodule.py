@@ -33,6 +33,9 @@ def train_loop(qin, model, model_bkp):
     while True:
         try:
             sample = qin.get()
+            if sample == "halt":
+                print("Trainer is closed ...")
+                break
             samples_x.append(sample[0])
             samples_y.append(sample[1])
             if len(samples_x) >= 64:

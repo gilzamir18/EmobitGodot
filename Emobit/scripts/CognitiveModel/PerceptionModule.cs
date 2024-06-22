@@ -49,8 +49,6 @@ public sealed class PerceptionModule
         {
             variables[PipelineSensor.PAIN].AddValue(-0.009f);
         }
-
-
         if (fruitDistance > 1)
         {
             variables[PipelineSensor.FRUIT_SMELL].Value = 1.0f/fruitDistance;
@@ -77,15 +75,15 @@ public sealed class PerceptionModule
             variables[PipelineSensor.SATISFACTION].AddValue(-0.01f);
         }
 
-        bool fruitVisible = fruitDirection >= -1;//visionData.Contains(FRUIT_ID);
+        bool fruitVisible = visionData.Contains(FRUIT_ID);
 
         if (fruitVisible)
         {
-            variables[PipelineSensor.FRUSTRATION].AddValue(-0.05f);
+            variables[PipelineSensor.FRUSTRATION].AddValue(-0.1f);
         }
         else
         {
-            variables[PipelineSensor.FRUSTRATION].AddValue(0.001f);
+            variables[PipelineSensor.FRUSTRATION].AddValue(0.01f);
         }
 
         if (agentDist <= 0.1)

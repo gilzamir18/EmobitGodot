@@ -65,8 +65,11 @@ def step_callback(last_obs, action, info):
         BasicGymController.add_field('reward', info['reward'])
 
     if preview_obs is not None:
-        sample = (preview_obs, info['reward'])
-        queue.put(sample)
+        try:
+            sample = (preview_obs, info['reward'])
+            queue.put(sample)
+        except:
+            queue.put("halt")
 
     preview_expected_reward = expected_reward
     preview_obs = last_obs
@@ -75,7 +78,7 @@ def step_callback(last_obs, action, info):
 BasicGymController.step_callback = step_callback
 BasicGymController.reset_callback = reset_callback
 
-env = gym.make("AI4UEnv-v0", rid='0', config=dict(server_IP='127.0.0.1', server_port=8080))
+env = gym.make("AI4UEnv-v0", rid='0', config=dict(server_IP='127.0.0.1', server_port=8080, buffer_size=81920))
 policy_kwargs = dict(net_arch=[1024, 512])
 model = SAC(MlpPolicy, env, learning_starts=10000, policy_kwargs=policy_kwargs, tensorboard_log='tflog', verbose=1)
 model.set_env(env)
@@ -89,7 +92,10 @@ training.start()
 
 
 print("Training....")
-model.learn(total_timesteps=2100000, callback=checkpoint_callback, log_interval=5)
+try:
+    model.learn(total_timesteps=2100000, callback=checkpoint_callback, log_interval=5,)
+except:
+    queue.put("halt")
 model.save("sac1m")
 print("Trained...")
 del model # remove to demonstrate saving and loading

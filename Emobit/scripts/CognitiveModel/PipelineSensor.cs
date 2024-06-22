@@ -90,7 +90,7 @@ public partial class PipelineSensor: Sensor
     {   
         this.agent = (BasicAgent) agent;
 
-        this.agent.endOfStepEvent += UpdateReward;
+        this.agent.OnStepEnd += UpdateReward;
 
         agentBody = (RigidBody3D) this.agent.GetAvatarBody();
 
@@ -161,7 +161,7 @@ public partial class PipelineSensor: Sensor
 
         radiation.Visible = false;
 
-        if (GD.RandRange(0, 1)==1)
+        if (GD.RandRange(0, 9)<=7)
         {
             RadiationEnabled = true;
         }
@@ -178,7 +178,7 @@ public partial class PipelineSensor: Sensor
 
         if (bodyProtection == BodyProtection.Random)
         {
-            if (GD.RandRange(0, 1) == 0)
+            if (GD.RandRange(0, 9) <= 6)
             {
                 _bodyProtection = BodyProtection.None;
                 (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 1f, 0.0f, 1.0f);
@@ -421,9 +421,9 @@ public partial class PipelineSensor: Sensor
     private void ResetHomestaticVariables()
     {
             // ILLNESS = 0, PAIN = 1, FRUIT_SMELL = 2, FRUIT_BRIGHT = 3, SATISFACTION = 4, FRUSTRATION = 5, TIREDNESS = 6;
-            int[,] options = new int[,]{ {0, 0, 1, 1, 1, 3, 1}, //rota mais distante 
+            int[,] options = new int[,]{ {0, 0, 1, 1, 1, 1, 1}, //rota mais distante 
                                          {0, 0, 1, 1, 1, 0, 1}, //rota mais longa sem muita convicção
-                                         {3, 0, 1, 1, 1, 3, 1}, //rota mais curta sem muita convicação
+                                         {3, 0, 1, 1, 1, 1, 1}, //rota mais curta sem muita convicação
                                          {3, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
                                          {2, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
                                         };

@@ -68,43 +68,28 @@ public partial class SceneManager : Node
 		shape3 = block3.GetNode<CollisionShape3D>("CollisionShape3D");
 		shape4 = block4.GetNode<CollisionShape3D>("CollisionShape3D");
 
-		agent.beforeTheResetEvent += OnReset;
+		agent.OnResetStart += OnReset;
 	}
 
 
 	public void OnReset(BasicAgent agent)
 	{
-		Layout l1 = new Layout(0, 0, 0, 0, 1, 0, 1);
-		Layout l2 = new Layout(1, 1, 1, 0, 1, 0, 1);
-		Layout l3 = new Layout(2, 2, 2, 0, 1, 0, 1);
-		Layout l4 = new Layout(3, 3, 3, 0, 1, 0, 1);
-		Layout l5 = new Layout(4, 4, 4, 0, 1, 0, 1);
-		Layout l6 = new Layout(5, 5, 5, 0, 1, 0, 1);
-		Layout l7 = new Layout(6, 6, 6, 0, 1, 0, 1);
-		Layout l8 = new Layout(7, 7, 7, 0, 1, 0, 1);
-		Layout l9 = new Layout(8, 8, 8, 0, 1, 0, 1);
-		Layout l10 = new Layout(9, 9, 9, 0, 1, 0, 1);
-		Layout l11 = new Layout(10, 10, 10, 0, 1, 0, 1);
-		Layout l12 = new Layout(11, 11, 11, 0, 1, 0, 1);
-		Layout l13 = new Layout(12, 12, 12, 0, 1, 1, 0);
-		Layout l14 = new Layout(13, 13, 13, 0, 1, 1, 0);
-		Layout l15 = new Layout(14, 14, 14, 0, 1, 1, 0);
-		Layout l16 = new Layout(15, 15, 15, 0, 1, 1, 0);
-		Layout l17 = new Layout(16, 16, 16, 0, 1, 1, 0);
-		Layout l18 = new Layout(17, 17, 17, 0, 1, 1, 0);
-		Layout l19 = new Layout(18, 18, 18, 0, 1, 1, 0);
-		Layout l20 = new Layout(19, 19, 19, 0, 1, 1, 0);
-		Layout l21 = new Layout(20, 20, 20, 0, 1, 1, 0);
-		Layout l22 = new Layout(21, 21, 21, 0, 1, 1, 0);
-		Layout l23 = new Layout(22, 22, 22, 0, 1, 1, 0);
-		Layout l24 = new Layout(23, 23, 23, 0, 1, 1, 0);
-		Layout l25 = new Layout(24, 24, 24, 0, 1, 1, 0);
+		Layout l1 = new Layout(0, 0, 0, 0, 1, 1, 0);
+		Layout l2 = new Layout(1, 1, 1, 0, 1, 1, 0);
 
-		List<Layout> layouts = new(){l1, l2, l3, l4, l5, l6, 
-									 l7, l8, l9, l10, l11, l12,
-									 l13, l14, l15, l16, l17, l18,
-									 l19, l20, l21, l22, l23, l24,
-									 l25};
+        Layout l3 = new Layout(2, 2, 2, 0, 1, 1, 0);
+        Layout l4 = new Layout(3, 3, 3, 0, 1, 1, 0);
+
+		Layout l5 = new Layout(4, 4, 4, 1, 0, 1, 0);
+        Layout l6 = new Layout(5, 5, 5, 1, 0, 1, 0);
+
+        Layout l7 = new Layout(6, 6, 6, 0, 1, 0, 1);
+        Layout l8 = new Layout(7, 7, 7, 0, 1, 0, 1);
+
+        Layout l9 = new Layout(8, 8, 8, 0, 1, 1, 0);
+        Layout l10 = new Layout(9, 9, 9, 0, 1, 1, 0);
+
+        List<Layout> layouts = new(){l1, l2, l3, l4, l5, l6, l7, l8, l9, l10};
 		
 		var sl = GD.RandRange(0, layouts.Count - 1);
 		Layout l = layouts[sl];

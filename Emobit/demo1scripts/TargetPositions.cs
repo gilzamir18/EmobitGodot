@@ -27,7 +27,7 @@ public partial class TargetPositions : Node
 	{
 		nodeRef = GetNode(respawnOptionsPath);
 		children = nodeRef.GetChildren();
-		basicAgent.beginOfEpisodeEvent += OnReset;
+		basicAgent.OnEpisodeStart += OnReset;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
