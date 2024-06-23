@@ -271,7 +271,7 @@ public partial class PipelineSensor: Sensor
         }
         for (int i = 0; i < visionData.Length; i++)
         {
-            history.Push(visionData[i]/255.0f);
+            history.Push(2 * (visionData[i] / 255.0f) - 1.0f);
         }
         return history.Values;
     }
