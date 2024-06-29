@@ -1,26 +1,26 @@
-[gd_scene load_steps=41 format=3 uid="uid://b7tn5hvpc0nn6"]
+[gd_scene load_steps=41 format=3 uid="uid://cjco6wrsexfw8"]
 
-[ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_h6hmq"]
-[ext_resource type="Script" path="res://scripts/Floor.cs" id="2_yerhy"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControlRequestor.cs" id="3_l2kt4"]
-[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://addons/ai4u/3DModel/Arrow.dae" id="4_0yein"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/agents/BasicAgent.cs" id="5_ms37f"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/actuators/RBMoveActuator.cs" id="6_qw0i5"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/TouchRewardFunc.cs" id="7_uk3ol"]
-[ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="8_okav3"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/RayCastingSensor.cs" id="9_pmi0c"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/OrientationSensor.cs" id="10_pockn"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/ActionSensor.cs" id="11_bykov"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/GroupTouchSensor.cs" id="12_ffchu"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RemoteConfiguration.cs" id="13_0inqu"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="14_cs04x"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="15_xjcot"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="16_fqnri"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetRewardFunc.cs" id="17_62fax"]
-[ext_resource type="Script" path="res://scripts/CognitiveModel/SecondaryEmotionModule.cs" id="18_u0y0p"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControllerConfiguration.cs" id="19_aeb7s"]
-[ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="19_ot61t"]
-[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="20_57vcx"]
+[ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_kw0pm"]
+[ext_resource type="Script" path="res://scripts/Floor.cs" id="2_elio7"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControlRequestor.cs" id="3_8b3g2"]
+[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://addons/ai4u/3DModel/Arrow.dae" id="4_33jmi"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/agents/BasicAgent.cs" id="5_qp52s"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/actuators/RBMoveActuator.cs" id="6_5mdhg"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/TouchRewardFunc.cs" id="7_mkgky"]
+[ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="8_jw02c"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/RayCastingSensor.cs" id="9_08gfq"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/OrientationSensor.cs" id="10_fugtx"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/ActionSensor.cs" id="11_djeo5"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/GroupTouchSensor.cs" id="12_4lc78"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RemoteConfiguration.cs" id="13_qsbws"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="14_ataah"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="15_f5vdl"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="16_gvrkq"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetRewardFunc.cs" id="17_7hbvf"]
+[ext_resource type="Script" path="res://scripts/CognitiveModel/SecondaryEmotionModule.cs" id="18_n1jd8"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControllerConfiguration.cs" id="19_biehb"]
+[ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="20_a3sy2"]
+[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="21_8x074"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
 size = Vector3(20, 0.1, 40)
@@ -77,7 +77,7 @@ albedo_color = Color(0.639216, 0.027451, 0.243137, 1)
 
 [node name="Arena" type="Node3D" node_paths=PackedStringArray("radiation", "radiationPositions", "agentBody", "agentPositions", "fruit", "fruitPositions", "pipelineSensor", "agent")]
 transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 0, 0, 0)
-script = ExtResource("1_h6hmq")
+script = ExtResource("1_kw0pm")
 radiation = NodePath("Radiation")
 radiationPositions = NodePath("RadiationPositions")
 agentBody = NodePath("IABot")
@@ -88,7 +88,7 @@ pipelineSensor = NodePath("IABot/Agent/PipelineSensor")
 agent = NodePath("IABot/Agent")
 
 [node name="Floor" type="StaticBody3D" parent="." groups=["FLOOR"]]
-script = ExtResource("2_yerhy")
+script = ExtResource("2_elio7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 transform = Transform3D(1, -2.6148e-12, 0, -1.13687e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 0.0164538, -0.0107511, 10.0117)
@@ -161,13 +161,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.381, 0.6, 10.0947)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.132, 0.6, -0.32555)
 
 [node name="pos4" type="Node3D" parent="RadiationPositions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.19319, 0.6, 8.62145)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.19319, 0.6, 6.62145)
 
 [node name="pos5" type="Node3D" parent="RadiationPositions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.92762, 0.6, 7.83173)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.92762, 0.6, 1.12132)
 
 [node name="pos6" type="Node3D" parent="RadiationPositions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.61561, 0.6, 1.5658)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.61561, 0.6, 3.65348)
 
 [node name="pos7" type="Node3D" parent="RadiationPositions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.37632, 0.6, 7.06707)
@@ -196,7 +196,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1863, 0.005, -8.091)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.14519, 0.005, 18.1295)
 
 [node name="pos5" type="Node3D" parent="FruitPositions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.31685, 0.005, 12.9659)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.06246, 0.005, 12.9659)
 
 [node name="pos6" type="Node3D" parent="FruitPositions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.666, 0.005, -7.68031)
@@ -263,20 +263,21 @@ size = 85.837
 transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.8739, 0)
 
 [node name="ControlLoop" type="Node" parent="." node_paths=PackedStringArray("agentsList")]
-script = ExtResource("3_l2kt4")
-defaultTimeScale = 10.0
+script = ExtResource("3_8b3g2")
 agentsList = [NodePath("../IABot/Agent")]
 
 [node name="IABot" type="RigidBody3D" parent="." groups=["PLAYER"]]
 transform = Transform3D(1, -5.96856e-11, 2.32831e-10, 4.6839e-11, 1, -3.49246e-10, 2.32831e-10, 8.14907e-10, 1, -6.95969, 0.00542105, -7.74487)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
+sleeping = true
+can_sleep = false
 continuous_cd = true
 max_contacts_reported = 10000
 contact_monitor = true
-angular_damp = 10.0
+angular_damp = 5.0
 
-[node name="Arrow" parent="IABot" instance=ExtResource("4_0yein")]
+[node name="Arrow" parent="IABot" instance=ExtResource("4_33jmi")]
 transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 1.29594, 0.474278)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="IABot"]
@@ -289,13 +290,13 @@ mesh = SubResource("CapsuleMesh_vl1w0")
 surface_material_override/0 = SubResource("StandardMaterial3D_jxcle")
 
 [node name="Agent" type="Node" parent="IABot"]
-script = ExtResource("5_ms37f")
+script = ExtResource("5_qp52s")
 remote = true
 doneAtNegativeReward = false
 MaxStepsPerEpisode = 400
 
 [node name="Actuator" type="Node" parent="IABot/Agent"]
-script = ExtResource("6_qw0i5")
+script = ExtResource("6_5mdhg")
 moveAmount = 5.0
 turnAmount = 2.0
 jumpPower = 0.0
@@ -304,16 +305,15 @@ floorGroup = "FLOOR"
 actionName = "move"
 
 [node name="FruitReward" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("target")]
-script = ExtResource("7_uk3ol")
+script = ExtResource("7_mkgky")
 reward = 100.0
 target = NodePath("../../../Fruit")
-causeEpisodeToEnd = true
+onlyOneTime = false
 
-[node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD", "secondaryEmotionModule", "radiation")]
-script = ExtResource("8_okav3")
+[node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD", "radiation")]
+script = ExtResource("8_jw02c")
 homeostaticHUD = NodePath("../../../CanvasLayer/HVariablesHUD")
 emotionHUD = NodePath("../../../CanvasLayer/EmotionsHUD")
-secondaryEmotionModule = NodePath("../SecondaryEmotionModule")
 radiation = NodePath("../../../Radiation")
 MinDistToStartRadiation = 4
 MaxDistToStartRadiation = 10
@@ -321,10 +321,10 @@ perceptionKey = "array"
 stackedObservations = 4
 
 [node name="RaycastingSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("eye")]
-script = ExtResource("9_pmi0c")
+script = ExtResource("9_08gfq")
 groupCode = PackedInt32Array(50, 100, 200)
 groupName = PackedStringArray("FLOOR", "PLAYER", "TARGET")
-noObjectCode = 10
+noObjectCode = 1
 collisionMask = 2147483647
 hSize = 62
 vSize = 3
@@ -339,7 +339,7 @@ perceptionKey = "vision"
 isInput = false
 
 [node name="FruitSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("target", "reference")]
-script = ExtResource("10_pockn")
+script = ExtResource("10_fugtx")
 target = NodePath("../../../../Fruit")
 reference = NodePath("../../..")
 maxDistance = 30.0
@@ -349,14 +349,14 @@ perceptionKey = "orientation"
 isInput = false
 
 [node name="ActionSensor" type="Node" parent="IABot/Agent/PipelineSensor"]
-script = ExtResource("11_bykov")
+script = ExtResource("11_djeo5")
 actionName = "move"
 actionSize = 4
 perceptionKey = "actions"
 isInput = false
 
 [node name="RadiationSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("target", "reference")]
-script = ExtResource("10_pockn")
+script = ExtResource("10_fugtx")
 target = NodePath("../../../../Radiation")
 reference = NodePath("../../..")
 maxDistance = 30.0
@@ -365,50 +365,50 @@ visibilityTest = true
 isInput = false
 
 [node name="CollisionWithWallSensor" type="Node" parent="IABot/Agent/PipelineSensor"]
-script = ExtResource("12_ffchu")
+script = ExtResource("12_4lc78")
 group = "WALL"
 isInput = false
 
 [node name="RemoteConf" type="Node" parent="IABot/Agent"]
-script = ExtResource("13_0inqu")
+script = ExtResource("13_qsbws")
 receiveTimeout = 20000
 receiveBufferSize = 81920
 sendBufferSize = 81920
 
 [node name="WASDController" type="Node" parent="IABot/Agent"]
-script = ExtResource("14_cs04x")
+script = ExtResource("14_ataah")
 speed = 1.0
 
 [node name="RadiationReward" type="Node" parent="IABot/Agent"]
-script = ExtResource("15_xjcot")
+script = ExtResource("15_f5vdl")
 reward = -100.0
 causeEpisodeToEnd = true
 
 [node name="RadiationOn" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
-script = ExtResource("16_fqnri")
+script = ExtResource("16_gvrkq")
 property = "RadiationOn"
 value = true
 reward = 0.0
 target = NodePath("../../PipelineSensor")
 
 [node name="BodyIsNotProtected" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
-script = ExtResource("16_fqnri")
+script = ExtResource("16_gvrkq")
 property = "BodyProtected"
 reward = 0.0
 target = NodePath("../../PipelineSensor")
 
 [node name="CheckRadiationDistance" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
-script = ExtResource("17_62fax")
+script = ExtResource("17_7hbvf")
 target = NodePath("../../../../Radiation")
 minDistance = 2.0
 squareInverse = false
 
 [node name="SecondaryEmotionModule" type="Node" parent="IABot/Agent"]
-script = ExtResource("18_u0y0p")
+script = ExtResource("18_n1jd8")
 enableHopeAndSurprise = true
 
 [node name="ControllerConfig" type="Node" parent="IABot/Agent"]
-script = ExtResource("19_aeb7s")
+script = ExtResource("19_biehb")
 
 [node name="Eye" type="Node3D" parent="IABot"]
 transform = Transform3D(1, 0.00150875, 4.86564e-05, -0.00138246, 0.928285, -0.371871, -0.000606228, 0.37187, 0.928288, -0.0385079, 1.75718, 0.923115)
@@ -484,10 +484,10 @@ shape = SubResource("BoxShape3D_7obly")
 [node name="ShowSteps" type="Label" parent="CanvasLayer"]
 offset_right = 152.0
 offset_bottom = 39.0
-script = ExtResource("19_ot61t")
+script = ExtResource("20_a3sy2")
 agentPath = NodePath("../../IABot/Agent")
 
-[node name="HVariablesHUD" parent="CanvasLayer" instance=ExtResource("20_57vcx")]
+[node name="HVariablesHUD" parent="CanvasLayer" instance=ExtResource("21_8x074")]
 custom_minimum_size = Vector2(20, 20)
 offset_top = 41.0
 offset_right = 263.0
@@ -496,7 +496,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 test = false
 
-[node name="EmotionsHUD" parent="CanvasLayer" instance=ExtResource("20_57vcx")]
+[node name="EmotionsHUD" parent="CanvasLayer" instance=ExtResource("21_8x074")]
 custom_minimum_size = Vector2(20, 20)
 offset_left = 539.0
 offset_top = 2.0
@@ -504,3 +504,5 @@ offset_right = 799.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
 test = false
+
+[connection signal="OnTouch" from="IABot/Agent/FruitReward" to="." method="OnFruitTouchEventHandler"]

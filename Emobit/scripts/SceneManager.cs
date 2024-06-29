@@ -1,4 +1,5 @@
 using ai4u;
+using CognusProject;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -48,12 +49,17 @@ public partial class SceneManager : Node
 	[Export]
 	private Node fruitPositions;
 
+	[Export]
+	private PipelineSensor pipelineSensor;
+
 
 	private StaticBody3D block1, block2, block3, block4;
 	private CollisionShape3D shape1, shape2, shape3, shape4;
 	
 	[Export]
 	private BasicAgent agent;
+
+	private Layout layout;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -69,10 +75,31 @@ public partial class SceneManager : Node
 		shape4 = block4.GetNode<CollisionShape3D>("CollisionShape3D");
 
 		agent.OnResetStart += OnReset;
+		/*agent.OnStepStart += (BasicAgent) =>
+		{
+			if (pipelineSensor.pain.Value >= 0.95f * pipelineSensor.pain.rangeMax)
+			{
+				agent.Rewards.Add(-10, true);
+			}
+		};*/
 	}
 
 
-	public void OnReset(BasicAgent agent)
+    public void OnFruitTouchEventHandler(TouchRewardFunc f)
+    {
+		if (fruitPositions.GetChildCount() > 0)
+		{
+			int pos = layout.FruitPosition;
+			int npos = pos;
+			while (npos == pos)
+			{
+				npos = GD.RandRange(0, fruitPositions.GetChildCount() - 1);
+			}
+			ResetFruitPosition(fruit, npos);
+        }
+    }
+
+    public void OnReset(BasicAgent agent)
 	{
 		Layout l1 = new Layout(0, 0, 0, 0, 1, 1, 0);
 		Layout l2 = new Layout(1, 1, 1, 0, 1, 1, 0);
@@ -92,11 +119,12 @@ public partial class SceneManager : Node
         List<Layout> layouts = new(){l1, l2, l3, l4, l5, l6, l7, l8, l9, l10};
 		
 		var sl = GD.RandRange(0, layouts.Count - 1);
-		Layout l = layouts[sl];
-		ResetBlocks(l.Block1, l.Block2, l.Block3, l.Block4);
-		ResetAgentPosition(agentBody, l.AgentPosition);
-		ResetFruitPosition(fruit, l.FruitPosition);
-		ResetRadiationPosition(l.RadiationPosition);
+		
+		layout = layouts[sl];
+		ResetBlocks(layout.Block1, layout.Block2, layout.Block3, layout.Block4);
+		ResetAgentPosition(agentBody, layout.AgentPosition);
+		ResetFruitPosition(fruit, layout.FruitPosition);
+		ResetRadiationPosition(layout.RadiationPosition);
 	}
 
 
@@ -198,7 +226,7 @@ public partial class SceneManager : Node
 
 		Vector3 axis = new Vector3(0, 1, 0); // Or Vector3.Right
 		int idx = GD.RandRange(0, 2);
-		float rotationAmount = new float[]{0.0f,  Mathf.Pi/9.0f, Mathf.Pi}[idx];
+		float rotationAmount = new float[]{0.0f,  Mathf.Pi/2.0f, Mathf.Pi}[idx];
 
 		// Rotate the transform around the X axis by 0.1 radians.
 		reference.Basis = new Basis(axis, rotationAmount) * reference.Basis;

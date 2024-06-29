@@ -14,7 +14,7 @@ public sealed class PrimaryMotivationModule
 
     }
 
-    public static void Attention(HomeostaticVariable[] variables, float[] hC)
+    public static void Attention(HomeostaticVariable[] variables, float[] hC, bool radProtected)
     {
         if (previousHomeostaticDistance == null)
         {
@@ -27,6 +27,12 @@ public sealed class PrimaryMotivationModule
         
         for (int i = 0; i < variables.Length; i++)
         {
+            if (i == 0 && radProtected)
+            {
+                hC[0] = 0;
+                continue;
+            }
+
             float u = variables[i].Check() ? 1 : 0;
             
             var distanceToCentroid = variables[i].DistanceToCentroid;

@@ -23,34 +23,34 @@ public sealed class RewardModule
         var fearPain = emotions["fearPain"];
         var joyApprx = emotions["joyApprx"];
         var distrGoal = emotions["distrGoal"];
-        
+
         w[0] = w[1] = w[2] = w[3] = w[4] = w[5] = w[6] = 1;
         if (fearRad.Intensity > 0)
         {
             w[0] = 2;
-            w[2] = w[3] = w[4] = 0;
+            w[2] = w[3] = w[4] = 0; w[5] = 0; w[6] = 0;
         }
 
         if (fearPain.Intensity > 0)
         {
-            w[1] = 1;
+            w[1] = 10;
         }
         else
         {
             w[1] = 0;
         }
-
+        
         var difjoy = joyApprx.Intensity - beforeJoy;
         if (difjoy > 0)
         {
-            w[4] = 2;
+            w[4] = 1;
         }
         beforeJoy = joyApprx.Intensity;
-
+        
         var difdistr = distrGoal.Intensity - beforeDistr;
         if (difdistr > 0)
         {
-            w[PipelineSensor.FRUSTRATION] = 2;
+            w[PipelineSensor.FRUSTRATION] = 1;
         }
         beforeDistr = distrGoal.Intensity;
 

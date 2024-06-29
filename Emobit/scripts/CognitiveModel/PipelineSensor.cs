@@ -3,10 +3,9 @@ using ai4u;
 using System;
 using ai4u.ext;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CognusProject;
-
-public enum BodyProtection {None, Radiation, Random};
 
 public partial class PipelineSensor: Sensor
 {
@@ -18,9 +17,6 @@ public partial class PipelineSensor: Sensor
     private HomeostaticHUD emotionHUD;
 
     [Export]
-    private BodyProtection bodyProtection = BodyProtection.None;
-
-    [Export]
     private SecondaryEmotionModule secondaryEmotionModule;
 
     [Export]
@@ -29,8 +25,7 @@ public partial class PipelineSensor: Sensor
     [Export]
     private Node3D radiation;
 
-    private BodyProtection _bodyProtection;
-
+    
     public bool RadiationEnabled {get; set;} = true;
 
     public bool RadiationOn {get; set;} = false;
@@ -42,13 +37,6 @@ public partial class PipelineSensor: Sensor
 
     private int distToStartRadiation;
 
-    public bool HasRadiationProtection
-    {
-        get
-        {
-            return _bodyProtection == BodyProtection.Radiation;
-        }
-    }
 
     public static int ILLNESS = 0, PAIN = 1, FRUIT_SMELL = 2, FRUIT_BRIGHT = 3, SATISFACTION = 4, FRUSTRATION = 5, TIREDNESS = 6;
 
@@ -72,7 +60,7 @@ public partial class PipelineSensor: Sensor
     private Dictionary<string, Emotion> emotions;
     private List<HomeostaticVariable> emotionalValues;
 
-    private HomeostaticVariable illness, pain, fruitBright, fruitSmell, satisfaction, frustration, tiredness;
+    internal HomeostaticVariable illness, pain, fruitBright, fruitSmell, satisfaction, frustration, tiredness;
     
 
     private float[] hC;
@@ -115,9 +103,9 @@ public partial class PipelineSensor: Sensor
         variables = new HomeostaticVariable[]{illness, pain, fruitSmell, fruitBright, satisfaction, frustration, tiredness};
 
         type = SensorType.sfloatarray;
-        shape = new int[]{ stackedObservations * (variables.Length * 5 + rayCastingSensor.shape[0] +  actionSensor.shape[0] + 2) };
-        rangeMin = -10;
-        rangeMax = 10;
+        shape = new int[]{ stackedObservations * (variables.Length * 5 + rayCastingSensor.shape[0] +  actionSensor.shape[0] + 1) };
+        rangeMin = -1;
+        rangeMax = 1;
 
         if (homeostaticHUD != null)
         {
@@ -143,6 +131,14 @@ public partial class PipelineSensor: Sensor
         history = new HistoryStack<float>(shape[0]);
     }
 
+
+    public bool BodyProtected
+    {
+        get
+        {
+            return illness.maxValue >= 0.99f;
+        }
+    }
 
     public void UpdateReward(BasicAgent agent)
     {
@@ -176,24 +172,6 @@ public partial class PipelineSensor: Sensor
         //GD.Print(RadiationEnabled + " ::: " + distToStartRadiation);
         
 
-        if (bodyProtection == BodyProtection.Random)
-        {
-            if (GD.RandRange(0, 9) <= 6)
-            {
-                _bodyProtection = BodyProtection.None;
-                (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 1f, 0.0f, 1.0f);
-            }
-            else
-            {
-                _bodyProtection = BodyProtection.Radiation;
-                (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 0.3f, 0.3f, 1.0f);
-            }
-        }
-        else
-        {
-            _bodyProtection = bodyProtection;
-        }
-        //GD.Print(_bodyProtection);
 
         fruitSensor.OnReset(agent);
         radiationSensor.OnReset(agent);
@@ -238,6 +216,7 @@ public partial class PipelineSensor: Sensor
 
 
         hC = new float[variables.Length];
+        w = new float[variables.Length];
         history = new HistoryStack<float>(shape[0]);
         previousPosition = agentBody.Position;
 
@@ -263,16 +242,26 @@ public partial class PipelineSensor: Sensor
             history.Push(hC[i]);
             history.Push(w[i]);
         }
-        history.Push(this._bodyProtection == BodyProtection.Radiation? 1 : 0);
         history.Push(this.lastReward);
         for (int i = 0; i < lastActions.Length; i++)
         {
             history.Push(lastActions[i]);
         }
+        //StringBuilder sb = new StringBuilder();
+        //int c = 0;
         for (int i = 0; i < visionData.Length; i++)
         {
-            history.Push(2 * (visionData[i] / 255.0f) - 1.0f);
+            history.Push(visionData[i] / 255.0f);
+            //sb.Append(visionData[i].ToString() + "  ");
+            //c++;
+            /*
+            if (c > 60)
+            {
+                c = 0;
+                sb.Append('\n');
+            }*/
         }
+        //GD.Print(sb.ToString());
         return history.Values;
     }
 
@@ -290,6 +279,10 @@ public partial class PipelineSensor: Sensor
             {
                 RadiationOn = true;
                 radiation.Visible = true;
+            }
+            else if (!RadiationOn)
+            {
+                radiationDist = -1;
             }
         }
         else
@@ -311,8 +304,8 @@ public partial class PipelineSensor: Sensor
         float collisionWall = collisionWithWallSensor.GetFloatArrayValue()[0];
 
 
-        PerceptionModule.Percept(variables, fruitDirection, fruitDist, radiationDist, agentDist, visionData, lastActions, collisionWall);
-        PrimaryMotivationModule.Attention(variables, hC);
+        PerceptionModule.Percept(variables, fruitDirection, fruitDist, radiationDist, agentDist, visionData, lastActions, collisionWall, (float)agent.GetPhysicsProcessDeltaTime());
+        PrimaryMotivationModule.Attention(variables, hC, BodyProtected);
         
         PrimaryEmotionModule.Evaluate(emotions, variables);
 
@@ -321,7 +314,7 @@ public partial class PipelineSensor: Sensor
             this.secondaryEmotionModule.Update(emotions);
         }
 
-        this.lastReward = RewardModule.Rewarding(emotions, variables, w, hC)/700.0f;
+        this.lastReward = RewardModule.Rewarding(emotions, variables, w, hC)/500;
         this.sumOfRewards += this.lastReward;
 
         emotionalValues[0].Value = emotions["fearRad"].Intensity;
@@ -420,13 +413,17 @@ public partial class PipelineSensor: Sensor
 
     private void ResetHomestaticVariables()
     {
-            // ILLNESS = 0, PAIN = 1, FRUIT_SMELL = 2, FRUIT_BRIGHT = 3, SATISFACTION = 4, FRUSTRATION = 5, TIREDNESS = 6;
+        // ILLNESS = 0, PAIN = 1, FRUIT_SMELL = 2, FRUIT_BRIGHT = 3, SATISFACTION = 4, FRUSTRATION = 5, TIREDNESS = 6;
+        /*int[,] options = new int[,]{ {0, 0, 1, 1, 1, 1, 1}, //rota mais distante 
+                                     {0, 0, 1, 1, 1, 0, 1}, //rota mais longa sem muita convicção
+                                     {3, 0, 1, 1, 1, 1, 1}, //rota mais curta sem muita convicação
+                                     {3, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
+                                     {3, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
+                                    };*/
             int[,] options = new int[,]{ {0, 0, 1, 1, 1, 1, 1}, //rota mais distante 
-                                         {0, 0, 1, 1, 1, 0, 1}, //rota mais longa sem muita convicção
-                                         {3, 0, 1, 1, 1, 1, 1}, //rota mais curta sem muita convicação
-                                         {3, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
-                                         {2, 0, 1, 1, 1, 0, 1}, //rota mais curta com muita convicção
-                                        };
+                                     {3, 0, 1, 1, 1, 1, 1}, //rota mais curta
+                                     {3, 0, 1, 1, 1, 0, 1}, //rota mais curta
+                                   };
 
             int idx = 0;
             if (predefinedBehavior >= 0)
@@ -435,14 +432,7 @@ public partial class PipelineSensor: Sensor
             }
             else
             {
-                if (GD.RandRange(0, 1) == 1)
-                {
-                    idx = GD.RandRange(0, 1);
-                }
-                else
-                {
-                    idx = GD.RandRange(2, 4);
-                }
+                 idx = GD.RandRange(0, 2);
             }
 
 
@@ -494,6 +484,15 @@ public partial class PipelineSensor: Sensor
             tiredness.rangeMax = 1;
             tiredness.SetCentroid(0);
             tiredness.Value = 0.0f;
+
+            if (illness.maxValue >= 0.99f)
+            {
+                (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 0.3f, 0.3f, 1.0f);
+            }
+            else
+            {
+                (agentBody.GetNode<MeshInstance3D>("MeshInstance3D").GetSurfaceOverrideMaterial(0) as StandardMaterial3D).AlbedoColor = new Color(1f, 1.0f, 0.0f, 1.0f);
+            }
     }
 }
 

@@ -8,7 +8,12 @@ controllers/controllers/controller1/tflog
 *.zip
 *.0
 
-controllers/controllers/v3/models_*
+controllers/v3/models_*
 /controllers/controllers/v3/t1
 /controllers/controllers/v3/t1
 /Emobit/.vs
+/controllers/v3/t1
+/controllers/v3/t2
+controllers/v3/models_200000
+/Emobit/.vs/Emobit/DesignTimeBuild
+/Emobit/.vs/Emobit/DesignTimeBuild

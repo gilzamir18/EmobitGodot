@@ -25,10 +25,10 @@ public sealed class PerceptionModule
                                                     float agentDist,
                                                     float[] visionData,
                                                     float[] action,
-                                                    float collisionWall)
+                                                    float collisionWall, float deltaTime)
     {
 
-        if (radiationDistance > 1)
+        if (radiationDistance >= 1.0f )
         {
             variables[PipelineSensor.ILLNESS].Value = 1.0f/radiationDistance;
         }
@@ -43,13 +43,13 @@ public sealed class PerceptionModule
 
         if (collisionWall > 0)
         {
-            variables[PipelineSensor.PAIN].AddValue(collisionWall * 0.009f);
+            variables[PipelineSensor.PAIN].AddValue(collisionWall * 0.05f * deltaTime * 100);
         }
         else
         {
-            variables[PipelineSensor.PAIN].AddValue(-0.009f);
+            variables[PipelineSensor.PAIN].AddValue(-0.009f * deltaTime * 100);
         }
-        if (fruitDistance > 1)
+        if (fruitDistance >= 1)
         {
             variables[PipelineSensor.FRUIT_SMELL].Value = 1.0f/fruitDistance;
         }
@@ -68,31 +68,31 @@ public sealed class PerceptionModule
                 (fruitDistance > 0 && delta < 0 && Math.Abs(delta) > 0.000001) )
         {
             minFruitDistance = fruitDistance;
-            variables[PipelineSensor.SATISFACTION].AddValue(0.09f);
+            variables[PipelineSensor.SATISFACTION].AddValue(0.02f * deltaTime * 100);
         }
         else
         {
-            variables[PipelineSensor.SATISFACTION].AddValue(-0.01f);
+            variables[PipelineSensor.SATISFACTION].AddValue(-0.01f * deltaTime * 100);
         }
 
         bool fruitVisible = visionData.Contains(FRUIT_ID);
 
         if (fruitVisible)
         {
-            variables[PipelineSensor.FRUSTRATION].AddValue(-0.1f);
+            variables[PipelineSensor.FRUSTRATION].AddValue(-0.1f * deltaTime * 100);
         }
         else
         {
-            variables[PipelineSensor.FRUSTRATION].AddValue(0.01f);
+            variables[PipelineSensor.FRUSTRATION].AddValue(0.01f * deltaTime * 100);
         }
 
         if (agentDist <= 0.1)
         {
-            variables[PipelineSensor.TIREDNESS].AddValue(0.001f);
+            variables[PipelineSensor.TIREDNESS].AddValue(0.003f * deltaTime * 100);
         }
         else
         {
-            variables[PipelineSensor.TIREDNESS].AddValue(-0.0001f);
+            variables[PipelineSensor.TIREDNESS].AddValue(-0.0006f * deltaTime * 100);
         }
     }
 
