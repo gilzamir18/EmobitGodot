@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cicwvawfyomhb"]
+[gd_scene load_steps=6 format=3 uid="uid://cicwvawfyomhb"]
 
 [ext_resource type="PackedScene" uid="uid://bsi8ntivadcmn" path="res://scenes/v1async.tscn" id="1_fuvxo"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/ContinuousPPO/ContinuousMLPPPOTrainerAsync.cs" id="2_i6f15"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/algorithms/ContinuousPPO/ContinuousMLPPPO.cs" id="2_k5d56"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/algorithms/ContinuousPPO/ContinuousMLPPPOAlgorithm.cs" id="3_hryfe"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/algorithms/PPO/PPOTrainingSharedConfig.cs" id="5_c3djj"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -16,29 +18,32 @@ size = 63.9
 [node name="Arena" parent="." instance=ExtResource("1_fuvxo")]
 transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, -1.52271, 0, 1.63069)
 
-[node name="Actuator" parent="Arena/IABot/Agent" index="1"]
-moveAmount = 10.0
-
 [node name="PPOTrainer" parent="Arena/IABot/Agent" index="8" node_paths=PackedStringArray("model")]
+script = ExtResource("2_i6f15")
 model = NodePath("../../../../SharedModel")
-nSteps = 128
 
 [node name="Arena2" parent="." instance=ExtResource("1_fuvxo")]
 transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 19.1474, 0.0231295, 1.56325)
 
 [node name="PPOTrainer" parent="Arena2/IABot/Agent" index="8" node_paths=PackedStringArray("model")]
+script = ExtResource("2_i6f15")
 model = NodePath("../../../../SharedModel")
-nSteps = 128
 
 [node name="SharedModel" type="Node" parent="." node_paths=PackedStringArray("algorithm")]
 script = ExtResource("2_k5d56")
 hiddenSize = PackedInt32Array(1024, 512)
-activationFunction = 1
 algorithm = NodePath("../SharedAlg")
 shared = true
 
 [node name="SharedAlg" type="Node" parent="."]
 script = ExtResource("3_hryfe")
+maxGradNorm = 0.0
+
+[node name="SharedConfig" type="Node" parent="."]
+script = ExtResource("5_c3djj")
+nSteps = 1000
+MaxNumberOfUpdates = 500000
+UpdateGradientInterval = 4
 
 [editable path="Arena"]
 [editable path="Arena2"]

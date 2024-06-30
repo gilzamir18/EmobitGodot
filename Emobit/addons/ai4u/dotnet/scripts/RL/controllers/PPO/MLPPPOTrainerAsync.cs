@@ -58,6 +58,15 @@ public partial class MLPPPOTrainerAsync : Trainer
 	/// </summary>
 	public override void OnSetup()
 	{
+
+		agent.OnEpisodeEnd += (Agent a) =>
+		{
+			if (episodes > 0)
+			{
+				asyncPlugin.Put("endepisode", $"{episodes} {agent.EpisodeReward}");
+			}
+		};
+
         asyncPlugin = GetTree().Root.GetNode<MLPPPOAsyncSingleton>("MLPPPOAsyncSingleton");
 		if (asyncPlugin == null)
         {
@@ -121,10 +130,6 @@ public partial class MLPPPOTrainerAsync : Trainer
 	public override void OnReset(Agent agent)
 	{
 		episodes += 1;
-		if (episodes > 0)
-		{
-			asyncPlugin.Put("endepisode", $"{episodes} {agent.EpisodeReward}");
-		}
 		policyUpdatesByEpisode = 0;
 		ended = false;
 		horizonPos = 0;
@@ -149,20 +154,26 @@ public partial class MLPPPOTrainerAsync : Trainer
 		float policyLoss = 0;
 		if ( (horizonPos >= asyncPlugin.SharedConfig.nSteps || !agent.Alive()) && !TrainingFinalized())
 		{
-			(criticLoss, policyLoss) = model.algorithm.Update(model, memory, true);
-            asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
-			memory.Clear();
-			horizonPos = 0;
-			policyUpdatesByEpisode++;
-			totalPolicyUpdates++;
+			if (memory.states.Count >= model.algorithm.batchSize)
+			{
+				(criticLoss, policyLoss) = model.algorithm.Update(model, memory, model.algorithm.batchSize, true);
+				asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
+				memory.Clear();
+				horizonPos = 0;
+				policyUpdatesByEpisode++;
+				totalPolicyUpdates++;
+			}
 		} else if (memory.actions.Count > 0 && ended)
 		{
-			(criticLoss, policyLoss) = model.algorithm.Update(model, memory, true);
-            asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
-			horizonPos = 0;
-			memory.Clear();
-			policyUpdatesByEpisode++;
-			totalPolicyUpdates++;
+			if (memory.states.Count >= model.algorithm.batchSize)
+			{
+				(criticLoss, policyLoss) = model.algorithm.Update(model, memory, model.algorithm.batchSize, true);
+				asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
+				horizonPos = 0;
+				memory.Clear();
+				policyUpdatesByEpisode++;
+				totalPolicyUpdates++;
+			}
 		}
 		if (TrainingFinalized())
 		{

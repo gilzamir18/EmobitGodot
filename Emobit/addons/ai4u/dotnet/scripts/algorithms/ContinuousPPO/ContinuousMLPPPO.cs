@@ -214,7 +214,7 @@ public partial class ContinuousMLPPPO: Node
         var (mean, logStd) = policy.Act(state);
         var std = logStd.exp();
         var action = normal(mean, std);
-        return action;
+        return clamp(action, -1 , 1);
     }
 
     public void Load(string prefix="model", string path="")

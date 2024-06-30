@@ -287,7 +287,6 @@ agentsList = []
 [node name="Actuator" type="Node" parent="IABot/Agent"]
 script = ExtResource("6_q38xv")
 moveAmount = 5.0
-turnAmount = 2.0
 jumpPower = 0.0
 jumpForwardPower = 0.0
 floorGroup = "FLOOR"
@@ -392,9 +391,8 @@ script = ExtResource("17_ftj1x")
 [node name="ControllerConfig" type="Node" parent="IABot/Agent"]
 script = ExtResource("18_x3epi")
 
-[node name="PPOTrainer" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("model")]
+[node name="PPOTrainer" type="Node" parent="IABot/Agent"]
 script = ExtResource("19_181fa")
-model = NodePath("")
 nSteps = 401
 maxNumberOfUpdates = 500000
 

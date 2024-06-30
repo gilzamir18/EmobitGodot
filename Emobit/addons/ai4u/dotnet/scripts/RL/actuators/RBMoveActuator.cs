@@ -20,7 +20,7 @@ namespace ai4u {
 		private float collisionShapeHalfHeight = 1.0f;
 		
 		[Export]
-		private float precision = 0.001f;
+		private float deadZone = 0.1f;
 
 		[Export]
 		public string floorGroup = "Floor";
@@ -115,17 +115,17 @@ namespace ai4u {
 					
 					if (onGround)
 					{	
-						if (Mathf.Abs(turn) < precision)
+						if (Mathf.Abs(turn) < deadZone)
 						{
 							turn = 0;
 						}
 						
-						if (Mathf.Abs(jump) < precision)
+						if (Mathf.Abs(jump) < deadZone)
 						{
 							jump = 0;
 						}
 						
-						if (Mathf.Abs(jumpForward) < precision)
+						if (Mathf.Abs(jumpForward) < deadZone)
 						{
 							jumpForward = 0;
 						}

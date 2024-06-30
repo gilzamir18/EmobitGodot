@@ -58,6 +58,15 @@ public partial class ContinuousMLPPPOTrainerAsync : Trainer
 	/// </summary>
 	public override void OnSetup()
 	{
+
+		agent.OnEpisodeEnd += (Agent a) =>
+		{
+            if (episodes > 0)
+            {
+                asyncPlugin.Put("endepisode", $"{episodes} {agent.EpisodeReward}");
+            }
+        };
+
         asyncPlugin = GetTree().Root.GetNode<ContinuousMLPPPOAsyncSingleton>("MLPPPOAsyncSingleton");
 		if (asyncPlugin == null)
         {
@@ -121,10 +130,6 @@ public partial class ContinuousMLPPPOTrainerAsync : Trainer
 	public override void OnReset(Agent agent)
 	{
 		episodes += 1;
-		if (episodes > 0)
-		{
-			asyncPlugin.Put("endepisode", $"{episodes} {agent.EpisodeReward}");
-		}
 		policyUpdatesByEpisode = 0;
 		ended = false;
 		horizonPos = 0;
@@ -147,18 +152,20 @@ public partial class ContinuousMLPPPOTrainerAsync : Trainer
 		CollectData();
 		float criticLoss = 0;
 		float policyLoss = 0;
+		var bs = Math.Min(memory.states.Count, model.algorithm.GetBatchSize());
 		if ( (horizonPos >= asyncPlugin.SharedConfig.nSteps || !agent.Alive()) && !TrainingFinalized())
 		{
-			(criticLoss, policyLoss) = model.algorithm.Update(model, memory, true);
-            asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
+
+			(criticLoss, policyLoss) = model.algorithm.Update(model, memory, bs, true);
+			asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
 			memory.Clear();
 			horizonPos = 0;
 			policyUpdatesByEpisode++;
 			totalPolicyUpdates++;
 		} else if (memory.actions.Count > 0 && ended)
 		{
-			(criticLoss, policyLoss) = model.algorithm.Update(model, memory, true);
-            asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
+			(criticLoss, policyLoss) = model.algorithm.Update(model, memory, bs, true);
+			asyncPlugin.Put("workdone", $"{criticLoss} {policyLoss}");
 			horizonPos = 0;
 			memory.Clear();
 			policyUpdatesByEpisode++;
@@ -204,7 +211,7 @@ public partial class ContinuousMLPPPOTrainerAsync : Trainer
 
 		controller.RequestContinuousAction(mainOutput, action);
 		
-		memory.actions.Add(y.detach());
+		memory.actions.Add(action);
 		memory.states.Add(state.detach());
 		memory.rewards.Add(reward);
 		memory.dones.Add(done);

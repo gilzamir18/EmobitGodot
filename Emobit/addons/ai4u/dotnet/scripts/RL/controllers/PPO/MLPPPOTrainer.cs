@@ -69,6 +69,17 @@ public partial class MLPPPOTrainer : Trainer
 	/// </summary>
 	public override void OnSetup()
 	{
+		agent.OnEpisodeEnd += (Agent a) =>
+		{
+			GD.Print("Episode Reward: " + agent.EpisodeReward);
+			summaryWriter.add_scalar("episode/reward", agent.EpisodeReward, (int)totalPolicyUpdates);
+			GD.Print("Updates: " + totalPolicyUpdates);
+			if (policyUpdatesByEpisode > 0)
+			{
+				GD.Print("Critic Loss: " + episodeCriticLoss / policyUpdatesByEpisode);
+				GD.Print("Policy Loss: " + episodePolicyLoss / policyUpdatesByEpisode);
+			}
+		};
 		if (summaryWriter == null)
 		{
 			summaryWriter = torch.utils.tensorboard.SummaryWriter(logPath, "ppo_log");
@@ -130,14 +141,6 @@ public partial class MLPPPOTrainer : Trainer
 	///</summary>
 	public override void OnReset(Agent agent)
 	{
-		GD.Print("Episode Reward: " + agent.EpisodeReward);
-		summaryWriter.add_scalar("episode/reward", agent.EpisodeReward, (int)totalPolicyUpdates);
-		GD.Print("Updates: " + totalPolicyUpdates);
-		if (policyUpdatesByEpisode > 0)
-		{
-			GD.Print("Critic Loss: " + episodeCriticLoss/policyUpdatesByEpisode);
-			GD.Print("Policy Loss: " + episodePolicyLoss/policyUpdatesByEpisode);
-		}
 		policyUpdatesByEpisode = 0;
 		ended = false;
 		horizonPos = 0;
@@ -162,27 +165,33 @@ public partial class MLPPPOTrainer : Trainer
 		float policyLoss = 0;
 		if ( (horizonPos >= nSteps || !agent.Alive()) && !TrainingFinalized())
 		{
-			(criticLoss, policyLoss) =  model.algorithm.Update(model, memory);
-			summaryWriter.add_scalar("critic/loss", criticLoss, (int)totalPolicyUpdates);
-			summaryWriter.add_scalar("policy/loss", policyLoss, (int)totalPolicyUpdates);
-			memory.Clear();
-			policyUpdatesByEpisode++;
-			totalPolicyUpdates++;
-			if (!modelSaved && TrainingFinalized())
+			if (memory.states.Count >= model.algorithm.batchSize)
 			{
-				modelSaved = true;
-				model.Save();
-				GD.Print("It was saved the trained model!");
-				GetTree().Quit();
+				(criticLoss, policyLoss) = model.algorithm.Update(model, memory, model.algorithm.batchSize);
+				summaryWriter.add_scalar("critic/loss", criticLoss, (int)totalPolicyUpdates);
+				summaryWriter.add_scalar("policy/loss", policyLoss, (int)totalPolicyUpdates);
+				memory.Clear();
+				policyUpdatesByEpisode++;
+				totalPolicyUpdates++;
+				horizonPos = 0;
 			}
-			horizonPos = 0;
-		} else if (memory.states.Count > 0 && ended)
+            if (!modelSaved && TrainingFinalized())
+            {
+                modelSaved = true;
+                model.Save();
+                GD.Print("It was saved the trained model!");
+                GetTree().Quit();
+            }
+        } else if (memory.states.Count > 0 && ended)
 		{
-			(criticLoss, policyLoss) = model.algorithm.Update(model, memory);
-			memory.Clear();
-			policyUpdatesByEpisode++;
-			totalPolicyUpdates++;
-			horizonPos = 0;
+			if (memory.states.Count >= model.algorithm.batchSize)
+			{
+				(criticLoss, policyLoss) = model.algorithm.Update(model, memory, model.algorithm.batchSize);
+				memory.Clear();
+				policyUpdatesByEpisode++;
+				totalPolicyUpdates++;
+				horizonPos = 0;
+			}
 		}
 		episodeCriticLoss += criticLoss;
 		episodePolicyLoss += policyLoss;
