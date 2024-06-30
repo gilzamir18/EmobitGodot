@@ -264,7 +264,6 @@ transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.87
 
 [node name="ControlLoop" type="Node" parent="." node_paths=PackedStringArray("agentsList")]
 script = ExtResource("3_l2kt4")
-defaultTimeScale = 10.0
 agentsList = [NodePath("../IABot/Agent")]
 
 [node name="IABot" type="RigidBody3D" parent="." groups=["PLAYER"]]
@@ -307,7 +306,6 @@ actionName = "move"
 script = ExtResource("7_uk3ol")
 reward = 100.0
 target = NodePath("../../../Fruit")
-causeEpisodeToEnd = true
 
 [node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD", "secondaryEmotionModule", "radiation")]
 script = ExtResource("8_okav3")
@@ -504,3 +502,5 @@ offset_right = 799.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
 test = false
+
+[connection signal="OnTouch" from="IABot/Agent/FruitReward" to="." method="OnFruitTouchEventHandler"]

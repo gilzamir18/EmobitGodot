@@ -17,3 +17,6 @@ controllers/v3/models_*
 controllers/v3/models_200000
 /Emobit/.vs/Emobit/DesignTimeBuild
 /Emobit/.vs/Emobit/DesignTimeBuild
+/controllers/v3/t3
+*.v2
+*.v2

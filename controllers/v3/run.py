@@ -51,7 +51,7 @@ def step_callback(last_obs, action, info):
     preview_obs = last_obs
     total_steps += 1
 
-path = "logs/rl_model_1200000_steps.zip"
+path = "t3/logs/rl_model_2000000_steps.zip"
 model = None
 
 if len(sys.argv) > 1:
@@ -69,7 +69,7 @@ model = SAC.load(path, custom_objects={'action_space': env.action_space, 'observ
 rModel = NeuralNetwork(env.observation_space.shape[0])
 rModel_bkp = NeuralNetwork(env.observation_space.shape[0])
 
-rModel.load_state_dict(torch.load("models_400000"))
+rModel.load_state_dict(torch.load("t3/models_2000000"))
 rModel_bkp.load_state_dict(rModel.state_dict())
 
 reward_sum = 0

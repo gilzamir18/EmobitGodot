@@ -11,7 +11,7 @@ from ai4u.onnxutils import read_json_file
 from ai4u.onnxutils import sac_export_to
 from ai4u.controllers import BasicGymController
 
-path = "logs/rl_model_1200000_steps.zip"
+path = "t1/logs/rl_model_1200000_steps.zip"
 model = None
 
 if len(sys.argv) > 1:
