@@ -57,7 +57,7 @@ public partial class SceneManager : Node
 	private CollisionShape3D shape1, shape2, shape3, shape4;
 	
 	[Export]
-	private BasicAgent agent;
+	private Agent agent;
 
 	private Layout layout;
 
@@ -75,7 +75,7 @@ public partial class SceneManager : Node
 		shape4 = block4.GetNode<CollisionShape3D>("CollisionShape3D");
 
 		agent.OnResetStart += OnReset;
-		/*agent.OnStepStart += (BasicAgent) =>
+		/*agent.OnStepStart += (Agent) =>
 		{
 			if (pipelineSensor.pain.Value >= 0.95f * pipelineSensor.pain.rangeMax)
 			{
@@ -99,7 +99,7 @@ public partial class SceneManager : Node
         }
     }
 
-    public void OnReset(BasicAgent agent)
+    public void OnReset(Agent agent)
 	{
 		Layout l1 = new Layout(0, 0, 0, 0, 1, 1, 0);
 		Layout l2 = new Layout(1, 1, 1, 0, 1, 1, 0);
@@ -214,14 +214,14 @@ public partial class SceneManager : Node
 	{
 		Godot.Collections.Array<Node> children;
 		children = agentPositions.GetChildren();
-		Transform3D reference;
+		Node3D reference;
 		if (children.Count > 0)
 		{
-			reference = ((Node3D)children[pos]).GlobalTransform;
+			reference = ((Node3D)children[pos]);
 		}
 		else
 		{
-			reference = ((Node3D) agentPositions).GlobalTransform;
+			reference = ((Node3D) agentPositions);
 		}
 
 		Vector3 axis = new Vector3(0, 1, 0); // Or Vector3.Right
@@ -236,22 +236,10 @@ public partial class SceneManager : Node
 		rBody.Position = children[idx].position;
 		rBody.Mode = mode;*/
 		
-		PhysicsServer3D.BodySetState(
-			rBody.GetRid(),
-			PhysicsServer3D.BodyState.Transform,
-			reference
-		);
-		
-		PhysicsServer3D.BodySetState(
-			rBody.GetRid(),
-			PhysicsServer3D.BodyState.AngularVelocity,
-			new Vector3(0, 0, 0)
-		);	
-		
-		PhysicsServer3D.BodySetState(
-			rBody.GetRid(),
-			PhysicsServer3D.BodyState.LinearVelocity,
-			new Vector3(0, 0, 0)
-		);	
+
+		rBody.Position = reference.GlobalPosition;
+		rBody.Rotate(rBody.Transform.Basis.Y, rotationAmount);
+		rBody.AngularVelocity = new Vector3(0, 0, 0);
+		rBody.LinearVelocity = new Vector3(0, 0, 0);
 	}
 }

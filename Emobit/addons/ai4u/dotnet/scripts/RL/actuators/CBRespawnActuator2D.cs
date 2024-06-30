@@ -45,20 +45,21 @@ namespace ai4u
 			{
 				nodeRef = GetNode(respawnOptionsPath);
 				children = nodeRef.GetChildren();
-				cBody = ( (BasicAgent) agent).GetAvatarBody() as CharacterBody2D;
+				isOutput = false;
+				cBody = (agent).GetAvatarBody() as CharacterBody2D;
 
 				if (early)
 				{
-					((BasicAgent)agent).OnResetStart += HandleReset;
+					(agent).OnResetStart += HandleReset;
 				}
 				else
 				{
-					((BasicAgent)agent).OnEpisodeStart += HandleReset;
+					(agent).OnEpisodeStart += HandleReset;
 				}
 			
 			}
 			
-			public void HandleReset(BasicAgent agent)
+			public void HandleReset(Agent agent)
 			{
 				Transform2D reference;
 				if (children.Count > 0)
@@ -74,7 +75,7 @@ namespace ai4u
 				}
                 cBody.Velocity = Vector2.Zero;
 				cBody.Rotation = reference.Rotation;
-                cBody.Position = reference.Origin;
+                cBody.GlobalPosition = reference.Origin;
 				if (randomize)
 				{
 					if (flipWhenTurn)

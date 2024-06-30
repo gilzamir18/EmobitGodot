@@ -86,7 +86,7 @@ public sealed class PerceptionModule
             variables[PipelineSensor.FRUSTRATION].AddValue(0.01f * deltaTime * 100);
         }
 
-        if (agentDist <= 0.1)
+        if (agentDist <= 0.3)
         {
             variables[PipelineSensor.TIREDNESS].AddValue(0.003f * deltaTime * 100);
         }

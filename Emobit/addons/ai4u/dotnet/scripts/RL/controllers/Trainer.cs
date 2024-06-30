@@ -4,10 +4,10 @@ namespace ai4u;
 public partial class Trainer : Node
 {
 
-	protected TrainController controller;
+	protected TrainingController controller;
 	protected Agent agent;
 	
-	public void Initialize(TrainController controller, Agent agent)
+	public void Initialize(TrainingController controller, Agent agent)
 	{
 		this.agent = agent;
 		this.controller = controller;
@@ -22,6 +22,11 @@ public partial class Trainer : Node
 
 	}
 	
+	public virtual void EnvironmentMessage()
+	{
+		
+	}
+
 	///<summary>
 	/// Here you get agent life cicle callback about episode resetting.
 	///</summary>
@@ -36,5 +41,10 @@ public partial class Trainer : Node
 	public virtual void StateUpdated()
 	{
 
+	}
+
+	public virtual bool TrainingFinalized()
+	{
+		return false;
 	}
 }

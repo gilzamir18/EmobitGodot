@@ -35,7 +35,7 @@ public partial class CBMoveActuator2D : MoveActuator
     [Export]
     private float[] actionRangeMax = new float[]{1, 1, 1, 1};
 
-    private BasicAgent agent;
+    private Agent agent;
     
     private CharacterBody2D body;
     private PhysicsDirectSpaceState2D spaceState;
@@ -66,7 +66,7 @@ public partial class CBMoveActuator2D : MoveActuator
         isContinuous = true;
         rangeMin = actionRangeMin;
         rangeMax = actionRangeMax;
-        this.agent = (BasicAgent) agent;
+        this.agent = agent;
         agent.AddResetListener(this);
         body = this.agent.GetAvatarBody() as CharacterBody2D;
         this.spaceState = body.GetWorld2D().DirectSpaceState;
@@ -112,7 +112,7 @@ public partial class CBMoveActuator2D : MoveActuator
             }
             
             // Add the gravity.
-            if (!body.IsOnFloor())
+            if (!body.IsOnFloor() && body.MotionMode == CharacterBody2D.MotionModeEnum.Grounded)
             {
 			    velocity.Y += gravity * 10 * (float)delta;
             }

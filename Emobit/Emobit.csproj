@@ -8,5 +8,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ML" Version="3.0.1" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.17.1" />
+    <PackageReference Include="TorchSharp-cpu" Version="0.102.6" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ public partial class TargetPositions : Node
 {
 
 	[Export]
-	private BasicAgent basicAgent;
+	private Agent basicAgent;
 
 	[Export]
 	private StaticBody3D body3D;
@@ -35,7 +35,7 @@ public partial class TargetPositions : Node
 	{
 	}
 
-	public void OnReset(BasicAgent agent)
+	public void OnReset(Agent agent)
 	{
 
 		int idx = -1;

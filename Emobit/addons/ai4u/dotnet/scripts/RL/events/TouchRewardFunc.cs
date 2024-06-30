@@ -3,9 +3,6 @@ using System;
 using ai4u;
 namespace ai4u {
 	public partial class TouchRewardFunc : RewardFunc {
-
-		[Signal] public delegate void OnTouchEventHandler(TouchRewardFunc source);
-			
 		[Export]
 		public float reward = 0.0f;
 		[Export]
@@ -21,7 +18,7 @@ namespace ai4u {
 		private float _collisionIntervalCoolDown = 0;
 
 		private float acmReward = 0.0f;
-		private BasicAgent agent;
+		private Agent agent;
 		private bool configured = false;
 		private bool eval = false;
 
@@ -38,7 +35,7 @@ namespace ai4u {
 				eval = false;
 				configured = true;
 				agent.AddResetListener(this);
-				this.agent = (BasicAgent) agent;
+				this.agent = agent;
 				this.agent.OnStepEnd += PhysicsUpdate;
 				var body = this.agent.GetAvatarBody();
 				if (body.GetType() == typeof(RigidBody3D))
@@ -60,11 +57,10 @@ namespace ai4u {
 			if (body == target) {
 				acmReward += this.reward;
 				eval = true;
-				EmitSignal(SignalName.OnTouch, this);
 			}
 		}
 
-        public void PhysicsUpdate(BasicAgent agent)
+        public void PhysicsUpdate(Agent agent)
         {
 
 
@@ -87,9 +83,8 @@ namespace ai4u {
 						entered = true;
                         acmReward += this.reward;
 						eval = true;
-						this._collisionIntervalCoolDown = this._collisionCheckInterval;
-                        EmitSignal(SignalName.OnTouch, this);
-                        break;
+						this._collisionIntervalCoolDown = this._collisionCheckInterval; 
+						break;
                     }
                 }
             }

@@ -77,11 +77,15 @@ namespace ai4u
 
         public override void _Ready()
         {
-               lineDrawer = new LineDrawer();
-               lineDrawer.SetColor(debugColor);
-               AddChild(lineDrawer);
-               lineDrawer.StartMeshes();
+            if (Engine.IsEditorHint())
+            {
+                lineDrawer = new LineDrawer();
+                lineDrawer.SetColor(debugColor);
+                AddChild(lineDrawer);
+                lineDrawer.StartMeshes();
+            }
         }
+
 
         public override void OnSetup(Agent agent) 
 		{
@@ -119,7 +123,7 @@ namespace ai4u
 			
 			mapping = new Dictionary<string, int>();
 
-			this.agent = (BasicAgent) agent;
+			this.agent = agent;
 			this.spaceState = (this.agent.GetAvatarBody() as PhysicsBody3D).GetWorld3D().DirectSpaceState;
 
 			if (this.eye == null) {

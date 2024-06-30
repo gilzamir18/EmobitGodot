@@ -1,0 +1,498 @@
+[gd_scene load_steps=42 format=3 uid="uid://bsi8ntivadcmn"]
+
+[ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_1nsa1"]
+[ext_resource type="Script" path="res://scripts/Floor.cs" id="2_5stdb"]
+[ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://addons/ai4u/3DModel/Arrow.dae" id="3_2f05l"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/Agent.cs" id="4_6br4q"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/LoopController.cs" id="5_8fqts"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/actuators/RBMoveActuator.cs" id="6_q38xv"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/TouchRewardFunc.cs" id="7_7brv3"]
+[ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="8_v1ay5"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/RayCastingSensor.cs" id="9_rabda"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/OrientationSensor.cs" id="10_1brgb"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/ActionSensor.cs" id="11_sommu"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/sensors/GroupTouchSensor.cs" id="12_caotu"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/WASDRBMoveController.cs" id="13_p6b3d"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/AndRewardFunc.cs" id="14_74psb"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/EvalBoolValue.cs" id="15_23tyu"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/DistanceToTargetRewardFunc.cs" id="16_t5fq8"]
+[ext_resource type="Script" path="res://scripts/CognitiveModel/SecondaryEmotionModule.cs" id="17_ftj1x"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControllerConfiguration.cs" id="18_x3epi"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/ContinuousPPO/ContinuousMLPPPOTrainer.cs" id="19_181fa"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/controllers/TrainingController.cs" id="20_xco2e"]
+[ext_resource type="Script" path="res://demo1scripts/ShowSteps.cs" id="23_ndqim"]
+[ext_resource type="PackedScene" uid="uid://d2tki2fk7rnlm" path="res://addons/ai4u/dotnet/prefabs/HomeostaticHUD.tscn" id="24_2nqso"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lijko"]
+size = Vector3(20, 0.1, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_moby4"]
+disable_ambient_light = true
+albedo_color = Color(0, 0.576471, 0.34902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qvs65"]
+size = Vector3(2, 1, 3.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qj23i"]
+size = Vector3(1.44922, 1.35632, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n050e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_40t7p"]
+albedo_color = Color(0, 0.216667, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_33gy8"]
+size = Vector3(35, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_orx12"]
+size = Vector3(1, 1, 2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_768m2"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vl1w0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jxcle"]
+albedo_color = Color(0.815686, 0.152941, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2m7b"]
+size = Vector3(10, 4.43793, 7.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3c5on"]
+size = Vector3(1, 1, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ngb1j"]
+size = Vector3(10, 4.48492, 7.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_66lyp"]
+size = Vector3(10, 4.84326, 7.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rxuae"]
+size = Vector3(10, 6, 7.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ydlo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x845j"]
+albedo_color = Color(0.639216, 0.027451, 0.243137, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7obly"]
+
+[node name="Arena" type="Node3D" node_paths=PackedStringArray("radiation", "radiationPositions", "agentBody", "agentPositions", "fruit", "fruitPositions", "pipelineSensor", "agent")]
+transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 0, 0, 0)
+script = ExtResource("1_1nsa1")
+radiation = NodePath("Radiation")
+radiationPositions = NodePath("RadiationPositions")
+agentBody = NodePath("IABot")
+agentPositions = NodePath("AgentPositions")
+fruit = NodePath("Fruit")
+fruitPositions = NodePath("FruitPositions")
+pipelineSensor = NodePath("IABot/Agent/PipelineSensor")
+agent = NodePath("IABot/Agent")
+
+[node name="Floor" type="StaticBody3D" parent="." groups=["FLOOR"]]
+script = ExtResource("2_5stdb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, -2.6148e-12, 0, -1.13687e-11, 1, 0, 1.16415e-10, 2.32831e-10, 1, 0.0164538, -0.0107511, 10.0117)
+shape = SubResource("BoxShape3D_lijko")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(9.50001, -1.77351e-10, -1.86265e-09, 3.24326e-09, 1, -7.45058e-09, -1.30385e-08, 8.14907e-10, 9.80002, 0.00842757, -0.410489, 5.12797)
+material_override = SubResource("StandardMaterial3D_moby4")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("BoxMesh_qvs65")
+skeleton = NodePath("")
+
+[node name="Fruit" type="StaticBody3D" parent="." groups=["TARGET"]]
+transform = Transform3D(2, -4.09273e-12, 0, -2.251e-11, 2, 0, 2.32831e-10, 9.31323e-10, 2, -6.67453, 1.12664, 7.13166)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fruit" groups=["TARGET"]]
+transform = Transform3D(1, -8.94715e-11, 1.5134e-09, -2.9703e-09, 1, -9.31323e-10, 1.66474e-08, 9.31323e-10, 1, -0.34961, 0.160584, 0)
+shape = SubResource("BoxShape3D_qj23i")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Fruit"]
+transform = Transform3D(1.33718, 1.26965e-09, 5.47152e-09, 4.46335e-10, 1.38729, -2.73576e-09, 4.65661e-10, 1.97906e-09, 0.854092, -0.359354, 0.154377, 0.0557616)
+mesh = SubResource("BoxMesh_n050e")
+surface_material_override/0 = SubResource("StandardMaterial3D_40t7p")
+
+[node name="AgentPositions" type="Node" parent="."]
+
+[node name="pos0" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, -8.1963)
+
+[node name="pos1" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.97661, 0, 17.2156)
+
+[node name="pos2" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.09977, 0.005, -7.21743)
+
+[node name="pos3" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1863, 0.005, 17.3061)
+
+[node name="pos4" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.32274, 0.005, -7.87125)
+
+[node name="pos5" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5236, 0.005, -6.34716)
+
+[node name="pos6" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5094, 0.005, 17.1313)
+
+[node name="pos7" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5236, 0.005, 16.4251)
+
+[node name="pos8" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.83899, 0.005, 17.7485)
+
+[node name="pos9" type="Node3D" parent="AgentPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.201891, 0.005, -7.16967)
+
+[node name="RadiationPositions" type="Node" parent="."]
+
+[node name="pos0" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.027, 0.6, 10.7847)
+
+[node name="pos1" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.043, 0.6, -0.309072)
+
+[node name="pos2" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.381, 0.6, 10.0947)
+
+[node name="pos3" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.132, 0.6, -0.32555)
+
+[node name="pos4" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.19319, 0.6, 8.62145)
+
+[node name="pos5" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.92762, 0.6, 7.83173)
+
+[node name="pos6" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.61561, 0.6, 1.5658)
+
+[node name="pos7" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.37632, 0.6, 7.06707)
+
+[node name="pos8" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.232392, 0.6, 18.822)
+
+[node name="pos9" type="Node3D" parent="RadiationPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.08315, 0.6, 15.049)
+
+[node name="FruitPositions" type="Node" parent="."]
+
+[node name="pos0" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90023, 0.005, 17.1155)
+
+[node name="pos1" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.14366, 0, -7.35144)
+
+[node name="pos2" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.09977, 0.005, 18.0945)
+
+[node name="pos3" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1863, 0.005, -8.091)
+
+[node name="pos4" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.14519, 0.005, 18.1295)
+
+[node name="pos5" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.31685, 0.005, 12.9659)
+
+[node name="pos6" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.666, 0.005, -7.68031)
+
+[node name="pos7" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25428, 0.005, 1.34734)
+
+[node name="pos8" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2262, 0.005, 16.2873)
+
+[node name="pos9" type="Node3D" parent="FruitPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7589, 0.005, -2.52818)
+
+[node name="LWall" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.688, 2.5057, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LWall"]
+transform = Transform3D(-4.38886e-08, -6.08225e-11, 1, 3.49246e-10, 1, -1.10958e-10, -1, 6.98492e-10, -4.34229e-08, 0.00780296, -0.0050981, 4.74792)
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LWall"]
+transform = Transform3D(0.49979, 1.8008e-10, 2.79397e-08, 1.61435e-11, 5.00137, -3.72529e-09, -5.82077e-11, -4.65661e-10, 15.0998, 0.00811768, -0.00530815, 4.94409)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="RWall2" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.80062, 2.5057, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RWall2"]
+transform = Transform3D(-4.36557e-08, -2.6148e-12, 1, 0, 1, -5.17275e-11, -1, 2.32831e-10, -4.35393e-08, 0.0089159, -0.00582695, 5.42619)
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RWall2"]
+transform = Transform3D(0.499805, -1.03955e-09, 2.79397e-08, 3.25144e-11, 5.00127, 5.58794e-09, -1.16415e-10, 0, 15.5842, 0.00816059, -0.00533772, 4.97067)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="BWall3" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -2.6148e-12, 0, -1.11413e-11, 1, 0, 0, 1.16415e-10, 1, -3.72529e-09, 2.506, -10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BWall3"]
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BWall3"]
+transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="TWall4" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -2.6148e-12, 0, -1.11413e-11, 1, 0, 0, 1.16415e-10, 1, 3.72529e-09, 2.506, 20)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TWall4"]
+shape = SubResource("BoxShape3D_33gy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TWall4"]
+transform = Transform3D(20, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_orx12")
+
+[node name="IABot" type="RigidBody3D" parent="." groups=["PLAYER"]]
+transform = Transform3D(1, -5.96856e-11, 2.32831e-10, 4.6839e-11, 1, -3.49246e-10, 2.32831e-10, 8.14907e-10, 1, -6.95969, 0.00542105, -7.74487)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+continuous_cd = true
+max_contacts_reported = 10000
+contact_monitor = true
+angular_damp = 10.0
+
+[node name="Arrow" parent="IABot" instance=ExtResource("3_2f05l")]
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 1.29594, 0.474278)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IABot"]
+transform = Transform3D(1, -6.08225e-11, 1.16415e-10, 4.63842e-11, 1, -2.32831e-10, 1.16415e-10, 4.65661e-10, 1, -0.000373307, 0.895548, 0.000962291)
+shape = SubResource("CapsuleShape3D_768m2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="IABot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.859779, 0)
+mesh = SubResource("CapsuleMesh_vl1w0")
+surface_material_override/0 = SubResource("StandardMaterial3D_jxcle")
+
+[node name="Agent" type="Node" parent="IABot"]
+script = ExtResource("4_6br4q")
+doneAtNegativeReward = false
+MaxStepsPerEpisode = 400
+
+[node name="ControlLoop" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("agentsList")]
+script = ExtResource("5_8fqts")
+defaultTimeScale = 10.0
+agentsList = []
+
+[node name="Actuator" type="Node" parent="IABot/Agent"]
+script = ExtResource("6_q38xv")
+moveAmount = 5.0
+turnAmount = 2.0
+jumpPower = 0.0
+jumpForwardPower = 0.0
+floorGroup = "FLOOR"
+actionName = "move"
+
+[node name="FruitReward" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("target")]
+script = ExtResource("7_7brv3")
+reward = 100.0
+target = NodePath("../../../Fruit")
+causeEpisodeToEnd = true
+
+[node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD", "radiation")]
+script = ExtResource("8_v1ay5")
+homeostaticHUD = NodePath("../../../CanvasLayer/HVariablesHUD")
+emotionHUD = NodePath("../../../CanvasLayer/EmotionsHUD")
+radiation = NodePath("../../../Radiation")
+MinDistToStartRadiation = 4
+MaxDistToStartRadiation = 10
+perceptionKey = "array"
+stackedObservations = 4
+
+[node name="RaycastingSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("eye")]
+script = ExtResource("9_rabda")
+groupCode = PackedInt32Array(50, 100, 200)
+groupName = PackedStringArray("FLOOR", "PLAYER", "TARGET")
+noObjectCode = 10
+collisionMask = 2147483647
+hSize = 62
+vSize = 3
+verticalShift = 0.0
+eye = NodePath("../../../Eye")
+visionMaxDistance = 35.0
+fieldOfView = 60.0
+flattened = true
+_normalized = false
+modelDataRange = PackedFloat32Array(0, 1)
+perceptionKey = "vision"
+isInput = false
+
+[node name="FruitSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("target", "reference")]
+script = ExtResource("10_1brgb")
+target = NodePath("../../../../Fruit")
+reference = NodePath("../../..")
+maxDistance = 30.0
+visibilityTest = true
+ignoreVibilityTestForDist = true
+perceptionKey = "orientation"
+isInput = false
+
+[node name="ActionSensor" type="Node" parent="IABot/Agent/PipelineSensor"]
+script = ExtResource("11_sommu")
+actionName = "move"
+actionSize = 4
+perceptionKey = "actions"
+isInput = false
+
+[node name="RadiationSensor" type="Node" parent="IABot/Agent/PipelineSensor" node_paths=PackedStringArray("target", "reference")]
+script = ExtResource("10_1brgb")
+target = NodePath("../../../../Radiation")
+reference = NodePath("../../..")
+maxDistance = 30.0
+info = 1
+visibilityTest = true
+isInput = false
+
+[node name="CollisionWithWallSensor" type="Node" parent="IABot/Agent/PipelineSensor"]
+script = ExtResource("12_caotu")
+group = "WALL"
+isInput = false
+
+[node name="WASDController" type="Node" parent="IABot/Agent"]
+script = ExtResource("13_p6b3d")
+speed = 1.0
+
+[node name="RadiationReward" type="Node" parent="IABot/Agent"]
+script = ExtResource("14_74psb")
+reward = -100.0
+causeEpisodeToEnd = true
+
+[node name="RadiationOn" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
+script = ExtResource("15_23tyu")
+property = "RadiationOn"
+value = true
+reward = 0.0
+target = NodePath("../../PipelineSensor")
+
+[node name="BodyIsNotProtected" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
+script = ExtResource("15_23tyu")
+property = "BodyProtected"
+reward = 0.0
+target = NodePath("../../PipelineSensor")
+
+[node name="CheckRadiationDistance" type="Node" parent="IABot/Agent/RadiationReward" node_paths=PackedStringArray("target")]
+script = ExtResource("16_t5fq8")
+target = NodePath("../../../../Radiation")
+minDistance = 2.0
+squareInverse = false
+
+[node name="SecondaryEmotionModule" type="Node" parent="IABot/Agent"]
+script = ExtResource("17_ftj1x")
+
+[node name="ControllerConfig" type="Node" parent="IABot/Agent"]
+script = ExtResource("18_x3epi")
+
+[node name="PPOTrainer" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("model")]
+script = ExtResource("19_181fa")
+model = NodePath("")
+nSteps = 401
+maxNumberOfUpdates = 500000
+
+[node name="TrainingController" type="Node" parent="IABot/Agent"]
+script = ExtResource("20_xco2e")
+trainerPath = NodePath("../PPOTrainer")
+
+[node name="Eye" type="Node3D" parent="IABot"]
+transform = Transform3D(1, 0.00150875, 4.86564e-05, -0.00138246, 0.928285, -0.371871, -0.000606228, 0.37187, 0.928288, -0.0385079, 1.75718, 0.923115)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)
+
+[node name="Block1" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -8.8562e-11, 2.32831e-10, 7.58291e-11, 1, -3.49246e-10, 3.49246e-10, 9.31323e-10, 1, -0.0139282, 2.33837, -7.61861)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block1"]
+transform = Transform3D(1, -8.61553e-09, 1.86265e-09, -3.56999e-09, 1, -2.44472e-09, 3.32948e-08, 1.16415e-09, 1, 0.00293359, -0.0149479, 1.785)
+shape = SubResource("BoxShape3D_o2m7b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block1"]
+transform = Transform3D(10, -2.07365e-10, 1.86265e-09, 7.27596e-12, 4.5, -9.31323e-10, 0, 9.31323e-10, 5, 0.00293357, -0.00191689, 1.785)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Block2" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -8.83347e-11, 2.32831e-10, 7.56017e-11, 1, -3.49246e-10, 4.65661e-10, 1.16415e-09, 1, -0.00174523, 2.33041, -0.205567)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block2"]
+transform = Transform3D(1, -3.4056e-09, 1.86265e-09, -2.17983e-09, 1, -2.44472e-09, 1.24564e-08, 1.16415e-09, 1, 0.00293358, -0.0372252, 1.785)
+shape = SubResource("BoxShape3D_ngb1j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block2"]
+transform = Transform3D(10, -2.07365e-10, 1.86265e-09, 7.27596e-12, 4.5, -9.31323e-10, 0, 9.31323e-10, 5, 0.00293357, -0.00191689, 1.785)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Block3" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -1.46542e-10, 3.49246e-10, 1.33355e-10, 1, -5.82077e-10, 4.65661e-10, 1.39698e-09, 1, 0.0100686, 2.32269, 6.98284)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block3"]
+transform = Transform3D(1, -2.96848e-09, 1.86265e-09, -1.7119e-09, 1, -2.44472e-09, 1.07102e-08, 1.16415e-09, 1, 0.00293358, 0.0764515, 1.785)
+shape = SubResource("BoxShape3D_66lyp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block3"]
+transform = Transform3D(10, -2.07365e-10, 1.86265e-09, 7.27596e-12, 4.5, -9.31323e-10, 0, 9.31323e-10, 5, 0.00293357, -0.00191689, 1.785)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Block4" type="StaticBody3D" parent="." groups=["WALL"]]
+transform = Transform3D(1, -1.75874e-10, 4.65661e-10, 1.61663e-10, 1, -6.98492e-10, 5.82077e-10, 1.62981e-09, 1, 0.022067, 2.31485, 14.2836)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block4"]
+transform = Transform3D(1, -3.02623e-09, 1.86265e-09, -1.74123e-09, 1, -2.44472e-09, 1.0943e-08, 1.16415e-09, 1, 0.00293359, -0.501918, 1.785)
+shape = SubResource("BoxShape3D_rxuae")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block4"]
+transform = Transform3D(10, -2.07365e-10, 1.86265e-09, 7.27596e-12, 4.5, -9.31323e-10, 0, 9.31323e-10, 5, 0.00293357, -0.00191689, 1.785)
+mesh = SubResource("BoxMesh_3c5on")
+
+[node name="Radiation" type="StaticBody3D" parent="."]
+transform = Transform3D(1, -1.73941e-11, -2.32831e-10, 1.73941e-11, 1, -5.82077e-10, 2.32831e-10, 5.82077e-10, 1, 6.791, 0.604178, -9.31323e-10)
+collision_layer = 2148007936
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Radiation"]
+transform = Transform3D(1, -2.16005e-12, 0, -1.1255e-11, 1, 0, 0, 1.16415e-10, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_6ydlo")
+surface_material_override/0 = SubResource("StandardMaterial3D_x845j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Radiation"]
+transform = Transform3D(1, -2.04636e-12, 0, 1.81899e-11, 1, 0, 1.16415e-10, 1.16415e-10, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_7obly")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ShowSteps" type="Label" parent="CanvasLayer"]
+offset_right = 152.0
+offset_bottom = 39.0
+script = ExtResource("23_ndqim")
+agentPath = NodePath("../../IABot/Agent")
+
+[node name="HVariablesHUD" parent="CanvasLayer" instance=ExtResource("24_2nqso")]
+custom_minimum_size = Vector2(20, 20)
+offset_top = 41.0
+offset_right = 263.0
+offset_bottom = 277.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+test = false
+
+[node name="EmotionsHUD" parent="CanvasLayer" instance=ExtResource("24_2nqso")]
+custom_minimum_size = Vector2(20, 20)
+offset_left = 539.0
+offset_top = 2.0
+offset_right = 799.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+test = false

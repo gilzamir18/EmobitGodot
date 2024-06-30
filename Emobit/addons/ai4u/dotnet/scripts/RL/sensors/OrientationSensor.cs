@@ -97,7 +97,7 @@ namespace ai4u {
 		public InfoType Info => info;
 
 		public override void OnSetup(Agent agent) {
-			this.agent = (BasicAgent)agent;
+			this.agent = agent;
 
 			if (reference == null) {
 				reference = this.agent.GetAvatarBody() as Node3D;
@@ -132,84 +132,114 @@ namespace ai4u {
 			history = new HistoryStack<float>(shape[0]);
 			lastFloatArrayValue = null;
 		}
-
+		
 		public override float[] GetFloatArrayValue()
 		{
-			if (target == null) {
+			if (target == null){
 				GD.Print("OrientationSensor error: target don't specified! Game Object: " + Name);
 			}
-
+		
 			Vector3 f = reference.GlobalTransform.Basis.Z;
 
 			Vector3 d = target.GlobalTransform.Origin - reference.GlobalTransform.Origin;
 			var dist = d.Length();
 			bool testResult = true;
 
-			float distResult = -1;
-			float angResult = -2;
-
-
-            if (visibilityTest)
-            {
-                if (!(ignoreVibilityTestForAngle && ignoreVibilityTestForDist))
-                {
-
-                    var vshift = reference.GlobalTransform.Basis.Y * verticalShiftForVisibility;
-                    var query = PhysicsRayQueryParameters3D.Create(reference.GlobalTransform.Origin + vshift, target.GlobalTransform.Origin + vshift, visibilityTestMask);
-
-
-                    if (excludeAgentFromVisibilityTest)
-                    {
-                        var rb = agent.GetAvatarBody() as PhysicsBody3D;
-                        query.Exclude = new Godot.Collections.Array<Rid> { rb.GetRid() };
-                    }
-
-                    var result = this.spaceState.IntersectRay(query);
+			if (visibilityTest && !(ignoreVibilityTestForAngle && ignoreVibilityTestForDist))
+			{
+				var vshift = reference.GlobalTransform.Basis.Y * verticalShiftForVisibility;
+				var query = PhysicsRayQueryParameters3D.Create(reference.GlobalTransform.Origin + vshift,  target.GlobalTransform.Origin + vshift, visibilityTestMask);	
 				
-                    if (result != null && result.Count > 0)
-                    {
-                        Node3D gobj = (Node3D)result["collider"];
-                        if (gobj.Visible && gobj != target)
-                        {
-                            testResult = false;
-                        }
-                    }
-                    else
-                    {
-                        testResult = false;
-                    }
-                }
-            }
-
-
-            if (dist < maxDistance)
-            {
-                if (testResult && (info == InfoType.ANGLE || info == InfoType.BOTH))
-                {
-					angResult = f.Dot(d.Normalized());
-                }
-				if (testResult && (info == InfoType.DIST || info == InfoType.BOTH))
+				if (excludeAgentFromVisibilityTest)
 				{
-					if (normalized)
+					var rb = agent.GetAvatarBody() as PhysicsBody3D;
+					query.Exclude = new Godot.Collections.Array<Rid> { rb.GetRid() };
+				}
+				
+				var result = this.spaceState.IntersectRay( query );
+				if (result.Count > 0)
+				{
+					Node3D gobj = (Node3D) result["collider"];
+					if (gobj != target) 
 					{
-						distResult = dist / maxDistance;
+						testResult = false;
+					}
+				}
+				else
+				{
+					testResult = false;
+				}
+			}
+
+			if (!testResult)
+			{
+				if (info == InfoType.ANGLE || info == InfoType.BOTH)
+				{
+					if (ignoreVibilityTestForAngle)
+					{
+						float c = f.Dot(d.Normalized());
+						history.Push(c);
 					}
 					else
 					{
-						distResult = dist;
+						history.Push(-2);
 					}
 				}
-            }
-            else
-            {
-				distResult = -1;
-				angResult = -2;
-            }
 
+				if (info == InfoType.DIST || info == InfoType.BOTH)
+				{
+					if (ignoreVibilityTestForDist)
+					{
+						if (normalized)
+						{
+							history.Push(dist/maxDistance);
+						} 
+						else
+						{
+							history.Push(dist);
+						}
+					}
+					else
+					{
+						history.Push(-1);
+					}
+				}
+				lastFloatArrayValue = history.Values;
+				return lastFloatArrayValue;
+			}
 
-			history.Push(angResult);
-			history.Push(distResult);
+			if (dist < maxDistance)
+			{
+				if (info == InfoType.ANGLE || info == InfoType.BOTH)
+				{
+					float c = f.Dot(d.Normalized());
 
+					history.Push(c);
+				}
+				if (info == InfoType.DIST || info == InfoType.BOTH)
+				{				
+					if (normalized)
+					{
+						history.Push(dist/maxDistance);
+					} 
+					else
+					{
+						history.Push(dist);
+					}
+				}
+			}
+			else
+			{
+				if (info == InfoType.ANGLE || info == InfoType.BOTH)
+				{
+					history.Push(-2);
+				}
+
+				if (info == InfoType.DIST || info == InfoType.BOTH)
+				{
+					history.Push(-1);
+				}
+			}
 			lastFloatArrayValue = history.Values;
 			return lastFloatArrayValue;
 		}

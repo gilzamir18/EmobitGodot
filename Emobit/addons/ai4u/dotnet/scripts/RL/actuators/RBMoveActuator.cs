@@ -25,7 +25,7 @@ namespace ai4u {
 		[Export]
 		public string floorGroup = "Floor";
 
-		private BasicAgent agent;
+		private Agent agent;
 		
 		private RigidBody3D rBody;
 		private PhysicsDirectSpaceState3D spaceState;
@@ -44,7 +44,7 @@ namespace ai4u {
 			isContinuous = true;
 			rangeMin = new float[]{0, -1, 0, 0};
 			rangeMax = new float[]{1, 1, 1, 1};
-			this.agent = (BasicAgent) agent;
+			this.agent = agent;
 			agent.AddResetListener(this);
 			rBody = this.agent.GetAvatarBody() as RigidBody3D;
 			this.spaceState = rBody.GetWorld3D().DirectSpaceState;
@@ -98,13 +98,16 @@ namespace ai4u {
 			if (agent != null && !agent.Done)
 			{
 				float[] action = agent.GetActionArgAsFloatArray();
-				float delta = (float)agent.GetPhysicsProcessDeltaTime();
+
+				action[0] = ai4u.math.AI4UMath.Clip(Mathf.Remap(action[0], -1, 1, rangeMin[0], rangeMax[0]), rangeMin[0], rangeMax[0]);
+				action[1] = ai4u.math.AI4UMath.Clip(Mathf.Remap(action[1], -1, 1, rangeMin[1], rangeMax[1]), rangeMin[1], rangeMax[1]);
+				action[2] = ai4u.math.AI4UMath.Clip(Mathf.Remap(action[2], -1, 1, rangeMin[2], rangeMax[2]), rangeMin[2], rangeMax[2]);
+				action[3] = ai4u.math.AI4UMath.Clip(Mathf.Remap(action[3], -1, 1, rangeMin[3], rangeMax[3]), rangeMin[3], rangeMax[3]);
+
 				move = action[0];
 				turn = action[1];
 				jump = action[2];
 				jumpForward = action[3];
-				//GD.Print("Move " + move);
-				//GD.Print("Turn " + turn);
 
 				if (rBody != null)
 				{
@@ -130,9 +133,9 @@ namespace ai4u {
 						var velocity = new Vector3(0, 0, 0);
 						
 						
-						velocity.Z += (move * moveAmount + jumpForward * jumpForwardPower) * delta * 100;
+						velocity.Z += move * moveAmount + jumpForward * jumpForwardPower;
 						
-						var r = Vector3.Up * turn * turnAmount * delta * 100;
+						var r = Vector3.Up * turn * turnAmount;
 						
 						PhysicsServer3D.BodySetState(
 							rBody.GetRid(),
@@ -140,7 +143,7 @@ namespace ai4u {
 							r
 						);
 						
-						velocity.Y += (jump * jumpPower + jumpForward * jumpPower) * delta * 100;
+						velocity.Y += jump * jumpPower + jumpForward * jumpPower;
 						
 						velocity = velocity.Rotated(Vector3.Up, rBody.Rotation.Y);
 						

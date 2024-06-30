@@ -15,6 +15,10 @@ run/main_scene="res://scenes/emotionalagentv3.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+MLPPPOAsyncSingleton="*res://addons/ai4u/dotnet/scripts/algorithms/ContinuousPPO/ContinuousMLPPPOAsyncSingleton.cs"
+
 [display]
 
 window/size/viewport_width=800
