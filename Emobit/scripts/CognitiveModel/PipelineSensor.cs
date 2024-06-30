@@ -76,7 +76,7 @@ public partial class PipelineSensor: Sensor
 
     public override void OnSetup(Agent agent)
     {   
-        this.agent = (BasicAgent) agent;
+        this.agent = (RLAgent) agent;
 
         this.agent.OnStepEnd += UpdateReward;
 
@@ -140,7 +140,7 @@ public partial class PipelineSensor: Sensor
         }
     }
 
-    public void UpdateReward(BasicAgent agent)
+    public void UpdateReward(RLAgent agent)
     {
         //GD.Print("Sum of rewards " + sumOfRewards);
         agent.AddReward(sumOfRewards);

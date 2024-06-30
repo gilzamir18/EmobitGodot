@@ -57,7 +57,7 @@ public partial class SceneManager : Node
 	private CollisionShape3D shape1, shape2, shape3, shape4;
 	
 	[Export]
-	private BasicAgent agent;
+	private RLAgent agent;
 
 	private Layout layout;
 
@@ -99,7 +99,7 @@ public partial class SceneManager : Node
         }
     }
 
-    public void OnReset(BasicAgent agent)
+    public void OnReset(RLAgent agent)
 	{
 		Layout l1 = new Layout(0, 0, 0, 0, 1, 1, 0);
 		Layout l2 = new Layout(1, 1, 1, 0, 1, 1, 0);

@@ -20,3 +20,6 @@ controllers/v3/models_200000
 /controllers/v3/t3
 *.v2
 *.v2
+/Emobit/.vs
+/Emobit/.vs
+/Emobit/.vs/Emobit

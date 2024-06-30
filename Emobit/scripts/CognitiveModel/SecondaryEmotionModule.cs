@@ -16,7 +16,7 @@ public partial class SecondaryEmotionModule : Node
 
 	private PipelineSensor pipeline;
 
-	private BasicAgent agent;
+	private RLAgent agent;
 
 	private float qValue_tm1 = 0;
 	private float maxTD = float.NegativeInfinity;
@@ -43,7 +43,7 @@ public partial class SecondaryEmotionModule : Node
 		
 	}
 
-	public void SetAgent(BasicAgent agent)
+	public void SetAgent(RLAgent agent)
 	{
 		this.agent = agent;
 	}
