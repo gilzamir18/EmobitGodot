@@ -306,7 +306,7 @@ actionName = "move"
 script = ExtResource("7_mkgky")
 reward = 100.0
 target = NodePath("../../../Fruit")
-onlyOneTime = false
+causeEpisodeToEnd = true
 
 [node name="PipelineSensor" type="Node" parent="IABot/Agent" node_paths=PackedStringArray("homeostaticHUD", "emotionHUD", "radiation")]
 script = ExtResource("8_jw02c")

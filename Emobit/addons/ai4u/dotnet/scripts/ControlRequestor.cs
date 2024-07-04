@@ -48,13 +48,22 @@ namespace ai4u
 		
 		public override void _Ready()
 		{
+			var __parent = GetParent();
+
+
+
 			agents = new List<Agent>();
 			foreach (var agent in agentsList)
 			{
 				agents.Add(agent);
 			}
-		
-			agents.Sort( new AgentComparer() );
+
+            if (__parent != null && __parent is RLAgent)
+            {
+				agents.Add((RLAgent)__parent);
+            }
+
+            agents.Sort( new AgentComparer() );
 			for (int i = 0; i < agents.Count; i++)
 			{
 				Agent a = agents[i];
