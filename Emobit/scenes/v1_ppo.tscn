@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://p7aph8v8u7sa"]
+
+[ext_resource type="PackedScene" uid="uid://hddml8evpygb" path="res://scenes/emotionalagentv1.tscn" id="1_s350f"]
+
+[node name="V1Ppo" type="Node3D"]
+
+[node name="Arena" parent="." instance=ExtResource("1_s350f")]
+transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, -45.7309, 0, -23.6527)
+
+[node name="DirectionalLight3D" parent="Arena" index="10"]
+visible = false
+
+[node name="DirectionalLight3D2" parent="Arena" index="13"]
+visible = false
+
+[node name="Arena2" parent="." instance=ExtResource("1_s350f")]
+transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, -17.3882, 0, -23.6527)
+
+[node name="DirectionalLight3D" parent="Arena2" index="10"]
+visible = false
+
+[node name="Agent" parent="Arena2/IABot" index="3"]
+ID = "1"
+
+[node name="RemoteConf" parent="Arena2/IABot/Agent" index="3"]
+port = 8081
+
+[node name="DirectionalLight3D2" parent="Arena2" index="13"]
+visible = false
+
+[node name="Arena3" parent="." instance=ExtResource("1_s350f")]
+transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 16.4254, 0, -23.6527)
+
+[node name="DirectionalLight3D" parent="Arena3" index="10"]
+visible = false
+
+[node name="Agent" parent="Arena3/IABot" index="3"]
+ID = "2"
+
+[node name="RemoteConf" parent="Arena3/IABot/Agent" index="3"]
+port = 8082
+
+[node name="DirectionalLight3D2" parent="Arena3" index="13"]
+visible = false
+
+[node name="Arena4" parent="." instance=ExtResource("1_s350f")]
+transform = Transform3D(0.999999, 0.000418613, -0.001643, -0.000416837, 0.999999, 0.00107453, 0.00164345, -0.00107384, 0.999998, 44.4477, 0, -23.8216)
+
+[node name="DirectionalLight3D" parent="Arena4" index="10"]
+visible = false
+
+[node name="Agent" parent="Arena4/IABot" index="3"]
+ID = "3"
+
+[node name="RemoteConf" parent="Arena4/IABot/Agent" index="3"]
+port = 8083
+
+[node name="DirectionalLight3D2" parent="Arena4" index="13"]
+visible = false
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 30.6098, -21.3437)
+projection = 1
+current = true
+size = 100.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)
+
+[editable path="Arena"]
+[editable path="Arena2"]
+[editable path="Arena3"]
+[editable path="Arena4"]

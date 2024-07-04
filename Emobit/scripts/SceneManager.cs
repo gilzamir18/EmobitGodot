@@ -212,46 +212,34 @@ public partial class SceneManager : Node
 
 	private void ResetAgentPosition(RigidBody3D rBody, int pos)
 	{
-		Godot.Collections.Array<Node> children;
-		children = agentPositions.GetChildren();
-		Transform3D reference;
-		if (children.Count > 0)
-		{
-			reference = ((Node3D)children[pos]).GlobalTransform;
-		}
-		else
-		{
-			reference = ((Node3D) agentPositions).GlobalTransform;
-		}
+        Godot.Collections.Array<Node> children;
+        children = agentPositions.GetChildren();
+        Node3D reference;
+        if (children.Count > 0)
+        {
+            reference = ((Node3D)children[pos]);
+        }
+        else
+        {
+            reference = ((Node3D)agentPositions);
+        }
 
-		Vector3 axis = new Vector3(0, 1, 0); // Or Vector3.Right
-		int idx = GD.RandRange(0, 2);
-		float rotationAmount = new float[]{0.0f,  Mathf.Pi/2.0f, Mathf.Pi}[idx];
+        Vector3 axis = new Vector3(0, 1, 0); // Or Vector3.Right
+        int idx = GD.RandRange(0, 2);
+        float rotationAmount = new float[] { 0.0f, Mathf.Pi / 2.0f, Mathf.Pi }[idx];
 
-		// Rotate the transform around the X axis by 0.1 radians.
-		reference.Basis = new Basis(axis, rotationAmount) * reference.Basis;
+        // Rotate the transform around the X axis by 0.1 radians.
+        reference.Basis = new Basis(axis, rotationAmount) * reference.Basis;
 
-		/*var mode = rBody.Mode;
+        /*var mode = rBody.Mode;
 		rBody.Mode = RigidBody3D.ModeEnum.Kinematic;
 		rBody.Position = children[idx].position;
 		rBody.Mode = mode;*/
-		
-		PhysicsServer3D.BodySetState(
-			rBody.GetRid(),
-			PhysicsServer3D.BodyState.Transform,
-			reference
-		);
-		
-		PhysicsServer3D.BodySetState(
-			rBody.GetRid(),
-			PhysicsServer3D.BodyState.AngularVelocity,
-			new Vector3(0, 0, 0)
-		);	
-		
-		PhysicsServer3D.BodySetState(
-			rBody.GetRid(),
-			PhysicsServer3D.BodyState.LinearVelocity,
-			new Vector3(0, 0, 0)
-		);	
-	}
+
+
+        rBody.Position = reference.GlobalPosition;
+        rBody.Rotate(rBody.Transform.Basis.Y, rotationAmount);
+        rBody.AngularVelocity = new Vector3(0, 0, 0);
+        rBody.LinearVelocity = new Vector3(0, 0, 0);
+    }
 }

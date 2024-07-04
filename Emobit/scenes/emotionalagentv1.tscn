@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/Floor.cs" id="2_elio7"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/ControlRequestor.cs" id="3_8b3g2"]
 [ext_resource type="PackedScene" uid="uid://5ikmnjyidtck" path="res://addons/ai4u/3DModel/Arrow.dae" id="4_33jmi"]
-[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/agents/BasicAgent.cs" id="5_qp52s"]
+[ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/agents/RLAgent.cs" id="5_qp52s"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/actuators/RBMoveActuator.cs" id="6_5mdhg"]
 [ext_resource type="Script" path="res://addons/ai4u/dotnet/scripts/RL/events/TouchRewardFunc.cs" id="7_mkgky"]
 [ext_resource type="Script" path="res://scripts/CognitiveModel/PipelineSensor.cs" id="8_jw02c"]
