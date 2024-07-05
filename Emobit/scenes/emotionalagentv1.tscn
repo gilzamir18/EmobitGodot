@@ -264,6 +264,7 @@ transform = Transform3D(1, 0, 0, 0, 0.000750498, 1, 0, -1, 0.000750498, 0, 15.87
 
 [node name="ControlLoop" type="Node" parent="." node_paths=PackedStringArray("agentsList")]
 script = ExtResource("3_8b3g2")
+defaultTimeScale = 10.0
 agentsList = [NodePath("../IABot/Agent")]
 
 [node name="IABot" type="RigidBody3D" parent="." groups=["PLAYER"]]
