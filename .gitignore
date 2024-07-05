@@ -27,3 +27,5 @@ controllers/v3/models_200000
 /Emobit/.vs
 /Emobit/.vs
 /Emobit/.vs/ProjectEvaluation
+*.bin
+/Emobit/.vs

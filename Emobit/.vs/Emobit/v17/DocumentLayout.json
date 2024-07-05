@@ -3,24 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\scripts\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:scripts\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\controlrequestor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:addons\\ai4u\\dotnet\\scripts\\controlrequestor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\scripts\\cognitivemodel\\pipelinesensor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:scripts\\cognitivemodel\\pipelinesensor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\rl\\agents\\rlagent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:addons\\ai4u\\dotnet\\scripts\\rl\\agents\\rlagent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\localbrain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:addons\\ai4u\\dotnet\\scripts\\localbrain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\rl\\controllers\\wasdrbmovecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:addons\\ai4u\\dotnet\\scripts\\rl\\controllers\\wasdrbmovecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\scripts\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:scripts\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\remotebrain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:addons\\ai4u\\dotnet\\scripts\\remotebrain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\rl\\agents\\rlagent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:addons\\ai4u\\dotnet\\scripts\\rl\\agents\\rlagent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\scripts\\cognitivemodel\\pipelinesensor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|solutionrelative:scripts\\cognitivemodel\\pipelinesensor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0453C533-58FD-4ECF-8DF2-4CAAA47A6359}|Emobit.csproj|c:\\users\\gilza\\dev\\emobitgodot\\emobit\\addons\\ai4u\\dotnet\\scripts\\remoteconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,35 +46,60 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "PipelineSensor.cs",
-              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\CognitiveModel\\PipelineSensor.cs",
-              "RelativeDocumentMoniker": "scripts\\CognitiveModel\\PipelineSensor.cs",
-              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\CognitiveModel\\PipelineSensor.cs",
-              "RelativeToolTip": "scripts\\CognitiveModel\\PipelineSensor.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAxwAAAAAAAAAAA",
+              "Title": "LocalBrain.cs",
+              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\LocalBrain.cs",
+              "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\LocalBrain.cs",
+              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\LocalBrain.cs",
+              "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\LocalBrain.cs",
+              "ViewState": "AQIAABYAAAAAAAAAAAAkwCUAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-04T12:04:41.36Z"
+              "WhenOpened": "2024-07-04T21:23:20.744Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ControlRequestor.cs",
+              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
+              "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
+              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
+              "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
+              "ViewState": "AQIAAEkBAAAAAAAAAAAqwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-04T21:16:55.109Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "RemoteBrain.cs",
-              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
-              "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
-              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
-              "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAQwBUAAAArAAAA",
+              "Title": "WASDRBMoveController.cs",
+              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RL\\controllers\\WASDRBMoveController.cs",
+              "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\RL\\controllers\\WASDRBMoveController.cs",
+              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RL\\controllers\\WASDRBMoveController.cs",
+              "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\RL\\controllers\\WASDRBMoveController.cs",
+              "ViewState": "AQIAAFoAAAAAAAAAAAAcwGoAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-02T12:13:02.699Z"
+              "WhenOpened": "2024-07-04T21:16:21.697Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
+              "Title": "SceneManager.cs",
+              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\SceneManager.cs",
+              "RelativeDocumentMoniker": "scripts\\SceneManager.cs",
+              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\SceneManager.cs",
+              "RelativeToolTip": "scripts\\SceneManager.cs",
+              "ViewState": "AQIAAN0AAAAAAAAAAAAAAOwAAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-04T18:14:12.342Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "RemoteConfiguration.cs",
               "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RemoteConfiguration.cs",
               "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\RemoteConfiguration.cs",
@@ -79,43 +112,42 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ControlRequestor.cs",
-              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
-              "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
-              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
-              "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\ControlRequestor.cs",
-              "ViewState": "AQIAAKABAAAAAAAAAAAqwJUAAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-02T01:33:20.426Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SceneManager.cs",
-              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\SceneManager.cs",
-              "RelativeDocumentMoniker": "scripts\\SceneManager.cs",
-              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\SceneManager.cs",
-              "RelativeToolTip": "scripts\\SceneManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-02T00:12:46.566Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "RLAgent.cs",
               "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RL\\agents\\RLAgent.cs",
               "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\RL\\agents\\RLAgent.cs",
               "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RL\\agents\\RLAgent.cs",
               "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\RL\\agents\\RLAgent.cs",
-              "ViewState": "AQIAAKUAAAAAAAAAAAAgwOAAAAAAAAAA",
+              "ViewState": "AQIAACEBAAAAAAAAAABRwDMBAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-30T11:05:17.401Z"
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RemoteBrain.cs",
+              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
+              "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
+              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
+              "RelativeToolTip": "addons\\ai4u\\dotnet\\scripts\\RemoteBrain.cs",
+              "ViewState": "AQIAABkAAAAAAAAAAAAcwBUAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-02T12:13:02.699Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "PipelineSensor.cs",
+              "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\CognitiveModel\\PipelineSensor.cs",
+              "RelativeDocumentMoniker": "scripts\\CognitiveModel\\PipelineSensor.cs",
+              "ToolTip": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\scripts\\CognitiveModel\\PipelineSensor.cs",
+              "RelativeToolTip": "scripts\\CognitiveModel\\PipelineSensor.cs",
+              "ViewState": "AQIAACwAAAAAAAAAAAAIwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-04T12:04:41.36Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "TouchRewardFunc.cs",
               "DocumentMoniker": "C:\\Users\\gilza\\dev\\EmobitGodot\\Emobit\\addons\\ai4u\\dotnet\\scripts\\RL\\events\\TouchRewardFunc.cs",
               "RelativeDocumentMoniker": "addons\\ai4u\\dotnet\\scripts\\RL\\events\\TouchRewardFunc.cs",

@@ -228,17 +228,16 @@ public partial class SceneManager : Node
         int idx = GD.RandRange(0, 2);
         float rotationAmount = new float[] { 0.0f, Mathf.Pi / 2.0f, Mathf.Pi }[idx];
 
-        // Rotate the transform around the X axis by 0.1 radians.
+
         reference.Basis = new Basis(axis, rotationAmount) * reference.Basis;
 
-        /*var mode = rBody.Mode;
+		/*var mode = rBody.Mode;
 		rBody.Mode = RigidBody3D.ModeEnum.Kinematic;
 		rBody.Position = children[idx].position;
 		rBody.Mode = mode;*/
 
-
-        rBody.Position = reference.GlobalPosition;
-        rBody.Rotate(rBody.Transform.Basis.Y, rotationAmount);
+		//rBody.Position = reference.GlobalPosition;
+		rBody.Transform = reference.GlobalTransform;
         rBody.AngularVelocity = new Vector3(0, 0, 0);
         rBody.LinearVelocity = new Vector3(0, 0, 0);
     }

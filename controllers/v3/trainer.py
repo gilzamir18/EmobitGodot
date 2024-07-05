@@ -93,7 +93,7 @@ training.start()
 
 print("Training....")
 try:
-    model.learn(total_timesteps=2100000, callback=checkpoint_callback, log_interval=5,)
+    model.learn(total_timesteps=2100000, callback=checkpoint_callback, log_interval=5)
 except:
     queue.put("halt")
 model.save("sac1m")
