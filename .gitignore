@@ -7,7 +7,6 @@ controllers/controllers/controller1/tflog
 *.pyc
 *.zip
 *.0
-
 controllers/v3/models_*
 /controllers/controllers/v3/t1
 /controllers/controllers/v3/t1
@@ -20,14 +19,11 @@ controllers/v3/models_200000
 /Emobit/.vs/Emobit/DesignTimeBuild
 /controllers/v3/t3
 *.v2
-*.v2
 /Emobit/.vs
-/Emobit/.vs
+Emobit/.vs
+/Emobit/.vs/*.*
 /Emobit/.vs/Emobit
-/Emobit/.vs
-/Emobit/.vs
 /Emobit/.vs/ProjectEvaluation
 *.bin
-/Emobit/.vs
 Emobit/.vs/Emobit/v17/.suo
 Emobit/.vs/Emobit/DesignTimeBuild/.dtbcache.v2
